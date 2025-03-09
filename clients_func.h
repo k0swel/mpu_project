@@ -1,0 +1,21 @@
+#ifndef CLIENTS_FUNC_H
+#define CLIENTS_FUNC_H
+#include <QString>
+
+class clients_func
+{
+private:
+   clients_func() = delete;
+   clients_func(const clients_func&) = delete;
+   ~clients_func() = delete;
+
+public:
+   static bool current_login(QString login);
+   static bool current_password(QString password);
+   static bool current_email(QString email);
+
+private:
+   static bool no_cyrillic(QString text);
+};
+
+#endif // CLIENTS_FUNC_H
