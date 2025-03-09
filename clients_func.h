@@ -15,7 +15,7 @@ public:
    static bool current_email(QString email);
 
 private:
-   static bool no_cyrillic(QString text);
+   static bool english_symbols(QString text);
 };
 
 #endif // CLIENTS_FUNC_H

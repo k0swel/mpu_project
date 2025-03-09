@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>809</width>
     <height>600</height>
    </rect>
   </property>
@@ -16,18 +16,28 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>180</y>
-     <width>331</width>
-     <height>171</height>
+     <x>180</x>
+     <y>100</y>
+     <width>441</width>
+     <height>241</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="lineEdit_password"/>
-    </item>
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <property name="topMargin">
+     <number>10</number>
+    </property>
     <item row="0" column="1">
      <widget class="QLineEdit" name="lineEdit_login"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_password">
+      <property name="echoMode">
+       <enum>QLineEdit::EchoMode::Password</enum>
+      </property>
+     </widget>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_password">
@@ -36,8 +46,12 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="lineEdit_email"/>
+    <item row="3" column="1">
+     <widget class="QPushButton" name="pushButton_reg">
+      <property name="text">
+       <string>Зарегистрироваться</string>
+      </property>
+     </widget>
     </item>
     <item row="0" column="0">
      <widget class="QLabel" name="label_login">
@@ -49,17 +63,13 @@
       </property>
      </widget>
     </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_email"/>
+    </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_email">
       <property name="text">
        <string>email</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QPushButton" name="pushButton_reg">
-      <property name="text">
-       <string>Зарегистрироваться</string>
       </property>
      </widget>
     </item>
@@ -71,6 +81,66 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QLabel" name="label_wrong_email">
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>240</y>
+     <width>149</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string>неверный email</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_wrong_password">
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>190</y>
+     <width>149</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string>неверный пароль</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_wrong_login">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>140</y>
+     <width>131</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string>неверный логин</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+   </property>
   </widget>
  </widget>
  <resources/>
