@@ -14,6 +14,7 @@ Widget::Widget(QWidget *parent)
    ui->label_wrong_login->hide();
    ui->label_wrong_password->hide();
    ui->label_wrong_email->hide();
+   this->setLayout(ui->gridLayout_2);
    this->show();
 }
 Widget::~Widget()
