@@ -1,11 +1,13 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "clients_func.h"
+#include "auth_form.h"
 
 
-Widget::Widget(QWidget *parent)
+Widget::Widget(Client* Client, QWidget *parent)
    : QWidget(parent)
-   , ui(new Ui::Widget)
+   , ui(new Ui::Widget),
+     client(Client)
 {
    ui->setupUi(this);
    QScreen *screen = QGuiApplication::primaryScreen();
@@ -14,7 +16,6 @@ Widget::Widget(QWidget *parent)
    ui->label_wrong_login->hide();
    ui->label_wrong_password->hide();
    ui->label_wrong_email->hide();
-   this->setLayout(ui->gridLayout_2);
    this->show();
 }
 Widget::~Widget()
@@ -26,32 +27,47 @@ Widget::~Widget()
 
 void Widget::on_pushButton_reg_clicked()
 {
-   if (clients_func::current_login(ui->lineEdit_login->text())) {
+   QString login = ui->lineEdit_login->text();
+   QString password = ui->lineEdit_password->text();
+   QString email = ui->lineEdit_email->text();
+
+   bool current_login = clients_func::current_login(login);
+   bool current_password = clients_func::current_password(password);
+   bool current_email = clients_func::current_email(email);
+
+   if (current_login) // если мы ввели корректный логин и пароль
       ui->label_wrong_login->hide();
-      qDebug() << "login correct";
-   }
-   else {
-      ui->label_wrong_login->show();
-      qDebug() << "login iscorrect";
-   }
 
-   if(clients_func::current_password(ui->lineEdit_password->text())) {
+   if (current_password)
       ui->label_wrong_password->hide();
-      qDebug() << "password correct";
-   }
-   else {
-      ui->label_wrong_password->show();
-      qDebug() << "password iscorrect!";
-   }
 
-   if (clients_func::current_email(ui->lineEdit_email->text())) {
+   if (current_email)
       ui->label_wrong_email->hide();
-      qDebug() << "email correct";
-   }
-   else {
+
+   if (!current_login)
+      ui->label_wrong_login->show();
+
+   if (!current_password)
+      ui->label_wrong_password->show();
+
+   if (!current_email)
       ui->label_wrong_email->show();
-      qDebug() << "email iscorrect!";
+
+   if (current_login and current_password and current_email) {
+      ui->label_wrong_login->hide();
+      ui->label_wrong_password->hide();
+      QString final_data = QString("reg | %1$%2$%3").arg(login).arg(password).arg(email);
+      client->write(final_data.toUtf8());
    }
 
+}
+
+
+void Widget::on_toolButton_auth_clicked()
+{
+   this->hide();
+   if (authorization == nullptr)
+      authorization = new auth_form(client);
+   authorization->show();
 }
 

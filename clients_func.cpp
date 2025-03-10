@@ -4,13 +4,15 @@
 bool clients_func::english_symbols(QString text) {
    if (text.size() > 1) {
       for (QChar ch: text) {
-         if ((ch.toLatin1() >= 'A' and ch.toLatin1() <= 'Z') or (ch.toLatin1() >= 'a' and ch.toLatin1() <= 'z') or ch.isDigit() or ch.isPunct() or ch.isSymbol())  {
-            continue;
+         if (ch != QChar('$') and ch != QChar('|')) {
+            if ((ch.toLatin1() >= 'A' and ch.toLatin1() <= 'Z') or (ch.toLatin1() >= 'a' and ch.toLatin1() <= 'z') or ch.isDigit() or ch.isPunct() or ch.isSymbol())
+               continue;
+            else {
+               qDebug () << "НЕВЕРНЫЙ СИМВОЛ = " << ch;
+               return false;
+            }
          }
-         else {
-            qDebug () << "НЕВЕРНЫЙ СИМВОЛ = " << ch;
-            return false;
-         }
+         else return false;
       }
       return true;
    }
@@ -35,6 +37,7 @@ bool clients_func::current_password(QString password) {
    bool english_symbols = false;
    bool is_digits = false;
    bool is_spec_symbols = false;
+   bool length_password_equal_or_more_5 = false;
 
    // проверка на английские символы
    if (clients_func::english_symbols(password)) {
@@ -47,7 +50,11 @@ bool clients_func::current_password(QString password) {
       if (symbol.isDigit()) is_digits = true; // цифры
       if (symbol.isPunct() or symbol.isSymbol()) is_spec_symbols = true; // спец символы
     }
-   return is_upper & english_symbols & is_digits & is_spec_symbols;
+
+   if (password.length() >= 5) {
+      length_password_equal_or_more_5 = true;
+   }
+   return is_upper & english_symbols & is_digits & is_spec_symbols & length_password_equal_or_more_5;
 }
 
 bool clients_func::current_email(QString email) {
@@ -68,4 +75,12 @@ bool clients_func::current_email(QString email) {
    else {
       return false;
    }
+}
+
+QString clients_func::get_client_time() {
+   time_t now_time = time(nullptr); // получаем время на сервере в данный момент.
+   tm* time_struct = localtime(&now_time); // конвертируем время в удобную структуру (год, месяц, число, день, час, минута, секунда, миллисекунда)
+   char time_format[100];
+   strftime(time_format, sizeof(time_format), "[%b %d %Y %H:%M:%S]", time_struct);
+   return QString(time_format);
 }

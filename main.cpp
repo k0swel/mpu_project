@@ -3,12 +3,16 @@
 #include <QApplication>
 #include <client.h>
 #include "reset_password.h"
+#include "clients_func.h"
 int main(int argc, char *argv[])
 {
    QApplication a(argc, argv);
    //Widget w; // регистрация
-   // auth_form authorization; // авторизация
-   reset_password window_reset_password; // окно восстановления пароля
+   Client* make_client = new Client;
+   Widget window_registration(make_client);
+
+
+   // reset_password window_reset_password; // окно восстановления пароля
 
    return a.exec();
 }

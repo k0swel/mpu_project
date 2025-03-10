@@ -29,31 +29,24 @@
     <property name="topMargin">
      <number>10</number>
     </property>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="lineEdit_login"/>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="lineEdit_password">
-      <property name="echoMode">
-       <enum>QLineEdit::EchoMode::Password</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
+    <item row="2" column="0">
      <widget class="QLabel" name="label_password">
       <property name="text">
        <string>Пароль</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QPushButton" name="pushButton_reg">
+    <item row="4" column="0">
+     <widget class="QToolButton" name="toolButton_auth">
       <property name="text">
-       <string>Зарегистрироваться</string>
+       <string>У меня уже есть аккаунт</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_login"/>
+    </item>
+    <item row="1" column="0">
      <widget class="QLabel" name="label_login">
       <property name="text">
        <string>Логин</string>
@@ -63,20 +56,42 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1">
+    <item row="3" column="1">
      <widget class="QLineEdit" name="lineEdit_email"/>
     </item>
-    <item row="2" column="0">
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_password">
+      <property name="echoMode">
+       <enum>QLineEdit::EchoMode::Password</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QPushButton" name="pushButton_reg">
+      <property name="text">
+       <string>Зарегистрироваться</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
      <widget class="QLabel" name="label_email">
       <property name="text">
        <string>email</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QToolButton" name="toolButton_auth">
+    <item row="0" column="0" colspan="2">
+     <widget class="QLabel" name="label">
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
       <property name="text">
-       <string>У меня уже есть аккаунт</string>
+       <string>Регистрация</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -86,7 +101,7 @@
    <property name="geometry">
     <rect>
      <x>630</x>
-     <y>240</y>
+     <y>290</y>
      <width>149</width>
      <height>21</height>
     </rect>
@@ -105,7 +120,7 @@
    <property name="geometry">
     <rect>
      <x>630</x>
-     <y>190</y>
+     <y>260</y>
      <width>149</width>
      <height>21</height>
     </rect>
@@ -127,7 +142,7 @@
    <property name="geometry">
     <rect>
      <x>630</x>
-     <y>140</y>
+     <y>230</y>
      <width>131</width>
      <height>21</height>
     </rect>

@@ -13,7 +13,7 @@ public:
    static bool current_login(QString login);
    static bool current_password(QString password);
    static bool current_email(QString email);
-
+   static QString get_client_time();
 private:
    static bool english_symbols(QString text);
 };

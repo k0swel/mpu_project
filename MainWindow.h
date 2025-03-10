@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QScreen>
 #include "client.h"
+#include "auth_form.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -15,14 +16,17 @@ class Widget : public QWidget
    Q_OBJECT
 
 public:
-   Widget(QWidget *parent = nullptr);
+   Widget(Client* client, QWidget *parent = nullptr);
    ~Widget();
 
 private slots:
    void on_pushButton_reg_clicked();
 
+   void on_toolButton_auth_clicked();
+
 private:
    Ui::Widget *ui;
-   Client this_client;
+   Client* client;
+   auth_form* authorization = nullptr;
 };
 #endif // MAINWINDOW_H
