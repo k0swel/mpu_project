@@ -3,6 +3,19 @@
 #include <QCoreApplication>
 #include <QString>
 
+MyTcpServer* MyTcpServer::p_instance = nullptr;
+MyTcpServerDestroyer MyTcpServerDestroyer::destroyer = MyTcpServerDestroyer();
+
+
+void MyTcpServerDestroyer::initialize(MyTcpServer* server, functions_for_server* functions) {
+      this->server = server;
+      this->functions = functions;
+}
+
+MyTcpServerDestroyer::~MyTcpServerDestroyer() {
+   delete this->server;
+   delete this->functions;
+}
 
 
 MyTcpServer::~MyTcpServer()
@@ -15,8 +28,8 @@ MyTcpServer::~MyTcpServer()
     //server_status=0;
 }
 
-MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent){ // включение сервера СДЕЛАНО
-    mTcpServer = new QTcpServer(this); // создаём сервер динамическим путём
+MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent){ // включение сервера
+    mTcpServer = new QTcpServer; // создаём сервер динамическим путём
     servers_functions = functions_for_server::get_instance(); // методы сервера
 
     connect(mTcpServer, &QTcpServer::newConnection,
@@ -30,9 +43,17 @@ MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent){ // включени
     }
 }
 
+MyTcpServer* MyTcpServer::create_instance() {
+   if (MyTcpServer::p_instance == nullptr) {
+      MyTcpServer::p_instance = new MyTcpServer;
+      MyTcpServerDestroyer::destroyer.initialize(MyTcpServer::p_instance, functions_for_server::get_instance());
+   }
+   return MyTcpServer::p_instance;
+}
+
 void MyTcpServer::slotNewConnection(){ // слот, который активируется при каждом подключении клиента к серверу.
  //   if(server_status==1){
-        QTcpSocket* temp = mTcpServer->nextPendingConnection();
+        QTcpSocket* temp = this->mTcpServer->nextPendingConnection();
         sockets.push_back(temp);
         temp->write(QString("Welcome, user №%1").arg(sockets.size()).toUtf8()); // отправляем приветственное сообщение клиенту.
         if (sockets.size() == 1) {
