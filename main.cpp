@@ -6,6 +6,5 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     MyTcpServer* myserv = MyTcpServer::create_instance(); // server
-
-    return 0;
+    return a.exec();
 }

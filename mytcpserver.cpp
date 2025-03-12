@@ -29,9 +29,8 @@ MyTcpServer::~MyTcpServer()
 }
 
 MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent){ // включение сервера
-    mTcpServer = new QTcpServer; // создаём сервер динамическим путём
+    mTcpServer = new QTcpServer(); // создаём сервер динамическим путём
     servers_functions = functions_for_server::get_instance(); // методы сервера
-
     connect(mTcpServer, &QTcpServer::newConnection,
             this, &MyTcpServer::slotNewConnection);
 
