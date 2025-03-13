@@ -1,18 +1,12 @@
-#include "MainWindow.h"
+#include "reg_form.h"
 #include "auth_form.h"
 #include <QApplication>
 #include <client.h>
 #include "reset_password.h"
-#include "clients_func.h"
 int main(int argc, char *argv[])
 {
    QApplication a(argc, argv);
-   //Widget w; // регистрация
-   Client* make_client = new Client;
-   Widget window_registration(make_client);
-
-
-   // reset_password window_reset_password; // окно восстановления пароля
-
+   Client* make_client = Client::get_instance(); // создаём единственный экземпляр клиента
+   Widget window_reg(make_client); // окно регистрации
    return a.exec();
 }

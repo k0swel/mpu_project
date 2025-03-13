@@ -1,6 +1,7 @@
 #include "clients_func.h"
 #include <QApplication>
-
+#include <QVector>
+#include <QRandomGenerator>
 bool clients_func::english_symbols(QString text) {
    if (text.size() > 1) {
       for (QChar ch: text) {
@@ -8,7 +9,6 @@ bool clients_func::english_symbols(QString text) {
             if ((ch.toLatin1() >= 'A' and ch.toLatin1() <= 'Z') or (ch.toLatin1() >= 'a' and ch.toLatin1() <= 'z') or ch.isDigit() or ch.isPunct() or ch.isSymbol())
                continue;
             else {
-               qDebug () << "НЕВЕРНЫЙ СИМВОЛ = " << ch;
                return false;
             }
          }
@@ -83,4 +83,36 @@ QString clients_func::get_client_time() {
    char time_format[100];
    strftime(time_format, sizeof(time_format), "[%b %d %Y %H:%M:%S]", time_struct);
    return QString(time_format);
+}
+
+QString clients_func::random_password() {
+   using milliseconds = std::chrono::duration<unsigned long long, std::ratio<1,1000>>;
+   QRandomGenerator object(std::chrono::duration_cast<milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+
+   int random_length = object.bounded(7, 16);
+   QString symbols = QString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"#%&'()*+,-./:;<=>?@[\\]^_`{}");
+    QString upper_symbols = QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    QString lower_symbols = QString("abcdefghijklmnopqrstuvwxyz");
+    QString digits = QString("0123456789");
+    QString special_symbols = QString("!\"#%&'()*+,-./:;<=>?@[\\]^_`{}");
+
+    // Генерация обязательных символов для пароля
+    QString random_pswd;
+    int random_count = object.bounded(0, random_length / 5 + 1);
+    for (int i = 0; i < random_count; i++ ) {
+      random_pswd.append(upper_symbols[object.bounded(0, upper_symbols.length())]);
+      random_pswd.append(lower_symbols[object.bounded(0, lower_symbols.length())]);
+      random_pswd.append(digits[object.bounded(0, digits.length())]);
+      random_pswd.append(special_symbols[object.bounded(0, special_symbols.length())]);
+    }
+
+    // Дополняем пароль случайными символами из всего набора
+    for (int i = 0; i < (random_length - random_count * 4); i++) {
+        random_pswd.append(symbols[object.bounded(0, symbols.length())]);
+    }
+
+    // Перемешиваем символы в пароле, чтобы распределить их случайным образом
+    std::random_shuffle(random_pswd.begin(), random_pswd.end());
+
+    return random_pswd;
 }

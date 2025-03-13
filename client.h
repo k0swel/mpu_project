@@ -5,19 +5,31 @@
 #include <QObject>
 #include <QString>
 
+class Client;
+
+class SingletonDestroyer {
+private:
+   static Client* client_connection;
+   static QTcpSocket* socket;
+public:
+   static void initialize(Client* element, QTcpSocket* socket);
+   ~SingletonDestroyer();
+   SingletonDestroyer();
+};
+
 class Client: public QObject
 {
    Q_OBJECT
 public:
-   Client();
-   ~Client();
    void write(QString text); // отправить сообщение серверу.
-   QTcpSocket* socket;
-
+   static Client* get_instance(); // создаём единственный экземпляр клиента
+   ~Client(); // причем деструктор
 private:
-   int port = 33333; // порт, куда подключается клиент
-   static QString get_client_time();
-
+   static QTcpSocket* socket;
+   static Client* p_instance;
+   static int port;
+   Client(); // прячем конструктор
+   static SingletonDestroyer el;
 private slots:
    void connect_to_server();
    void disconnect_from_server();

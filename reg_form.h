@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef REG_FORM_H
+#define REG_FORM_H
 
 #include <QWidget>
 #include <QApplication>
@@ -24,9 +24,12 @@ private slots:
 
    void on_toolButton_auth_clicked();
 
+
 private:
    Ui::Widget *ui;
    Client* client;
-   auth_form* authorization = nullptr;
+   auth_form* window_auth = nullptr;
+   reset_password* window_reset = nullptr;
+   void reset_text();
 };
-#endif // MAINWINDOW_H
+#endif // REG_FORM_H
