@@ -5,7 +5,7 @@
 #include <QTcpSocket>
 #include <QThread>
 
-class client: public QObject
+class client: public QThread
 {
    Q_OBJECT
 public:
@@ -13,16 +13,16 @@ public:
    ~client();
 
 public slots:
-   void initialization();
 
 private slots:
+   void initialization();
    void slot_close_connection();
    void slot_read_from_client();
 
 signals:
    void finished();
 private:
-   QTcpSocket* client_socket = nullptr;
+   QTcpSocket client_socket;
    qintptr client_description;
    QThread* thread_for_client = nullptr;
    static void hello_message();
