@@ -2,9 +2,14 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QString>
+#include "client_object.h"
 
 MyTcpServer* MyTcpServer::p_instance = nullptr;
 MyTcpServerDestroyer MyTcpServerDestroyer::destroyer = MyTcpServerDestroyer();
+
+QList<client*> clients;
+functions_for_server* servers_functions = functions_for_server::get_instance(); // методы сервера;
+
 
 
 void MyTcpServerDestroyer::initialize(MyTcpServer* server, functions_for_server* functions) {
@@ -20,17 +25,16 @@ MyTcpServerDestroyer::~MyTcpServerDestroyer() {
 
 MyTcpServer::~MyTcpServer()
 {
-   while(sockets.size() > 0) { // закрываем сначала все клиентские сокеты
-      sockets.back()->close();
-      sockets.pop_back();
+   for (int i = 0; i < clients.size(); i++) {
+      delete clients[i];
    }
    mTcpServer->close(); // закрываем сервер.
+   delete mTcpServer;
     //server_status=0;
 }
 
 MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent){ // включение сервера
     mTcpServer = new QTcpServer(); // создаём сервер динамическим путём
-    servers_functions = functions_for_server::get_instance(); // методы сервера
     connect(mTcpServer, &QTcpServer::newConnection,
             this, &MyTcpServer::slotNewConnection);
 
@@ -51,42 +55,14 @@ MyTcpServer* MyTcpServer::create_instance() {
 }
 
 void MyTcpServer::slotNewConnection(){ // слот, который активируется при каждом подключении клиента к серверу.
- //   if(server_status==1){
         QTcpSocket* temp = this->mTcpServer->nextPendingConnection();
-        sockets.push_back(temp);
-        temp->write(QString("Welcome, user №%1").arg(sockets.size()).toUtf8()); // отправляем приветственное сообщение клиенту.
-        if (sockets.size() == 1) {
-           qDebug() << QString("%1 Client socket has connected. Сurrently 1 socket is connected").arg(servers_functions->get_server_time());
-         }
-         else if (sockets.size() > 1) {
-            qDebug() << QString("%1 Client socket has connected. Сurrently %2 sockets are connected").arg(servers_functions->get_server_time()).arg(sockets.size());
-         }
-        connect(temp, &QTcpSocket::readyRead,this,&MyTcpServer::slotServerRead);
-        connect(temp,&QTcpSocket::disconnected,this,&MyTcpServer::slotClientDisconnected);
-   // }
+
+        QThread* thread = new QThread;
+        client* client_object = new client(temp->socketDescriptor());
+        client_object->moveToThread(thread);
+        connect(thread, &QThread::started, client_object, &client::initialization);
+        connect(client_object, &client::finished, thread, &QThread::quit);
+        connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+        thread->start();
 }
 
-void MyTcpServer::slotServerRead(){
-   QTcpSocket* current_socket = qobject_cast<QTcpSocket*>(sender()); // сокет, который отправил сигнал
-   QString data;
-   while (current_socket->bytesAvailable() > 0) { // получаем ответ от клиента.
-      data.push_back(current_socket->readAll());
-   }
-   qDebug() << QString("%1 Client ").arg(servers_functions->get_server_time()) << current_socket << QString(" send message: %1").arg(data).simplified();
-
-}
-
-void MyTcpServer::slotClientDisconnected(){ // слот активируется при отключении клиента от сервера СДЕЛАНО
-   QTcpSocket* current_socket = qobject_cast<QTcpSocket*>(sender()); // сокет, который отправил сигнал
-   current_socket->close();
-   sockets.removeOne(current_socket);
-
-   if (sockets.size() == 0)
-      qDebug() << QString("%1 The client has disconnected. No clients at the moment").arg(servers_functions->get_server_time());
-   else if (sockets.size() == 1)
-      qDebug() << QString("%1 The client has disconnected. Сurrently 1 socket is connected").arg(servers_functions->get_server_time());
-   else if (sockets.size() > 1)
-      qDebug() << QString("%1 The client has disconnected. Сurrently %1 sockets are connected").arg(servers_functions->get_server_time()).arg(sockets.size());
-
-
-}

@@ -9,6 +9,7 @@
 #include <QList>
 #include "functions_for_server.h"
 
+
 class MyTcpServer;
 
 class MyTcpServerDestroyer {
@@ -26,18 +27,14 @@ class MyTcpServer : public QObject
     Q_OBJECT
 public:
    static MyTcpServer* create_instance();
-   functions_for_server* servers_functions; // функции сервера.
     ~MyTcpServer();
 
 private slots:
     void slotNewConnection();
-    void slotClientDisconnected();
-    void slotServerRead();
 private:
     static MyTcpServer* p_instance;
     explicit MyTcpServer(QObject *parent = nullptr);
    MyTcpServer(const MyTcpServer&) = delete;
-    QList<QTcpSocket*> sockets;
     QTcpServer * mTcpServer;
     QTcpSocket* temp;
     //int server_status;
