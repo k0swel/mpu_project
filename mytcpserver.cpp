@@ -4,12 +4,10 @@
 #include <QString>
 #include "client_object.h"
 
-MyTcpServer* MyTcpServer::p_instance = nullptr;
-MyTcpServerDestroyer MyTcpServerDestroyer::destroyer = MyTcpServerDestroyer();
-
 QList<client*> clients;
 functions_for_server* servers_functions = functions_for_server::get_instance(); // методы сервера;
-
+MyTcpServer* MyTcpServer::p_instance = nullptr;
+MyTcpServerDestroyer* MyTcpServer::destroyer = nullptr;
 
 
 void MyTcpServerDestroyer::initialize(MyTcpServer* server, functions_for_server* functions) {
@@ -19,7 +17,7 @@ void MyTcpServerDestroyer::initialize(MyTcpServer* server, functions_for_server*
 
 MyTcpServerDestroyer::~MyTcpServerDestroyer() {
    delete this->server;
-   delete this->functions;
+   delete this->functions;   
 }
 
 
@@ -48,8 +46,9 @@ MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent){ // включени
 
 MyTcpServer* MyTcpServer::create_instance() {
    if (MyTcpServer::p_instance == nullptr) {
-      MyTcpServer::p_instance = new MyTcpServer;
-      MyTcpServerDestroyer::destroyer.initialize(MyTcpServer::p_instance, functions_for_server::get_instance());
+      MyTcpServer::p_instance = new MyTcpServer();
+      MyTcpServer::destroyer = new MyTcpServerDestroyer();
+      MyTcpServer::destroyer->initialize(MyTcpServer::p_instance, servers_functions);
    }
    return MyTcpServer::p_instance;
 }

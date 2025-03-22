@@ -1,5 +1,5 @@
 #include "functions_for_server.h"
-
+#include <QCoreApplication>
 
 functions_for_server* functions_for_server::p_instance = nullptr;
 
@@ -7,7 +7,7 @@ functions_for_server::functions_for_server() {}
 
 functions_for_server* functions_for_server::get_instance() {
    if (p_instance == nullptr) {
-      p_instance = new functions_for_server();
+      functions_for_server::p_instance = new functions_for_server();
    }
    return p_instance;
 }
