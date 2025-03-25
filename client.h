@@ -4,7 +4,6 @@
 #include <QByteArray>
 #include <QObject>
 #include <QString>
-
 class Client;
 
 class SingletonDestroyer {
@@ -21,7 +20,7 @@ class Client: public QObject
 {
    Q_OBJECT
 public:
-   void write(QString text); // отправить сообщение серверу.
+   bool write(QString text); // отправить сообщение серверу.
    static Client* get_instance(); // создаём единственный экземпляр клиента
    ~Client(); // причем деструктор
 private:

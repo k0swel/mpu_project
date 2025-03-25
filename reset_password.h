@@ -28,6 +28,8 @@ private slots:
 
    void on_pushButton_to_auth_clicked();
 
+   void on_pushButton_code_clicked();
+
 private:
    Ui::reset_password *ui;
    Client* client;

@@ -6,232 +6,474 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1006</width>
-    <height>456</height>
+    <width>510</width>
+    <height>336</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Widget</string>
   </property>
-  <widget class="QWidget" name="verticalLayoutWidget">
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(33, 35, 40);</string>
+  </property>
+  <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>530</x>
-     <y>110</y>
-     <width>284</width>
-     <height>247</height>
+     <x>20</x>
+     <y>20</y>
+     <width>231</width>
+     <height>28</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0">
-    <property name="spacing">
-     <number>6</number>
-    </property>
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>СОЗДАНИЕ АККАУНТА</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_reg">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>250</y>
+     <width>141</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="palette">
+    <palette>
+     <active>
+      <colorrole role="WindowText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>0</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>13</red>
+         <green>178</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Text">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="ButtonText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>0</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Base">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>13</red>
+         <green>178</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Window">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>13</red>
+         <green>178</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="PlaceholderText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="128">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </active>
+     <inactive>
+      <colorrole role="WindowText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>0</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>13</red>
+         <green>178</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Text">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="ButtonText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>0</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Base">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>13</red>
+         <green>178</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Window">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>13</red>
+         <green>178</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="PlaceholderText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="128">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </inactive>
+     <disabled>
+      <colorrole role="WindowText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>13</red>
+         <green>178</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Text">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="ButtonText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Base">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>13</red>
+         <green>178</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Window">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>13</red>
+         <green>178</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="PlaceholderText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="128">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </disabled>
+    </palette>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius: 20px;
+color: rgb(255, 255, 255);
+background-color: rgb(13, 178, 255);
+border: 2px solid rgb(0,0,0);</string>
+   </property>
+   <property name="text">
+    <string>Зарегистрироваться</string>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_auth">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>300</y>
+     <width>171</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius: 10px;
+background-color: rgb(68, 135, 0);
+color: white;
+selection-color: rgb(85, 255, 0);
+border: 2px solid rgb(0, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>У меня уже есть аккаунт</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>80</y>
+     <width>441</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QLabel" name="label">
-      <property name="font">
-       <font>
-        <pointsize>16</pointsize>
-       </font>
+     <widget class="QLabel" name="label_login">
+      <property name="layoutDirection">
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(224, 225, 230);</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::Box</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <property name="midLineWidth">
+       <number>0</number>
       </property>
       <property name="text">
-       <string>Регистрация</string>
+       <string>Логин</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="spacing">
-       <number>14</number>
+     <widget class="QLineEdit" name="lineEdit_login">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
       </property>
-      <item>
-       <widget class="QLabel" name="label_login">
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Shape::Box</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Shadow::Plain</enum>
-        </property>
-        <property name="lineWidth">
-         <number>0</number>
-        </property>
-        <property name="midLineWidth">
-         <number>0</number>
-        </property>
-        <property name="text">
-         <string>Логин</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="lineEdit_login"/>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_wrong_login">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>неверный логин</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(50, 53, 60);</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>120</y>
+     <width>441</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <item>
+     <widget class="QLabel" name="label_password">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(224, 225, 230);</string>
+      </property>
+      <property name="text">
+       <string>Пароль</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+      </property>
+     </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <property name="spacing">
-       <number>14</number>
+     <widget class="QLineEdit" name="lineEdit_password">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(50, 53, 60);</string>
       </property>
-      <item>
-       <widget class="QLabel" name="label_password">
-        <property name="text">
-         <string>Пароль</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="lineEdit_password">
-        <property name="echoMode">
-         <enum>QLineEdit::EchoMode::Password</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_wrong_password">
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>неверный пароль</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      <property name="echoMode">
+       <enum>QLineEdit::EchoMode::Password</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>160</y>
+     <width>441</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_4">
+    <item>
+     <widget class="QLabel" name="label_email">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(224, 225, 230);</string>
+      </property>
+      <property name="text">
+       <string>email</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+      </property>
+     </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <property name="spacing">
-       <number>14</number>
+     <widget class="QLineEdit" name="lineEdit_email">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(50, 53, 60);</string>
       </property>
-      <item>
-       <widget class="QLabel" name="label_email">
-        <property name="text">
-         <string>email</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="lineEdit_email"/>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_wrong_email">
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>неверный email</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_4">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>210</y>
+     <width>441</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_5">
+    <item>
+     <widget class="QLabel" name="label_email_2">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(224, 225, 230);</string>
+      </property>
+      <property name="text">
+       <string>Дата рождения</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+      </property>
+     </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
-      <property name="spacing">
+     <widget class="QDateEdit" name="dateEdit_birthday">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(50, 53, 60);</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+      </property>
+      <property name="dateTime">
+       <datetime>
+        <hour>9</hour>
+        <minute>0</minute>
+        <second>0</second>
+        <year>2000</year>
+        <month>1</month>
+        <day>1</day>
+       </datetime>
+      </property>
+      <property name="calendarPopup">
+       <bool>true</bool>
+      </property>
+      <property name="currentSectionIndex">
        <number>0</number>
       </property>
-      <property name="leftMargin">
-       <number>0</number>
+      <property name="date">
+       <date>
+        <year>2000</year>
+        <month>1</month>
+        <day>1</day>
+       </date>
       </property>
-      <property name="rightMargin">
-       <number>71</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="label_email_2">
-        <property name="text">
-         <string>Дата рождения</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QDateEdit" name="dateEdit_birthday">
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignCenter</set>
-        </property>
-        <property name="buttonSymbols">
-         <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
-        </property>
-        <property name="dateTime">
-         <datetime>
-          <hour>0</hour>
-          <minute>0</minute>
-          <second>0</second>
-          <year>2000</year>
-          <month>1</month>
-          <day>1</day>
-         </datetime>
-        </property>
-        <property name="calendarPopup">
-         <bool>true</bool>
-        </property>
-        <property name="currentSectionIndex">
-         <number>0</number>
-        </property>
-        <property name="date">
-         <date>
-          <year>2000</year>
-          <month>1</month>
-          <day>1</day>
-         </date>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_5">
-      <item>
-       <widget class="QToolButton" name="toolButton_auth">
-        <property name="text">
-         <string>У меня уже есть аккаунт</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_reg">
-        <property name="text">
-         <string>Зарегистрироваться</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     </widget>
     </item>
    </layout>
   </widget>

@@ -6,7 +6,7 @@
 #include <QScreen>
 #include "client.h"
 #include "auth_form.h"
-
+#include "client_main_window.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
 QT_END_NAMESPACE
@@ -30,6 +30,7 @@ private:
    Client* client;
    auth_form* window_auth = nullptr;
    reset_password* window_reset = nullptr;
+   client_main_window* client_window = nullptr;
    void reset_text();
 };
 #endif // REG_FORM_H

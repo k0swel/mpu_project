@@ -18,9 +18,9 @@ reset_password::reset_password(Client* client,QWidget *parent) :
    ui->pushButton_code->hide();
    ui->label_message_send_code->hide();
 
-   ui->lineEdit_code->setValidator(new QIntValidator(0, 2147483647));
+   ui->lineEdit_code->setValidator(new QIntValidator(0, 2147483647, this));
    this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
-   this->setWindowTitle(QString("Восстановление пароля"));
+   this->setWindowTitle(QString("Метод половинного деления"));
 }
 
 reset_password::~reset_password()
@@ -32,11 +32,12 @@ void reset_password::on_pushButton_reset_password_clicked()
 {
    QString email = ui->lineEdit_email->text();
    if (clients_func::current_email(email) == true) { // если пользователь ввел корректный логин
-      client->write(QString("reset | %1").arg(email).toUtf8());
-      ui->pushButton_reset_password->hide();
-      ui->pushButton_code->show();
-      ui->lineEdit_code->show();
-      ui->label_code->show();
+      if (client->write(QString("reset|%1").arg(email).toUtf8())) {
+         ui->pushButton_reset_password->hide();
+         ui->pushButton_code->show();
+         ui->lineEdit_code->show();
+         ui->label_code->show();
+      }
    }
    else {
       QMessageBox::information(nullptr, "Предупреждение об ошибке", "Вы ввели email в некорректном формате, попробуйте еще раз.");
@@ -56,5 +57,11 @@ void reset_password::on_pushButton_to_auth_clicked()
 {
    this->close();
    this->window_auth->show(); // открываем окно авторизации.
+}
+
+
+void reset_password::on_pushButton_code_clicked()
+{
+   // ФУНКЦИЯ ДЛЯ ПОДТВЕРЖДЕНИЯ, ЧТО НА ПОЧТУ ПРИШЁЛ КОРРЕКТНЫЙ КОД.
 }
 

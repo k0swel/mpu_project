@@ -31,7 +31,6 @@ private slots:
 private:
    Ui::auth_form *ui;
    Client* client;
-   void reset_text(); // скрываем сообщения об ошибках;
 };
 
 #endif // AUTH_FORM_H

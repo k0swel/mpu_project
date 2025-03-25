@@ -57,13 +57,16 @@ void Client::read() {
    qDebug() << QString("%1 Server send: %2").arg(clients_func::get_client_time()).arg(QString(data).simplified());
 }
 
-void Client::write(QString text) {
+bool Client::write(QString text) {
    QByteArray data = text.toUtf8();
    if (this->socket->state() != QAbstractSocket::ConnectedState) {
       QMessageBox::information(nullptr, "Ошибка", "Нет подключения к серверу, попробуйте перезапустить приложение");
+      return false;
    }
-   else
+   else {
       this->socket->write(data);
+      return true;
+   }
 }
 
 void Client::disconnect_from_server() {
