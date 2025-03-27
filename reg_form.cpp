@@ -1,9 +1,10 @@
 #include "reg_form.h"
 #include "ui_reg_form.h"
 #include "clients_func.h"
-#include "auth_form.h"
 #include <QMessageBox>
-
+// импортируем классы окна авторизации и клиентского приложения
+#include "auth_form.h"
+#include "client_main_window.h"
 
 Widget::Widget(Client* Client, QWidget *parent)
    : QWidget(parent)
@@ -15,6 +16,7 @@ Widget::Widget(Client* Client, QWidget *parent)
    this->setWindowFlags(Qt::MSWindowsFixedSizeDialogHint); // нельзя сменить размер окна мышкой или клавой
    ui->dateEdit_birthday->setMaximumDate(QDate::currentDate()); // устанавливаем максимальную дату - сегодняшний день
    ui->dateEdit_birthday->setDate(QDate::currentDate());
+   connect(this, &QWidget::destroyed, this, &QObject::deleteLater); // при закрытии окна, уничтожаем его из памяти.
    this->show();
 }
 Widget::~Widget()
@@ -53,9 +55,14 @@ void Widget::on_pushButton_reg_clicked()
       QString final_data = QString("reg|%1$%2$%3$%4-%5-%6").arg(login).arg(password).arg(email).arg(year_of_birthday).arg(month_of_birthday).arg(day_of_birthday);
       if (client->write(final_data.toUtf8())) {
          if (true) { // ЗДЕСЬ ВМЕСТО условия создадим connect, который ждёт сигнала от сервера, что пользователь успешно зарегистрирован.
-            this->client_window = new client_main_window;
-            this->close();
-            this->client_window->show();
+            this->hide(); // закрываем текущее окно
+            if (this->client_window == nullptr) { // если объект клиентского окна не создан
+               this->client_window = new client_main_window(this->client,this); // создаём объект клиентского окна
+               this->client_window->show(); // показываем основное клиетское окно
+            }
+            else {
+               this->client_window->show(); // показываем основное клиетское окно
+            }
          }
       }
    }
@@ -63,13 +70,12 @@ void Widget::on_pushButton_reg_clicked()
 }
 
 
-void Widget::on_toolButton_auth_clicked()
+void Widget::on_toolButton_auth_clicked() // по нажатии на кнопку открываем окно авторизации
 {
-   this->close();
-   if (this->window_auth == nullptr) {
-      this->window_auth = new auth_form(client);
-      this->window_auth->window_reg = this;
+   this->close(); // закрываем текущее окно
+   if (this->window_auth == nullptr) { // если объект окна авторизации не создан
+      this->window_auth = new auth_form(client, this); // создаём объект окна авторизации
    }
-   this->window_auth->show();
+   this->window_auth->show(); // показываем окно авторизации
 }
 

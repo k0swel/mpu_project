@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/logout/icon">
-        <file>logout.png</file>
-    </qresource>
-</RCC>

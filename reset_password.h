@@ -4,8 +4,8 @@
 #include <QWidget>
 #include "Client.h"
 
-class Widget;
-class auth_form;
+class Widget; // класс окна регистрации
+class auth_form; // класс окна авторизации
 
 namespace Ui {
 class reset_password;
@@ -16,9 +16,7 @@ class reset_password : public QWidget
    Q_OBJECT
 
 public:
-   explicit reset_password(Client* client, QWidget *parent = nullptr);
-   Widget* window_reg = nullptr;
-   auth_form* window_auth = nullptr;
+   explicit reset_password(Client* client, Widget* reg_window, auth_form* auth_window, QWidget *parent = nullptr);
    ~reset_password();
 
 private slots:
@@ -32,7 +30,9 @@ private slots:
 
 private:
    Ui::reset_password *ui;
-   Client* client;
+   Client* client = nullptr;
+   Widget* reg_window = nullptr;
+   auth_form* auth_window = nullptr;
 };
 
 #endif // RESET_PASSWORD_H

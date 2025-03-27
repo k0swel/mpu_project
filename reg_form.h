@@ -5,8 +5,10 @@
 #include <QApplication>
 #include <QScreen>
 #include "client.h"
-#include "auth_form.h"
-#include "client_main_window.h"
+
+class auth_form;
+class client_main_window;
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
 QT_END_NAMESPACE
@@ -27,10 +29,9 @@ private slots:
 
 private:
    Ui::Widget *ui;
-   Client* client;
-   auth_form* window_auth = nullptr;
-   reset_password* window_reset = nullptr;
-   client_main_window* client_window = nullptr;
+   Client* client = nullptr;
+   auth_form* window_auth = nullptr; // окно регистрации
+   client_main_window* client_window = nullptr; // окно клиента
    void reset_text();
 };
 #endif // REG_FORM_H

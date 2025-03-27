@@ -2,7 +2,8 @@
 #include <QApplication>
 #include <QVector>
 #include <QRandomGenerator>
-
+#include <QWidget>
+#include <QLineEdit>
 #define AGE 12
 
 
@@ -111,10 +112,43 @@ QString clients_func::random_password() {
     return random_pswd;
 }
 
-bool clients_func::age(const QDate& date) {
+bool clients_func::age(const QDate& date) { // функция проверки возраста
    QDate now = QDate::currentDate();
    if (now.year() - date.year() > AGE) return true;
    if (now.year() - date.year() == AGE and now.dayOfYear() > date.dayOfYear()) return true;
    return false;
 }
+
+void clients_func::equation(QHBoxLayout* uravnenie, action effect){ // функция, которая прячет/показывает макет уравнений
+   if (effect == action::HIDE) {
+      for (int i = 0; i < uravnenie->count(); i++) {
+         uravnenie->itemAt(i)->widget()->hide(); // прячем виджеты layout'a
+      }
+   }
+   else if (effect == action::SHOW) {
+      for (int i = 0; i < uravnenie->count(); i++) {
+         uravnenie->itemAt(i)->widget()->show(); // показываем виджеты layout'a
+      }
+   }
+}
+
+bool clients_func::correct_digitals(QHBoxLayout* uravnenie) {
+   bool result = true; // по умолчанию
+   // for (int i = 0; i < uravnenie->count(); i++) {
+   //    QWidget* elem_of_layout = uravnenie->itemAt(i)->widget();
+   //    QString type_of_elem = elem_of_layout->metaObject()->className(); // получаем имя элемента виджета
+   //    if (type_of_elem == QString("QLineEdit")) {
+   //       QLineEdit* line_edit = (QLineEdit*)elem_of_layout;
+   //       if (line_edit->text().isEmpty()) // если какой-то line edit пустой, то result делаем ложью
+   //          result = result & 0;
+   //       else {
+   //          for (auto el: line_edit->text()) {
+   //             if (el.isDigit() or el)
+   //          }
+   //       }
+   //    }
+   // }
+   return result;
+}
+
 

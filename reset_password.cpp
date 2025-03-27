@@ -2,13 +2,16 @@
 #include "ui_reset_password.h"
 #include "clients_func.h"
 #include <QMessageBox>
+#include <QIntValidator>
+// импортируем классы окна авторизации и регистрации:
 #include "auth_form.h"
 #include "reg_form.h"
-#include <QIntValidator>
 
-reset_password::reset_password(Client* client,QWidget *parent) :
+reset_password::reset_password(Client* client, Widget* reg_window, auth_form* auth_window, QWidget *parent) :
    QWidget(parent),
    ui(new Ui::reset_password),
+   reg_window(reg_window),
+   auth_window(auth_window),
    client(client)
 {
    ui->setupUi(this);
@@ -21,6 +24,8 @@ reset_password::reset_password(Client* client,QWidget *parent) :
    ui->lineEdit_code->setValidator(new QIntValidator(0, 2147483647, this));
    this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
    this->setWindowTitle(QString("Метод половинного деления"));
+
+   connect(this, &QWidget::destroyed, this, &QObject::deleteLater); // при закрытии окна, уничтожаем его из памяти.
 }
 
 reset_password::~reset_password()
@@ -46,17 +51,17 @@ void reset_password::on_pushButton_reset_password_clicked()
 }
 
 
-void reset_password::on_pushButton_to_reg_clicked()
+void reset_password::on_pushButton_to_reg_clicked() // если нажата кнопка регистрации
 {
-   this->close(); // закрываем текущее окно
-   this->window_reg->show(); // открываем окно регистрации.
+   this->hide(); // закрываем текущее окно
+   this->reg_window->show(); // открываем окно регистрации.
 }
 
 
-void reset_password::on_pushButton_to_auth_clicked()
+void reset_password::on_pushButton_to_auth_clicked() // если нажата кнопка авторизации
 {
-   this->close();
-   this->window_auth->show(); // открываем окно авторизации.
+   this->hide(); // закрываем текущее окно
+   this->auth_window->show(); // открываем окно авторизации.
 }
 
 

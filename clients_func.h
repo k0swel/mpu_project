@@ -2,6 +2,12 @@
 #define CLIENTS_FUNC_H
 #include <QString>
 #include <QDate>
+#include <QHBoxLayout>
+
+enum class action {
+  HIDE,
+   SHOW,
+};
 
 class clients_func
 {
@@ -17,6 +23,8 @@ public:
    static QString get_client_time();
    static QString random_password();
    static bool age(const QDate& date);
+   static void equation(QHBoxLayout* uravnenie, action effect);
+   static bool correct_digitals(QHBoxLayout* uravnenie);
 private:
    static bool english_symbols(QString text);
 };
