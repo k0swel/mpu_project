@@ -15,8 +15,7 @@ client::client(qintptr client_description): client_description(client_descriptio
 
 client::~client() {
    this->client_socket.close();
-   this->quit(); // выключаем поток.
-
+    qDebug() << "Вызвался деструкртор клиента!";
 }
 
 void client::initialization() {
@@ -34,13 +33,13 @@ void client::slot_read_from_client() {
       data.push_back(client_socket.readAll());  // помещаем сообщение от клиента в data.
    }
    qDebug() << QString("%1 Client ").arg(servers_functions->get_server_time()) << &client_socket << QString(" send message: %1").arg(QString(data)).simplified();
-   this->client_socket.write(data.toLatin1()); // ОТПРАВЛЯЕМ ОТПРАВЛЕННОЕ СООБЩЕНИЕ ОБРАТНО КЛИЕНТУ
+   this->client_socket.write(data.toUtf8()); // ОТПРАВЛЯЕМ ОТПРАВЛЕННОЕ СООБЩЕНИЕ ОБРАТНО КЛИЕНТУ
 }
 
 void client::slot_close_connection() {
    clients.removeAll(this);
    bye_message();
-   delete this;
+    this->quit();
 }
 
 

@@ -14,6 +14,7 @@ class MyTcpServer;
 
 class MyTcpServerDestroyer {
 public:
+   static MyTcpServerDestroyer destroyer;
    void initialize(MyTcpServer* server, functions_for_server* functions);
    ~MyTcpServerDestroyer();
 private:
@@ -27,12 +28,11 @@ class MyTcpServer : public QObject
 public:
    static MyTcpServer* create_instance();
     ~MyTcpServer();
-   static MyTcpServerDestroyer* destroyer;
-   static MyTcpServer* p_instance;
 
 private slots:
-    void slotNewConnection();     
+    void slotNewConnection();
 private:
+    static MyTcpServer* p_instance;
     explicit MyTcpServer(QObject *parent = nullptr);
    MyTcpServer(const MyTcpServer&) = delete;
     QTcpServer * mTcpServer;
