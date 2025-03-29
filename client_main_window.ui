@@ -141,7 +141,7 @@ QListView::item:selected {
     <item>
      <layout class="QHBoxLayout" name="Layout_quadratic">
       <item>
-       <widget class="QComboBox" name="comboBox_sign2_quadratic_3">
+       <widget class="QComboBox" name="comboBox_sign2_quardratic">
         <item>
          <property name="text">
           <string>+</string>
@@ -212,7 +212,7 @@ QListView::item:selected {
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="comboBox_sign2_quadratic">
+       <widget class="QComboBox" name="comboBox_sign2_quadratic_3">
         <item>
          <property name="text">
           <string>+</string>

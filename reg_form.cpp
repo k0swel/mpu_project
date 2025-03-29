@@ -5,6 +5,10 @@
 // импортируем классы окна авторизации и клиентского приложения
 #include "auth_form.h"
 #include "client_main_window.h"
+#include "client.h"
+
+
+
 
 Widget::Widget(Client* Client, QWidget *parent)
    : QWidget(parent)
@@ -15,12 +19,13 @@ Widget::Widget(Client* Client, QWidget *parent)
    this->setWindowTitle(QString("Метод половинного деления"));
    this->setWindowFlags(Qt::MSWindowsFixedSizeDialogHint); // нельзя сменить размер окна мышкой или клавой
    ui->dateEdit_birthday->setMaximumDate(QDate::currentDate()); // устанавливаем максимальную дату - сегодняшний день
-   ui->dateEdit_birthday->setDate(QDate::currentDate());
-   connect(this, &QWidget::destroyed, this, &QObject::deleteLater); // при закрытии окна, уничтожаем его из памяти.
+   ui->dateEdit_birthday->setDate(QDate::currentDate()); // устанавливаем виджет даты рождения - текущий день.
+   this->setAttribute(Qt::WA_DeleteOnClose); // удаляем окно при нажатии на значок закрытия.
    this->show();
 }
 Widget::~Widget()
 {
+   qDebug() << "Вызвался деструктор окна регистрации";
    delete ui;
 }
 
@@ -33,12 +38,12 @@ void Widget::on_pushButton_reg_clicked()
    QString email = ui->lineEdit_email->text();
    int year_of_birthday, month_of_birthday, day_of_birthday; // год, месяц и день рождения клиента.
    ui->dateEdit_birthday->date().getDate(&year_of_birthday, &month_of_birthday, &day_of_birthday);
-
    bool current_login = clients_func::current_login(login);
    bool current_password = clients_func::current_password(password);
    bool current_email = clients_func::current_email(email);
    bool current_age = clients_func::age(ui->dateEdit_birthday->date());
-
+   bool is_empty_name = ui->lineEdit_name->text().isEmpty(); // проверяем пустой ли виджет ввода имени
+   bool is_empty_last_name = ui->lineEdit_lastname->text().isEmpty(); // проверяем пустой ли виджет ввода фамилии
    if (!current_login) // если мы ввели некорректный логин пароль или email
       QMessageBox::information(this, "Предупреждение об ошибке", "Вы ввели логин в некорректном формате.\n\nЛогин должен содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | )");
 
@@ -50,32 +55,31 @@ void Widget::on_pushButton_reg_clicked()
 
    if (!current_age)
       QMessageBox::information(this, "Предупреждение об ошибке", "Требуемый возраст - 12 лет");
-
-   if (current_login and current_password and current_email and current_age) {
-      QString final_data = QString("reg|%1$%2$%3$%4-%5-%6").arg(login).arg(password).arg(email).arg(year_of_birthday).arg(month_of_birthday).arg(day_of_birthday);
-      if (client->write(final_data.toUtf8())) {
-         if (true) { // ЗДЕСЬ ВМЕСТО условия создадим connect, который ждёт сигнала от сервера, что пользователь успешно зарегистрирован.
-            this->hide(); // закрываем текущее окно
-            if (this->client_window == nullptr) { // если объект клиентского окна не создан
-               this->client_window = new client_main_window(this->client,this); // создаём объект клиентского окна
-               this->client_window->show(); // показываем основное клиетское окно
-            }
-            else {
-               this->client_window->show(); // показываем основное клиетское окно
-            }
+   if (is_empty_name)
+       QMessageBox::information(this, "Предупреждение об ошибке", "Введите своё имя!");
+   if (is_empty_last_name)
+       QMessageBox::information(this, "Предупреждение об ошибке", "Введите свою фамилию");
+   if (current_login and current_password and current_email and current_age and !is_empty_name and !is_empty_last_name) {
+       QString final_data = QString("reg|%1$%2$%3$%4-%5-%6$%7$%8$%9").arg(login).arg(password).arg(email).arg(year_of_birthday).arg(month_of_birthday).arg(day_of_birthday).arg(ui->lineEdit_lastname->text()).arg(ui->lineEdit_name->text()).arg( ui->lineEdit_middlename->text());
+       if (client->write(final_data.toUtf8())) {
+         if (true) { // ЕСЛИ СЕРВЕР ДАЛ ДОБРО, ТО РЕГИСТРИРУЕМСЯ
+            this->hide(); // прячем текущее окно.
+            new client_main_window(this->client); // создаём объект клиентского окна
+            this->close(); // закрываем текущее окно
+         }
+         else {
+             QMessageBox::information(this, "Предупреждение об ошибке", "Вы уже зарегистрированы!"); // message box о том, что клиент в данный момент зарегистрирован.
          }
       }
    }
-
 }
 
 
 void Widget::on_toolButton_auth_clicked() // по нажатии на кнопку открываем окно авторизации
 {
-   this->close(); // закрываем текущее окно
-   if (this->window_auth == nullptr) { // если объект окна авторизации не создан
-      this->window_auth = new auth_form(client, this); // создаём объект окна авторизации
-   }
-   this->window_auth->show(); // показываем окно авторизации
+   this->hide(); // прячем текущее окно
+   new auth_form(client); // создаём объект окна авторизации
+   this->close(); // закрываем окно
 }
+
 

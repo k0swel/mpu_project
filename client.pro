@@ -15,6 +15,7 @@ SOURCES += \
     client_main_window.cpp \
     clients_func.cpp \
     main.cpp \
+    notification.cpp \
     reg_form.cpp \
     reset_password.cpp
 
@@ -23,12 +24,14 @@ HEADERS += \
     client.h \
     client_main_window.h \
     clients_func.h \
+    notification.h \
     reg_form.h \
     reset_password.h
 
 FORMS += \
     auth_form.ui \
     client_main_window.ui \
+    notification.ui \
     reg_form.ui \
     reset_password.ui
 

@@ -1,8 +1,9 @@
 #include "reg_form.h"
-#include "auth_form.h"
 #include <QApplication>
 #include <client.h>
-#include "reset_password.h"
+#include "notification.h"
+#include "QValidator"
+
 int main(int argc, char *argv[])
 {
    QApplication a(argc, argv);

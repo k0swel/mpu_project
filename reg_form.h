@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QScreen>
 #include "client.h"
+#include <QCloseEvent>
 
 class auth_form;
 class client_main_window;
@@ -30,8 +31,6 @@ private slots:
 private:
    Ui::Widget *ui;
    Client* client = nullptr;
-   auth_form* window_auth = nullptr; // окно регистрации
-   client_main_window* client_window = nullptr; // окно клиента
    void reset_text();
 };
 #endif // REG_FORM_H

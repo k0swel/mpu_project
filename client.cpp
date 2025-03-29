@@ -2,6 +2,8 @@
 #include "clients_func.h"
 #include <QMessageBox>
 
+extern QApplication a;
+
 Client* Client::p_instance = nullptr;
 Client* SingletonDestroyer::client_connection = nullptr;
 QTcpSocket* SingletonDestroyer::socket = nullptr;
@@ -33,7 +35,9 @@ Client::Client()
    Client::socket->connectToHost("127.0.0.1", 33333);
 }
 
-Client::~Client() {}
+Client::~Client() {
+   qDebug() << "Вызвался деструктор клиента";
+}
 
 Client* Client::get_instance() {
    if (Client::p_instance == nullptr) {

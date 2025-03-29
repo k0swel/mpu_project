@@ -132,23 +132,8 @@ void clients_func::equation(QHBoxLayout* uravnenie, action effect){ // функ�
    }
 }
 
-bool clients_func::correct_digitals(QHBoxLayout* uravnenie) {
-   bool result = true; // по умолчанию
-   // for (int i = 0; i < uravnenie->count(); i++) {
-   //    QWidget* elem_of_layout = uravnenie->itemAt(i)->widget();
-   //    QString type_of_elem = elem_of_layout->metaObject()->className(); // получаем имя элемента виджета
-   //    if (type_of_elem == QString("QLineEdit")) {
-   //       QLineEdit* line_edit = (QLineEdit*)elem_of_layout;
-   //       if (line_edit->text().isEmpty()) // если какой-то line edit пустой, то result делаем ложью
-   //          result = result & 0;
-   //       else {
-   //          for (auto el: line_edit->text()) {
-   //             if (el.isDigit() or el)
-   //          }
-   //       }
-   //    }
-   // }
-   return result;
+int clients_func::random_code() { // генерируем случайный код.
+   QRandomGenerator generate_random_code(QTime::currentTime().msec());
+   return generate_random_code.bounded(1000, 9999 + 1); // генерируем случайный код
 }
-
 

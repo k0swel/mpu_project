@@ -6,12 +6,12 @@
 // импортируем классы окна авторизации и регистрации:
 #include "auth_form.h"
 #include "reg_form.h"
+#include "client.h"
 
-reset_password::reset_password(Client* client, Widget* reg_window, auth_form* auth_window, QWidget *parent) :
+
+reset_password::reset_password(Client* client, QWidget *parent) :
    QWidget(parent),
    ui(new Ui::reset_password),
-   reg_window(reg_window),
-   auth_window(auth_window),
    client(client)
 {
    ui->setupUi(this);
@@ -24,24 +24,26 @@ reset_password::reset_password(Client* client, Widget* reg_window, auth_form* au
    ui->lineEdit_code->setValidator(new QIntValidator(0, 2147483647, this));
    this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
    this->setWindowTitle(QString("Метод половинного деления"));
-
-   connect(this, &QWidget::destroyed, this, &QObject::deleteLater); // при закрытии окна, уничтожаем его из памяти.
+   this->setAttribute(Qt::WA_DeleteOnClose); // удаляем окно при нажатии на значок закрытия.
+   this->show(); // показываем текущее окно.
 }
 
 reset_password::~reset_password()
 {
+   qDebug() << "Вызвался деструктор окна сброса пароля";
    delete ui;
 }
 
 void reset_password::on_pushButton_reset_password_clicked()
 {
    QString email = ui->lineEdit_email->text();
-   if (clients_func::current_email(email) == true) { // если пользователь ввел корректный логин
+   if (clients_func::current_email(email) == true) { // если пользователь ввел корректный email
       if (client->write(QString("reset|%1").arg(email).toUtf8())) {
          ui->pushButton_reset_password->hide();
          ui->pushButton_code->show();
          ui->lineEdit_code->show();
          ui->label_code->show();
+         this->generate_code = clients_func::random_code(); // генерируем случайный код
       }
    }
    else {
@@ -53,20 +55,32 @@ void reset_password::on_pushButton_reset_password_clicked()
 
 void reset_password::on_pushButton_to_reg_clicked() // если нажата кнопка регистрации
 {
-   this->hide(); // закрываем текущее окно
-   this->reg_window->show(); // открываем окно регистрации.
+   this->hide(); // закрываем текущее окно.
+   new Widget(this->client); // создаём окно регистрации.
+   this->close(); // закрываем текущее окно.
 }
 
 
 void reset_password::on_pushButton_to_auth_clicked() // если нажата кнопка авторизации
 {
-   this->hide(); // закрываем текущее окно
-   this->auth_window->show(); // открываем окно авторизации.
+   this->hide(); // прячем текущее окно.
+   new auth_form(this->client); // создаём окно авторизации.
+   this->close(); // закрываем текущее окно.
 }
 
 
-void reset_password::on_pushButton_code_clicked()
+void reset_password::on_pushButton_code_clicked() // если нажата кнопка отпаравки кода
 {
-   // ФУНКЦИЯ ДЛЯ ПОДТВЕРЖДЕНИЯ, ЧТО НА ПОЧТУ ПРИШЁЛ КОРРЕКТНЫЙ КОД.
+   if (ui->lineEdit_code->text().toInt() == this->generate_code) {
+      QString new_password = clients_func::random_password();
+      this->client->write(QString("new_password|%1$%2").arg(ui->lineEdit_email->text()).arg(new_password));
+      QMessageBox::information(this, QString("Обновление пароля"), QString("Вот ваш новый сгенерированный пароль: %1").arg(new_password));
+      this->hide(); // прячем текущее окно
+      new auth_form(this->client); // создаём окно авторизации.
+      this->close(); // закрываем текущее окно
+   }
+   else {
+      QMessageBox::information(this, "Ошибка", "Вы ввели неверный код. Попробуйте ещё раз");
+   }
 }
 

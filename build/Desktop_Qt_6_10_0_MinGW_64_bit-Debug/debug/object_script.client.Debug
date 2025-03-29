@@ -1,0 +1,14 @@
+debug/auth_form.o
+debug/client.o
+debug/client_main_window.o
+debug/clients_func.o
+debug/main.o
+debug/notification.o
+debug/reg_form.o
+debug/reset_password.o
+debug/moc_auth_form.o
+debug/moc_client.o
+debug/moc_client_main_window.o
+debug/moc_notification.o
+debug/moc_reg_form.o
+debug/moc_reset_password.o

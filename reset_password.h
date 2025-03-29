@@ -2,7 +2,9 @@
 #define RESET_PASSWORD_H
 
 #include <QWidget>
-#include "Client.h"
+#include "client.h"
+#include <QCloseEvent>
+
 
 class Widget; // класс окна регистрации
 class auth_form; // класс окна авторизации
@@ -16,7 +18,7 @@ class reset_password : public QWidget
    Q_OBJECT
 
 public:
-   explicit reset_password(Client* client, Widget* reg_window, auth_form* auth_window, QWidget *parent = nullptr);
+   explicit reset_password(Client* client, QWidget *parent = nullptr);
    ~reset_password();
 
 private slots:
@@ -31,8 +33,8 @@ private slots:
 private:
    Ui::reset_password *ui;
    Client* client = nullptr;
-   Widget* reg_window = nullptr;
-   auth_form* auth_window = nullptr;
+
+   int generate_code; // переменная хранит сгенерированный код подтверждения.
 };
 
 #endif // RESET_PASSWORD_H

@@ -2,6 +2,8 @@
 #define CLIENT_MAIN_WINDOW_H
 
 #include <QMainWindow>
+#include <QLineEdit>
+#include <QIntValidator>
 
 class Widget; // класс окна регистрации
 class Client; // класс клиента
@@ -14,7 +16,7 @@ class client_main_window : public QWidget
    Q_OBJECT
 
 public:
-   explicit client_main_window(Client* client, Widget* window_reg, QWidget *parent = nullptr); // конструктор, который принимает окно регистрации
+   explicit client_main_window(Client* client, QWidget *parent = nullptr); // конструктор, который принимает окно регистрации
    ~client_main_window();
 
 private slots:
@@ -26,8 +28,8 @@ private slots:
 
 private:
    Ui::client_main_window *ui;
-   Widget* reg_window = nullptr; // окно регистрации.
    Client* client = nullptr; // класс клиента
+   void line_edit_set_validator(); // устанавливаем минимальные и максимальные значения в lineedit
 };
 
 #endif // CLIENT_MAIN_WINDOW_H
