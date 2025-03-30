@@ -25,15 +25,23 @@ signals:
    void auth_ok(); // сигнал об успешной авторизации.
    void auth_error(); // сигнал об ошибке при авторизации.
 
+   // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
+   void signal_equation_solution(QString); // сигнал о решении уравнения
+
 public slots:
    // РЕГИСТРАЦИЯ
    void slot_register_new_account(QString login, QString password, QString email, QString date_of_birthday, QString last_name, QString first_name, QString middle_name); // слот для регистрации аккаунта
 
    // АВТОРИЗАЦИЯ
    void slot_auth(QString login, QString password);
+
    // СБРОС ПАРОЛЯ
    void slot_send_code(QString email, QString code); // функция отправки кода на почту клиента.
    void slot_new_password(QString email, QString password); // функция для установки нового пароля клиенту.
+
+   // КЛИЕНТСКОЕ ОКНО
+   void slot_linear_equation(QString a, QString b); // функция решения линейного уравнения
+   void slot_quadratic_equation(QString a, QString b, QString c); // функция решения квадратного уравнения.
 };
 
 #endif // FUNCTIONS_FOR_SERVER_H

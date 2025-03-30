@@ -27,6 +27,9 @@ private slots:
    void slot_auth_ok(); // отправка клиенту сообщение об успешной авторизации.
    void slot_auth_error(); // отправка клиенту сообщение об ошибке при авторизации.
 
+   // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
+   void slot_equation_solution(QString answer); // отправляем сообщение о решении любого уравнения клиенту
+
 signals:
    void finished(); // для закрытия потока клиента
 
@@ -39,6 +42,11 @@ signals:
    // СБРОС ПАРОЛЯ
    void signal_send_code_to_email(QString email, QString code); // сигнал отправки кода на почту клиента
    void signal_set_new_password(QString email, QString password); // сигнал установки нового пароля на аккаунт клиента.
+
+   // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
+   void signal_linear_equation(QString a, QString b); // сигнал на решение клиентского уравнения
+   void signal_quadratic_equation(QString a, QString b, QString c) ; // сигнал на решение квадратного уравнения
+
 private:
    QTcpSocket client_socket;
    qintptr client_description;

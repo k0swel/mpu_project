@@ -41,6 +41,11 @@ void client::initialization() {
    // СБРОС ПАРОЛЯ
    connect(this, &client::signal_send_code_to_email, servers_functions, &functions_for_server::slot_send_code); // CONNECT для отправки кода клиенту.
    connect(this, &client::signal_set_new_password, servers_functions, &functions_for_server::slot_new_password); // CONNECT для установки нового пароля клиенту.
+
+   // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
+   connect(this, &client::signal_linear_equation, servers_functions, &functions_for_server::slot_linear_equation); // CONNECT для решения линейного уравнения
+   connect(this, &client::signal_quadratic_equation, servers_functions, &functions_for_server::slot_quadratic_equation); // CONNECT для решения квадратного уравнения.
+   connect(servers_functions, &functions_for_server::signal_equation_solution, this, &client::slot_equation_solution);  // CONNECT для отправки решения уравнения
    this->run(); // запускаем поток.
 }
 
@@ -85,6 +90,26 @@ void client::slot_read_from_client() {
       QString new_password = clients_data.split("$")[1]; // вытаскиваем из данных клиента новый пароль, который нужно установить на аккаунт
       emit signal_set_new_password(email, new_password); // отправляем сигнал на установку нового пароля
    }
+
+   // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
+   if (action == "equation") {
+      QString type_equation = data.split("|")[1]; // вытаскиваем из сообшения клиента тип уравнения
+      if (type_equation == QString("linear")) {
+         QStringList List_with_koef = data.split("|")[2].split("$");
+         QString a = List_with_koef[0]; // вытаскиваем коэффициент a
+         QString b = List_with_koef[1]; // вытаскиваем коэффициент b
+         emit this->signal_linear_equation(a,b); // вызываем сигнал решения линейного уравнения
+      }
+      if (type_equation == "quadratic") {
+         qDebug() << "Test2";
+         QStringList List_with_koef = data.split("|")[2].split("$");
+         QString a = List_with_koef[0]; // вытаскиваем коэффициент a
+         QString b = List_with_koef[1]; // вытаскиваем коэффициент b
+         QString c = List_with_koef[2]; // вытаскиваем коэффициент c
+         emit this->signal_quadratic_equation(a,b,c); // вызываем сигнал решения линейного уравнения
+      }
+   }
+
    qDebug() << QString("%1 Client ").arg(servers_functions->get_server_time()) << &client_socket << QString(" send message: %1").arg(QString(data)).simplified();
    //this->client_socket.write(data.toUtf8()); // ОТПРАВЛЯЕМ ОТПРАВЛЕННОЕ СООБЩЕНИЕ ОБРАТНО КЛИЕНТУ
 }
@@ -111,6 +136,11 @@ void client::slot_auth_ok() // слот если авторизация прош
 void client::slot_auth_error() // слот если произошла ошибка при авторизации
 {
    this->client_socket.write("auth|error"); // отправляем клиенту сообщение об ошибке при авторизации.
+}
+
+void client::slot_equation_solution(QString answer) // слот для отправки решения уравнения
+{
+   this->client_socket.write(answer.toUtf8()); // отправляем клиенту сообщение о статусе решения уравнения)
 }
 
 // СЛУЖЕБНЫЕ ФУНКЦИИ ДЛЯ РАБОТЫ В РАМКАХ КЛАССА

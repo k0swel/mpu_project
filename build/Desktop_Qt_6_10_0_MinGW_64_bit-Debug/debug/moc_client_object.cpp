@@ -53,13 +53,20 @@ template <> constexpr inline auto client::qt_create_metaobjectdata<qt_meta_tag_Z
         "signal_send_code_to_email",
         "code",
         "signal_set_new_password",
+        "signal_linear_equation",
+        "a",
+        "b",
+        "signal_quadratic_equation",
+        "c",
         "initialization",
         "slot_close_connection",
         "slot_read_from_client",
         "slot_register_ok",
         "slot_register_error",
         "slot_auth_ok",
-        "slot_auth_error"
+        "slot_auth_error",
+        "slot_equation_solution",
+        "answer"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -82,20 +89,32 @@ template <> constexpr inline auto client::qt_create_metaobjectdata<qt_meta_tag_Z
         QtMocHelpers::SignalData<void(QString, QString)>(14, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::QString, 6 }, { QMetaType::QString, 5 },
         }}),
+        // Signal 'signal_linear_equation'
+        QtMocHelpers::SignalData<void(QString, QString)>(15, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 16 }, { QMetaType::QString, 17 },
+        }}),
+        // Signal 'signal_quadratic_equation'
+        QtMocHelpers::SignalData<void(QString, QString, QString)>(18, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 16 }, { QMetaType::QString, 17 }, { QMetaType::QString, 19 },
+        }}),
         // Slot 'initialization'
-        QtMocHelpers::SlotData<void()>(15, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'slot_close_connection'
-        QtMocHelpers::SlotData<void()>(16, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'slot_read_from_client'
-        QtMocHelpers::SlotData<void()>(17, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'slot_register_ok'
-        QtMocHelpers::SlotData<void()>(18, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'slot_register_error'
-        QtMocHelpers::SlotData<void()>(19, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'slot_auth_ok'
         QtMocHelpers::SlotData<void()>(20, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'slot_auth_error'
+        // Slot 'slot_close_connection'
         QtMocHelpers::SlotData<void()>(21, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'slot_read_from_client'
+        QtMocHelpers::SlotData<void()>(22, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'slot_register_ok'
+        QtMocHelpers::SlotData<void()>(23, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'slot_register_error'
+        QtMocHelpers::SlotData<void()>(24, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'slot_auth_ok'
+        QtMocHelpers::SlotData<void()>(25, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'slot_auth_error'
+        QtMocHelpers::SlotData<void()>(26, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'slot_equation_solution'
+        QtMocHelpers::SlotData<void(QString)>(27, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QString, 28 },
+        }}),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -124,13 +143,16 @@ void client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 2: _t->signal_auth((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
         case 3: _t->signal_send_code_to_email((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
         case 4: _t->signal_set_new_password((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
-        case 5: _t->initialization(); break;
-        case 6: _t->slot_close_connection(); break;
-        case 7: _t->slot_read_from_client(); break;
-        case 8: _t->slot_register_ok(); break;
-        case 9: _t->slot_register_error(); break;
-        case 10: _t->slot_auth_ok(); break;
-        case 11: _t->slot_auth_error(); break;
+        case 5: _t->signal_linear_equation((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
+        case 6: _t->signal_quadratic_equation((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[3]))); break;
+        case 7: _t->initialization(); break;
+        case 8: _t->slot_close_connection(); break;
+        case 9: _t->slot_read_from_client(); break;
+        case 10: _t->slot_register_ok(); break;
+        case 11: _t->slot_register_error(); break;
+        case 12: _t->slot_auth_ok(); break;
+        case 13: _t->slot_auth_error(); break;
+        case 14: _t->slot_equation_solution((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         default: ;
         }
     }
@@ -144,6 +166,10 @@ void client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         if (QtMocHelpers::indexOfMethod<void (client::*)(QString , QString )>(_a, &client::signal_send_code_to_email, 3))
             return;
         if (QtMocHelpers::indexOfMethod<void (client::*)(QString , QString )>(_a, &client::signal_set_new_password, 4))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (client::*)(QString , QString )>(_a, &client::signal_linear_equation, 5))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (client::*)(QString , QString , QString )>(_a, &client::signal_quadratic_equation, 6))
             return;
     }
 }
@@ -167,14 +193,14 @@ int client::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 12)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 15;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 12)
+        if (_id < 15)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 12;
+        _id -= 15;
     }
     return _id;
 }
@@ -207,5 +233,17 @@ void client::signal_send_code_to_email(QString _t1, QString _t2)
 void client::signal_set_new_password(QString _t1, QString _t2)
 {
     QMetaObject::activate<void>(this, &staticMetaObject, 4, nullptr, _t1, _t2);
+}
+
+// SIGNAL 5
+void client::signal_linear_equation(QString _t1, QString _t2)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 5, nullptr, _t1, _t2);
+}
+
+// SIGNAL 6
+void client::signal_quadratic_equation(QString _t1, QString _t2, QString _t3)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 6, nullptr, _t1, _t2, _t3);
 }
 QT_WARNING_POP

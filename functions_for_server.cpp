@@ -54,3 +54,35 @@ void functions_for_server::slot_new_password(QString email, QString password)
 
 
 }
+
+void functions_for_server::slot_linear_equation(QString a, QString b)
+{
+   // ЛОГИКА РЕШЕНИЯ ЛИНЕЙНОГО УРАВНЕНИЯ
+   int answer = 777; // тестовое решение уравнения
+   QString solution;
+   if (answer)  // если решение линейного уравнения существует
+      solution = QString("answer|%1").arg(answer); // добавляем в строку, которую будем отправлять клиенту, решение линейного уравнения
+
+   else // если решение линейного уравнения не существует
+      solution = QString("answer|error"); // добавляем в строку информацию об ошибке при решении линейного уравнения
+
+   emit this->signal_equation_solution(solution); // отправляем сигнал о решении линейного уравнения
+}
+
+void functions_for_server::slot_quadratic_equation(QString a, QString b, QString c)
+{
+   // ЛОГИКА РЕШЕНИЯ КВАДРАТНОГО УРАВНЕНИЯ УРАВНЕНИЯ
+   QList<double>answers = {-1.5, 3}; // пример ответа
+   QString solution; // переменная хранит решение уравнения
+   if (!answers.isEmpty()) { // если массив ответов не пустой
+      solution = QString("answer|");
+      for (auto el: answers) {
+         solution += QString("%1$").arg(el); // добавляем в строку каждый корень квадратного уравнения
+      }
+      solution.chop(1); // chop удаляет N символов с конца строки
+   }
+   else {
+      solution = QString("answer|error"); // добавляем в строку информацию об ошибке при решении линейного уравнения
+   }
+   emit this->signal_equation_solution(solution); // отправляем сигнал о решении уравнения
+}
