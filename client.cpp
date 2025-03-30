@@ -73,6 +73,14 @@ void Client::read() {
    if (data_to_qstring == "auth|error")
       emit this->auth_error(); // ошибка при авторизации!
 
+   // СИГНАЛЫ ГЛАВНОГО ОКНА КЛИЕНТА
+   if (data_to_qstring.split("|")[0] == "answer") { // если текущий ответ от сервера содержит статус о решении уравнения
+      QString answer = data_to_qstring.split("|")[1]; // вытаскиваем из ответа от сервера ответ
+      if (answer != "error")
+         emit this->equation_ok(QString(answer)); // отправляем сигнал о решении уравнения.
+      else
+         emit this->equation_fail(); // отправляем сигнал об ошибке при решении уравнения.
+   }
    qDebug() << QString("%1 Server send: %2").arg(clients_func::get_client_time()).arg(data_to_qstring.simplified());
 }
 

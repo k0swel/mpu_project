@@ -69,7 +69,7 @@ void reset_password::on_pushButton_to_auth_clicked() // если нажата к
 }
 
 
-void reset_password::on_pushButton_code_clicked() // если нажата кнопка отпаравки кода
+void reset_password::on_pushButton_code_clicked() // если нажата кнопка отправки кода
 {
    if (ui->lineEdit_code->text().toInt() == this->generate_code) {
       QString new_password = clients_func::random_password();

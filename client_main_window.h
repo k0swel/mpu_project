@@ -26,6 +26,9 @@ private slots:
 
    void on_pushButton_solve_equation_clicked(); // кнопка отправки уравнения на сервер.
 
+   void slot_equation_ok(QString answer); // слот при успешном решении уравнения.
+   void slot_equation_fail(); // слот при ошибке при решении линейного уравнения.
+
 private:
    Ui::client_main_window *ui;
    Client* client = nullptr; // класс клиента

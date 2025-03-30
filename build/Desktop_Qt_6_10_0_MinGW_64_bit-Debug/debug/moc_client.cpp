@@ -44,6 +44,8 @@ template <> constexpr inline auto Client::qt_create_metaobjectdata<qt_meta_tag_Z
         "register_error",
         "auth_ok",
         "auth_error",
+        "equation_ok",
+        "equation_fail",
         "connect_to_server",
         "disconnect_from_server",
         "read"
@@ -58,12 +60,18 @@ template <> constexpr inline auto Client::qt_create_metaobjectdata<qt_meta_tag_Z
         QtMocHelpers::SignalData<void()>(4, 2, QMC::AccessPublic, QMetaType::Void),
         // Signal 'auth_error'
         QtMocHelpers::SignalData<void()>(5, 2, QMC::AccessPublic, QMetaType::Void),
+        // Signal 'equation_ok'
+        QtMocHelpers::SignalData<void(QString)>(6, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 2 },
+        }}),
+        // Signal 'equation_fail'
+        QtMocHelpers::SignalData<void()>(7, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'connect_to_server'
-        QtMocHelpers::SlotData<void()>(6, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'disconnect_from_server'
-        QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'read'
         QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'disconnect_from_server'
+        QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'read'
+        QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -91,9 +99,11 @@ void Client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 1: _t->register_error(); break;
         case 2: _t->auth_ok(); break;
         case 3: _t->auth_error(); break;
-        case 4: _t->connect_to_server(); break;
-        case 5: _t->disconnect_from_server(); break;
-        case 6: _t->read(); break;
+        case 4: _t->equation_ok((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 5: _t->equation_fail(); break;
+        case 6: _t->connect_to_server(); break;
+        case 7: _t->disconnect_from_server(); break;
+        case 8: _t->read(); break;
         default: ;
         }
     }
@@ -105,6 +115,10 @@ void Client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         if (QtMocHelpers::indexOfMethod<void (Client::*)()>(_a, &Client::auth_ok, 2))
             return;
         if (QtMocHelpers::indexOfMethod<void (Client::*)()>(_a, &Client::auth_error, 3))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (Client::*)(QString )>(_a, &Client::equation_ok, 4))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (Client::*)()>(_a, &Client::equation_fail, 5))
             return;
     }
 }
@@ -128,14 +142,14 @@ int Client::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 9;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 9)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 7;
+        _id -= 9;
     }
     return _id;
 }
@@ -162,5 +176,17 @@ void Client::auth_ok()
 void Client::auth_error()
 {
     QMetaObject::activate(this, &staticMetaObject, 3, nullptr);
+}
+
+// SIGNAL 4
+void Client::equation_ok(QString _t1)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 4, nullptr, _t1);
+}
+
+// SIGNAL 5
+void Client::equation_fail()
+{
+    QMetaObject::activate(this, &staticMetaObject, 5, nullptr);
 }
 QT_WARNING_POP
