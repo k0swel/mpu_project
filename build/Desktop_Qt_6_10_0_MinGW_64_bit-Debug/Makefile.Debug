@@ -1623,7 +1623,8 @@ debug/auth_form.o: ../../auth_form.cpp ../../auth_form.h \
 		../../../../../../Qt/6.10.0/mingw_64/include/QtWidgets/QMessageBox \
 		../../../../../../Qt/6.10.0/mingw_64/include/QtWidgets/qmessagebox.h \
 		../../../../../../Qt/6.10.0/mingw_64/include/QtWidgets/qdialog.h \
-		../../../../../../Qt/6.10.0/mingw_64/include/QtWidgets/qdialogbuttonbox.h
+		../../../../../../Qt/6.10.0/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
+		../../notification.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\auth_form.o ..\..\auth_form.cpp
 
 debug/client.o: ../../client.cpp ../../client.h \
@@ -2982,6 +2983,7 @@ debug/reg_form.o: ../../reg_form.cpp ../../reg_form.h \
 		../../../../../../Qt/6.10.0/mingw_64/include/QtWidgets/qmessagebox.h \
 		../../../../../../Qt/6.10.0/mingw_64/include/QtWidgets/qdialog.h \
 		../../../../../../Qt/6.10.0/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
+		../../notification.h \
 		../../auth_form.h \
 		../../client_main_window.h \
 		../../../../../../Qt/6.10.0/mingw_64/include/QtWidgets/QMainWindow \

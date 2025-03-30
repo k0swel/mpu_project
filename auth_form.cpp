@@ -78,12 +78,12 @@ void auth_form::on_pushButton_to_reg_clicked() // нажата кнопка вы
 
 void auth_form::auth_ok() {
    this->hide(); // прячем окно
-   new client_main_window(this->client);
+   new client_main_window(this->client); // открываем окно клиента.
    this->close(); // закрываем текущее окно
 }
 
 void auth_form::auth_error() {
-   new notification(AUTH_ERROR);
+   new notification(AUTH_ERROR); // показываем уведомление с ошибкой.
 }
 
 

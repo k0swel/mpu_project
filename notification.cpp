@@ -9,9 +9,10 @@ notification::notification(QString text, QWidget *parent) :
 {
    ui->setupUi(this);
    this->setWindowFlags(Qt::Tool);
+   this->setWindowTitle("Ошибка"); // устанавливаем заголовок окна
    this->move(0,0); // передвигаем окно в начало виджета.
    ui->label->setText(text); // устанавливаем выбранный текст в уведомление
-   ui->label->setWordWrap(true);
+   ui->label->setWordWrap(true); // делаем перенос qlabel на новую строку при необходимости.
    this->show();
    this->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose); // уничтожаем виджет при его закрытии.
    update_progress_bar();
@@ -25,7 +26,7 @@ notification::~notification()
 
 void notification::update_progress_bar() {
    timer = new QTimer(this); // инициализируем таймер.
-   timer->setInterval(40);
+   timer->setInterval(20);
    timer->start();
    connect(timer, &QTimer::timeout, [this]() -> void {
       if (this->ui->progressBar->value() != 100)

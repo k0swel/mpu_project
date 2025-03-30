@@ -22,7 +22,7 @@ class Client: public QObject
 public:
    bool write(QString text); // отправить сообщение серверу.
    static Client* get_instance(); // создаём единственный экземпляр клиента
-   ~Client(); // причем деструктор
+   ~Client();
 private:
    static QTcpSocket* socket;
    static Client* p_instance;
