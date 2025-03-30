@@ -2,11 +2,13 @@
 #include "ui_reg_form.h"
 #include "clients_func.h"
 #include <QMessageBox>
+#include "notification.h" // импорт окна уведомления
 // импортируем классы окна авторизации и клиентского приложения
 #include "auth_form.h"
 #include "client_main_window.h"
 #include "client.h"
 
+#define REG_ERROR "Ошибка при регистрации. Данная учётная запись уже зарегистрирована"
 
 
 
@@ -21,10 +23,15 @@ Widget::Widget(Client* Client, QWidget *parent)
    ui->dateEdit_birthday->setMaximumDate(QDate::currentDate()); // устанавливаем максимальную дату - сегодняшний день
    ui->dateEdit_birthday->setDate(QDate::currentDate()); // устанавливаем виджет даты рождения - текущий день.
    this->setAttribute(Qt::WA_DeleteOnClose); // удаляем окно при нажатии на значок закрытия.
+   connect(this->client, &Client::register_ok, this, &Widget::register_successful); // сигнал на случай успешной регистрации
+
+   connect(this->client, &Client::register_error, this, &Widget::register_error); // сигнал на случай если пользователь уже зарегистрирован.
    this->show();
 }
 Widget::~Widget()
 {
+   disconnect(this->client, &Client::register_ok, this, &Widget::register_successful); // отмена сигнала об успешной регистрации.
+   disconnect(this->client, &Client::register_error, this, &Widget::register_error); // отмена сигнала об ошибке при регистрации.
    qDebug() << "Вызвался деструктор окна регистрации";
    delete ui;
 }
@@ -62,14 +69,10 @@ void Widget::on_pushButton_reg_clicked()
    if (current_login and current_password and current_email and current_age and !is_empty_name and !is_empty_last_name) {
        QString final_data = QString("reg|%1$%2$%3$%4-%5-%6$%7$%8$%9").arg(login).arg(password).arg(email).arg(year_of_birthday).arg(month_of_birthday).arg(day_of_birthday).arg(ui->lineEdit_lastname->text()).arg(ui->lineEdit_name->text()).arg( ui->lineEdit_middlename->text());
        if (client->write(final_data.toUtf8())) {
-         if (true) { // ЕСЛИ СЕРВЕР ДАЛ ДОБРО, ТО РЕГИСТРИРУЕМСЯ
-            this->hide(); // прячем текущее окно.
-            new client_main_window(this->client); // создаём объект клиентского окна
-            this->close(); // закрываем текущее окно
-         }
-         else {
-             QMessageBox::information(this, "Предупреждение об ошибке", "Вы уже зарегистрированы!"); // message box о том, что клиент в данный момент зарегистрирован.
-         }
+          // ДОБАВЛЕН CONNECT НА СЛУЧАЙ ЕСЛИ РЕГИСТРАЦИЯ УСПЕШНА
+       }
+      else {
+         // ДОБАВЛЕН СИГНАЛ НА СЛУЧАЙ ЕСЛИ ПОЛЬЗОВАТЕЛЬ УЖЕ ЗАРЕГИСТРИРОВАН
       }
    }
 }
@@ -80,6 +83,16 @@ void Widget::on_toolButton_auth_clicked() // по нажатии на кнопк
    this->hide(); // прячем текущее окно
    new auth_form(client); // создаём объект окна авторизации
    this->close(); // закрываем окно
+}
+
+void Widget::register_successful() {
+   this->hide(); // прячем текущее окно.
+   new client_main_window(this->client); // создаём объект клиентского окна
+   this->close(); // закрываем текущее окно
+}
+
+void Widget::register_error() {
+   new notification(REG_ERROR);
 }
 
 

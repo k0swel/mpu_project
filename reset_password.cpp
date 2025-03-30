@@ -38,12 +38,12 @@ void reset_password::on_pushButton_reset_password_clicked()
 {
    QString email = ui->lineEdit_email->text();
    if (clients_func::current_email(email) == true) { // если пользователь ввел корректный email
-      if (client->write(QString("reset|%1").arg(email).toUtf8())) {
+      this->generate_code = clients_func::random_code(); // генерируем случайный код
+      if (client->write(QString("reset|%1$%2").arg(email).arg(this->generate_code))) {
          ui->pushButton_reset_password->hide();
          ui->pushButton_code->show();
          ui->lineEdit_code->show();
          ui->label_code->show();
-         this->generate_code = clients_func::random_code(); // генерируем случайный код
       }
    }
    else {

@@ -84,7 +84,7 @@ void client_main_window::on_pushButton_solve_equation_clicked() // метод о
          // отправляем квадратное уравнение на сервер.
       }
       else
-         new notification(NOTIFICATION_ERROR, this);
+         new notification(NOTIFICATION_ERROR);
    }
 }
 

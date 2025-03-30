@@ -5,6 +5,9 @@
 #include "reset_password.h"
 #include "reg_form.h"
 #include <QMessageBox>
+#include "notification.h"
+
+#define AUTH_ERROR "Неверный логин/пароль"
 
 
 
@@ -17,11 +20,15 @@ auth_form::auth_form(Client* client_socket, QWidget *parent) :
    this->setWindowTitle(QString("Метод половинного деления"));
    this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
    this->setAttribute(Qt::WA_DeleteOnClose); // удаляем окно при нажатии на значок закрытия.
+   connect(this->client, &Client::auth_ok, this, &auth_form::auth_ok); // сигнал на случай успешной авторизации
+   connect(this->client, &Client::auth_error, this, &auth_form::auth_error); // сигнал на случай ошибки при авторизации
    this->show(); // показываем текущее окно.
 }
 
 auth_form::~auth_form()
 {
+   disconnect(this->client, &Client::auth_ok, this, &auth_form::auth_ok); // отмена сигнала на случай успешной авторизации
+   disconnect(this->client, &Client::auth_error, this, &auth_form::auth_error); // отмена сигнала на случай ошибки при авторизации
    qDebug() << "Вызвался деструктор окна авторизации";
    delete ui;
 }
@@ -44,8 +51,10 @@ void auth_form::on_pushButton_login_clicked() // нажата кнопка ав�
       QString final_data = QString("login|%1$%2").arg(login).arg(password); // объединяем логин и пароль в строку, которую отправим на сервер
       if (client->write(final_data)) { // отправляем введенные пользователем данные на сервер.
          if (true) { // если ответ от сервера положительный, то впускаем клиента на сервер
-            new client_main_window(this->client);
-            this->close(); // закрываем текущее окно
+            // ДОБАВЛЕН CONNECT НА СЛУЧАЙ УСПЕШНОЙ АВТОРИЗАЦИИ
+         }
+         else {
+            // ДОБАВЛЕН CONNECT НА СЛУЧАЙ ОШИБКИ ПРИ АВТОРИЗАЦИИ
          }
       }
    }
@@ -66,4 +75,15 @@ void auth_form::on_pushButton_to_reg_clicked() // нажата кнопка вы
    new Widget(this->client); // создаём окно регистрации.
    this->close(); // закрываем текущее окно.
 }
+
+void auth_form::auth_ok() {
+   this->hide(); // прячем окно
+   new client_main_window(this->client);
+   this->close(); // закрываем текущее окно
+}
+
+void auth_form::auth_error() {
+   new notification(AUTH_ERROR);
+}
+
 

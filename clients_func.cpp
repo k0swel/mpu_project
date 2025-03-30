@@ -134,6 +134,8 @@ void clients_func::equation(QHBoxLayout* uravnenie, action effect){ // функ�
 
 int clients_func::random_code() { // генерируем случайный код.
    QRandomGenerator generate_random_code(QTime::currentTime().msec());
-   return generate_random_code.bounded(1000, 9999 + 1); // генерируем случайный код
+   int random_code = generate_random_code.bounded(1000, 9999 + 1);
+   qDebug() << "Сгенерированный код: " << random_code;
+   return random_code; // генерируем случайный код
 }
 

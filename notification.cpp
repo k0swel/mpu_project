@@ -8,7 +8,10 @@ notification::notification(QString text, QWidget *parent) :
    text(text)
 {
    ui->setupUi(this);
+   this->setWindowFlags(Qt::Tool);
+   this->move(0,0); // передвигаем окно в начало виджета.
    ui->label->setText(text); // устанавливаем выбранный текст в уведомление
+   ui->label->setWordWrap(true);
    this->show();
    this->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose); // уничтожаем виджет при его закрытии.
    update_progress_bar();
@@ -34,3 +37,4 @@ void notification::update_progress_bar() {
 
    });
 }
+

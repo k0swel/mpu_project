@@ -58,7 +58,22 @@ void Client::read() {
    while (this->socket->bytesAvailable() > 0) {
       data.append(this->socket->readAll());
    }
-   qDebug() << QString("%1 Server send: %2").arg(clients_func::get_client_time()).arg(QString(data).simplified());
+
+   QString data_to_qstring = QString(data);
+
+   // СИГНАЛЫ ДЛЯ РЕГИСТРАЦИИ
+   if (data_to_qstring == "register|ok")
+      emit this->register_ok(); // успешная регистарция
+   if (data_to_qstring == "register|error")
+      emit this->register_error(); // ошибка при регистрации
+
+   // СИГНАЛЫ ДЛЯ АВТОРИЗАЦИИ
+   if (data_to_qstring == "auth|ok")
+      emit this->auth_ok(); // успешная авторизация
+   if (data_to_qstring == "auth|error")
+      emit this->auth_error(); // ошибка при авторизации!
+
+   qDebug() << QString("%1 Server send: %2").arg(clients_func::get_client_time()).arg(data_to_qstring.simplified());
 }
 
 bool Client::write(QString text) {

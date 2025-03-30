@@ -23,9 +23,12 @@ public:
    ~Widget();
 
 private slots:
-   void on_pushButton_reg_clicked();
+   void on_pushButton_reg_clicked(); // нажата кнопка регистрации
+   void on_toolButton_auth_clicked(); // нажата кнопка авторизации
 
-   void on_toolButton_auth_clicked();
+   // СЛОТЫ РЕГИСТРАЦИИ
+   void register_successful(); // успешная регистрация
+   void register_error(); // ошибка при регистрации
 
 
 private:

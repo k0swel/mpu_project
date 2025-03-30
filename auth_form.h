@@ -24,11 +24,12 @@ public:
 
 private slots:
    void on_pushButton_login_clicked(); //  нажата кнопка авторизации
-
    void on_pushButton_reset_password_clicked(); //  нажата кнопка сброса пароля
-
    void on_pushButton_to_reg_clicked(); //  нажата кнопка региистрации
 
+   // СЛОТЫ АВТОРИЗАЦИИ
+   void auth_ok(); // успешная авторизация
+   void auth_error(); // ошибка при авторизации
 private:
    Ui::auth_form *ui;
    Client* client = nullptr;
