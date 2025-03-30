@@ -15,18 +15,36 @@ public:
 public slots:
 
 private slots:
-   void initialization();
-   void slot_close_connection();
-   void slot_read_from_client();
+   void initialization(); // инициализируем каждого клиента
+   void slot_close_connection(); // слот закрытия соединения
+   void slot_read_from_client(); // слот получения нового сообщения от клиента
+
+   // РЕГИСТРАЦИЯ
+   void slot_register_ok(); // отправка клиенту сообщение об успешной регистрации.
+   void slot_register_error(); // отправку клиенту сообщение об ошибке при регистрации.
+
+   // АВТРОИЗАЦИЯ
+   void slot_auth_ok(); // отправка клиенту сообщение об успешной авторизации.
+   void slot_auth_error(); // отправка клиенту сообщение об ошибке при авторизации.
 
 signals:
-   void finished();
+   void finished(); // для закрытия потока клиента
+
+   // СИГНАЛ ДЛЯ РЕГИСТРАЦИИ
+   void signal_register_new_account(QString login, QString password, QString email, QString date_of_birthday, QString last_name, QString first_name, QString middle_name); // слот для регистрации аккаунта
+
+   // СИГНАЛ ДЛЯ АВТОРИЗАЦИИ
+   void signal_auth(QString login, QString password);
+
+   // СБРОС ПАРОЛЯ
+   void signal_send_code_to_email(QString email, QString code); // сигнал отправки кода на почту клиента
+   void signal_set_new_password(QString email, QString password); // сигнал установки нового пароля на аккаунт клиента.
 private:
    QTcpSocket client_socket;
    qintptr client_description;
    QThread* thread_for_client = nullptr;
-   static void hello_message();
-   static void bye_message();
+   static void hello_message(); // функция отправки сообщения в консоль при каждом новом подключении
+   static void bye_message(); // функция отправки сообщения в консоль при каждом отключении
 };
 
 #endif // CLIENT_OBJECT_H
