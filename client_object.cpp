@@ -7,23 +7,26 @@
 extern QList<client*> clients;
 extern functions_for_server* servers_functions;
 
-client::client(qintptr client_description): client_description(client_description)
+client::client(qintptr client_description, QObject* parent): QObject(parent), client_description(client_description)
 {
    initialization();
-   this->exec(); // запускаем обработку сообщений.
 }
 
 client::~client() {
-   this->client_socket.close();
-    qDebug() << "Вызвался деструкртор клиента!";
+   qDebug() << "Деструктор клиента вызван успешно!";
+   clients.removeAll(this);
+   this->client_socket->close();
+   this->bye_message(); // вызываем прощальное сообщение
+   emit this->del_thread(); // вызываем сигнал удаления потока
 }
 
 void client::initialization() {
-   client_socket.setSocketDescriptor(client_description); // мы создали новый сокет и идентифицируем его дескриптором уже существующим
-   clients.push_back(this);
+   client_socket = new QTcpSocket(this); // вот сокет.
+   client_socket->setSocketDescriptor(client_description); // мы создали новый сокет и идентифицируем его дескриптором уже существующим
+   clients.push_back(this); // добавляем клиента в конец списка
    hello_message(); // отправляем в консоль приветственное сообщение. Статическая функция.
-   connect(&client_socket, &QTcpSocket::readyRead, this, &client::slot_read_from_client); // читаем сообщения от клиента
-   connect(&client_socket, &QTcpSocket::disconnected, this, &client::slot_close_connection); // если сокет отключается от сервера, вызываем функцию slot_close_connection
+   connect(client_socket, &QTcpSocket::readyRead, this, &client::slot_read_from_client); // читаем сообщения от клиента
+   connect(client_socket, &QTcpSocket::disconnected, this, &client::slot_close_connection); // если сокет отключается от сервера, вызываем функцию slot_close_connection
 
    // CONNECTЫ ДЛЯ ВЗАИМОДЕЙСТВИЯ С КЛИЕНТОМ
 
@@ -46,13 +49,13 @@ void client::initialization() {
    connect(this, &client::signal_linear_equation, servers_functions, &functions_for_server::slot_linear_equation); // CONNECT для решения линейного уравнения
    connect(this, &client::signal_quadratic_equation, servers_functions, &functions_for_server::slot_quadratic_equation); // CONNECT для решения квадратного уравнения.
    connect(servers_functions, &functions_for_server::signal_equation_solution, this, &client::slot_equation_solution);  // CONNECT для отправки решения уравнения
-   this->run(); // запускаем поток.
 }
 
 void client::slot_read_from_client() {
+   qDebug() << "Сработал " << Q_FUNC_INFO << " . Текущий поток - " << QThread::currentThreadId();
    QString data;
-   while (client_socket.bytesAvailable()) { // читаем сообщение от клиента
-      data.push_back(client_socket.readAll());  // помещаем сообщение от клиента в data.
+   while (client_socket->bytesAvailable()) { // читаем сообщение от клиента
+      data.push_back(client_socket->readAll());  // помещаем сообщение от клиента в data.
    }
    QString action = data.split("|")[0]; // вытаскиваем из сообщения клиента действие
    QString clients_data = data.split("|")[1]; // вытаскиваем данные из сообщения клиента
@@ -77,7 +80,6 @@ void client::slot_read_from_client() {
       QString password = clients_data.split("$")[1]; // парсим пароль.
       emit this->signal_auth(login, password); // отправляем сигнал авторизации в класс functions_for_server
    }
-
 
    // СБРОС ПАРОЛЯ
    if (action == "reset") { // ОТПРАВКА КОДА НА ПОЧТУ КЛИЕНТА
@@ -115,32 +117,31 @@ void client::slot_read_from_client() {
 }
 
 void client::slot_close_connection() { // слот если клиент закрыл соединение с сервером.
-   clients.removeAll(this);
-   bye_message();
-    this->quit();
+   this->client_socket->close();
+   this->deleteLater(); // удаляем экземпляр класса
 }
 
 void client::slot_register_ok() { // слот если клиент успешно зарегистрирован
-   this->client_socket.write("register|ok"); // отправляем клиенту сообщение об успешной регистрации
+   this->client_socket->write("register|ok"); // отправляем клиенту сообщение об успешной регистрации
 }
 
 void client::slot_register_error() { // слот если произошла ошибка по время регистрации
-   this->client_socket.write("register|error"); // отправляем клиенту сообщение об ошибке при регистрации
+   this->client_socket->write("register|error"); // отправляем клиенту сообщение об ошибке при регистрации
 }
 
 void client::slot_auth_ok() // слот если авторизация прошла успешно
 {
-   this->client_socket.write("auth|ok"); // отправляем клиенту сообщение об успешной авторизации.
+   this->client_socket->write("auth|ok"); // отправляем клиенту сообщение об успешной авторизации.
 }
 
 void client::slot_auth_error() // слот если произошла ошибка при авторизации
 {
-   this->client_socket.write("auth|error"); // отправляем клиенту сообщение об ошибке при авторизации.
+   this->client_socket->write("auth|error"); // отправляем клиенту сообщение об ошибке при авторизации.
 }
 
 void client::slot_equation_solution(QString answer) // слот для отправки решения уравнения
 {
-   this->client_socket.write(answer.toUtf8()); // отправляем клиенту сообщение о статусе решения уравнения)
+   this->client_socket->write(answer.toUtf8()); // отправляем клиенту сообщение о статусе решения уравнения)
 }
 
 // СЛУЖЕБНЫЕ ФУНКЦИИ ДЛЯ РАБОТЫ В РАМКАХ КЛАССА

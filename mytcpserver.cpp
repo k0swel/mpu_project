@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QString>
+#include <QThread>
 #include "client_object.h"
 
 MyTcpServer* MyTcpServer::p_instance = nullptr;
@@ -34,11 +35,11 @@ MyTcpServer::~MyTcpServer()
 }
 
 MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent){ // включение сервера
-    mTcpServer = new QTcpServer(); // создаём сервер динамическим путём
+    mTcpServer = new QTcpServer; // создаём сервер динамическим путём
     connect(mTcpServer, &QTcpServer::newConnection,
-            this, &MyTcpServer::slotNewConnection);
+            this, &MyTcpServer::slotNewConnection); // связь для нового клиента
 
-    if(!mTcpServer->listen(QHostAddress::Any, 33333)){
+    if(!mTcpServer->listen(QHostAddress::Any, 33333)){ // прослушиваем порт 33333
         qDebug() << QString("%1 server is not started!").arg(servers_functions->get_server_time());
     } else {
         //server_status=1;
@@ -55,8 +56,12 @@ MyTcpServer* MyTcpServer::create_instance() {
 }
 
 void MyTcpServer::slotNewConnection(){ // слот, который активируется при каждом подключении клиента к серверу.
-        QTcpSocket* temp = this->mTcpServer->nextPendingConnection();
-        client* client_object = new client(temp->socketDescriptor()); // создаём клиента и запускам его поток
-        connect(client_object, &QThread::finished, client_object, &client::deleteLater); // когда у клиента не останется сообщений, он уничтожится.
+      QThread* new_thread_for_client = new QThread(this); // создаём новый поток для клиента
+      QTcpSocket* temp = this->mTcpServer->nextPendingConnection();
+      client* client_object = new client(temp->socketDescriptor()); // создаём клиента и запускам его поток
+      client_object->moveToThread(new_thread_for_client); // помещаем объекта в новый поток
+        connect(client_object, &client::del_thread, new_thread_for_client, &QThread::quit); // когда клиент завершает работу потока, мы его останавливаем
+        connect(new_thread_for_client, &QThread::finished, client_object, &QThread::deleteLater); // когда поток объявляет о завершении работы, мы уничтожаем поток
+      new_thread_for_client->start(); // запускаем поток.
 }
 

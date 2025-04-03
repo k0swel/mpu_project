@@ -5,11 +5,11 @@
 #include <QTcpSocket>
 #include <QThread>
 
-class client: public QThread
+class client: public QObject
 {
    Q_OBJECT
 public:
-   client(qintptr client_description);
+   client(qintptr client_description, QObject* parent = nullptr);
    ~client();
 
 public slots:
@@ -47,8 +47,10 @@ signals:
    void signal_linear_equation(QString a, QString b); // сигнал на решение клиентского уравнения
    void signal_quadratic_equation(QString a, QString b, QString c) ; // сигнал на решение квадратного уравнения
 
+   void del_thread(); // сигнал удаления потока.
+
 private:
-   QTcpSocket client_socket;
+   QTcpSocket* client_socket;
    qintptr client_description;
    QThread* thread_for_client = nullptr;
    static void hello_message(); // функция отправки сообщения в консоль при каждом новом подключении

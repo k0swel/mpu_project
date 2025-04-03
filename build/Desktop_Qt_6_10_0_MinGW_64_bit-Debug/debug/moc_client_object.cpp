@@ -58,6 +58,7 @@ template <> constexpr inline auto client::qt_create_metaobjectdata<qt_meta_tag_Z
         "b",
         "signal_quadratic_equation",
         "c",
+        "del_thread",
         "initialization",
         "slot_close_connection",
         "slot_read_from_client",
@@ -97,23 +98,25 @@ template <> constexpr inline auto client::qt_create_metaobjectdata<qt_meta_tag_Z
         QtMocHelpers::SignalData<void(QString, QString, QString)>(18, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::QString, 16 }, { QMetaType::QString, 17 }, { QMetaType::QString, 19 },
         }}),
+        // Signal 'del_thread'
+        QtMocHelpers::SignalData<void()>(20, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'initialization'
-        QtMocHelpers::SlotData<void()>(20, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'slot_close_connection'
         QtMocHelpers::SlotData<void()>(21, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'slot_read_from_client'
+        // Slot 'slot_close_connection'
         QtMocHelpers::SlotData<void()>(22, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'slot_register_ok'
+        // Slot 'slot_read_from_client'
         QtMocHelpers::SlotData<void()>(23, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'slot_register_error'
+        // Slot 'slot_register_ok'
         QtMocHelpers::SlotData<void()>(24, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'slot_auth_ok'
+        // Slot 'slot_register_error'
         QtMocHelpers::SlotData<void()>(25, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'slot_auth_error'
+        // Slot 'slot_auth_ok'
         QtMocHelpers::SlotData<void()>(26, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'slot_auth_error'
+        QtMocHelpers::SlotData<void()>(27, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'slot_equation_solution'
-        QtMocHelpers::SlotData<void(QString)>(27, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::QString, 28 },
+        QtMocHelpers::SlotData<void(QString)>(28, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QString, 29 },
         }}),
     };
     QtMocHelpers::UintData qt_properties {
@@ -124,7 +127,7 @@ template <> constexpr inline auto client::qt_create_metaobjectdata<qt_meta_tag_Z
             qt_methods, qt_properties, qt_enums);
 }
 Q_CONSTINIT const QMetaObject client::staticMetaObject = { {
-    QMetaObject::SuperData::link<QThread::staticMetaObject>(),
+    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
     qt_staticMetaObjectStaticContent<qt_meta_tag_ZN6clientE_t>.stringdata,
     qt_staticMetaObjectStaticContent<qt_meta_tag_ZN6clientE_t>.data,
     qt_static_metacall,
@@ -145,14 +148,15 @@ void client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 4: _t->signal_set_new_password((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
         case 5: _t->signal_linear_equation((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
         case 6: _t->signal_quadratic_equation((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[3]))); break;
-        case 7: _t->initialization(); break;
-        case 8: _t->slot_close_connection(); break;
-        case 9: _t->slot_read_from_client(); break;
-        case 10: _t->slot_register_ok(); break;
-        case 11: _t->slot_register_error(); break;
-        case 12: _t->slot_auth_ok(); break;
-        case 13: _t->slot_auth_error(); break;
-        case 14: _t->slot_equation_solution((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 7: _t->del_thread(); break;
+        case 8: _t->initialization(); break;
+        case 9: _t->slot_close_connection(); break;
+        case 10: _t->slot_read_from_client(); break;
+        case 11: _t->slot_register_ok(); break;
+        case 12: _t->slot_register_error(); break;
+        case 13: _t->slot_auth_ok(); break;
+        case 14: _t->slot_auth_error(); break;
+        case 15: _t->slot_equation_solution((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         default: ;
         }
     }
@@ -171,6 +175,8 @@ void client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
             return;
         if (QtMocHelpers::indexOfMethod<void (client::*)(QString , QString , QString )>(_a, &client::signal_quadratic_equation, 6))
             return;
+        if (QtMocHelpers::indexOfMethod<void (client::*)()>(_a, &client::del_thread, 7))
+            return;
     }
 }
 
@@ -184,23 +190,23 @@ void *client::qt_metacast(const char *_clname)
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_staticMetaObjectStaticContent<qt_meta_tag_ZN6clientE_t>.strings))
         return static_cast<void*>(this);
-    return QThread::qt_metacast(_clname);
+    return QObject::qt_metacast(_clname);
 }
 
 int client::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QThread::qt_metacall(_c, _id, _a);
+    _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 15)
+        if (_id < 16)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 15;
+        _id -= 16;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 15)
+        if (_id < 16)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 15;
+        _id -= 16;
     }
     return _id;
 }
@@ -245,5 +251,11 @@ void client::signal_linear_equation(QString _t1, QString _t2)
 void client::signal_quadratic_equation(QString _t1, QString _t2, QString _t3)
 {
     QMetaObject::activate<void>(this, &staticMetaObject, 6, nullptr, _t1, _t2, _t3);
+}
+
+// SIGNAL 7
+void client::del_thread()
+{
+    QMetaObject::activate(this, &staticMetaObject, 7, nullptr);
 }
 QT_WARNING_POP

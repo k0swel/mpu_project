@@ -1360,7 +1360,8 @@ debug/main.o: ../../main.cpp ../../../../../../Qt/6.10.0/mingw_64/include/QtCore
 		../../../../../../Qt/6.10.0/mingw_64/include/QtNetwork/qtnetworkversion.h \
 		../../../../../../Qt/6.10.0/mingw_64/include/QtNetwork/qudpsocket.h \
 		../../../../../../Qt/6.10.0/mingw_64/include/QtCore/QDebug \
-		../../functions_for_server.h
+		../../functions_for_server.h \
+		../../../../../../Qt/6.10.0/mingw_64/include/QtCore/QThread
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o ..\..\main.cpp
 
 debug/mytcpserver.o: ../../mytcpserver.cpp ../../mytcpserver.h \
@@ -1713,8 +1714,8 @@ debug/mytcpserver.o: ../../mytcpserver.cpp ../../mytcpserver.h \
 		../../../../../../Qt/6.10.0/mingw_64/include/QtCore/QDebug \
 		../../functions_for_server.h \
 		../../../../../../Qt/6.10.0/mingw_64/include/QtCore/QCoreApplication \
-		../../client_object.h \
-		../../../../../../Qt/6.10.0/mingw_64/include/QtCore/QThread
+		../../../../../../Qt/6.10.0/mingw_64/include/QtCore/QThread \
+		../../client_object.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\mytcpserver.o ..\..\mytcpserver.cpp
 
 debug/moc_client_object.o: debug/moc_client_object.cpp 
