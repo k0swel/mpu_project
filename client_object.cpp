@@ -43,6 +43,7 @@ void client::initialization() {
 
    // СБРОС ПАРОЛЯ
    connect(this, &client::signal_send_code_to_email, servers_functions, &functions_for_server::slot_send_code); // CONNECT для отправки кода клиенту.
+   connect(servers_functions, &functions_for_server::reset_error, this, &client::slot_reset_error); // CONNECT для отправки клиенту ошибки при сбросе пароля.
    connect(this, &client::signal_set_new_password, servers_functions, &functions_for_server::slot_new_password); // CONNECT для установки нового пароля клиенту.
 
    // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
@@ -66,11 +67,10 @@ void client::slot_read_from_client() {
       QString login = clients_data_list[0]; // логин
       QString password = clients_data_list[1]; // пароль
       QString email = clients_data_list[2]; // почта
-      QString date_of_birthday = clients_data_list[3]; // дата рождения
-      QString last_name = clients_data_list[4]; // фамилия
-      QString first_name = clients_data_list[5]; // имя
-      QString middle_name = clients_data_list[6]; // отчество
-      emit signal_register_new_account(login,password,email, date_of_birthday, last_name, first_name, middle_name); // посылаем сигнал на регистрацию аккаунта.
+      QString last_name = clients_data_list[3]; // фамилия
+      QString first_name = clients_data_list[4]; // имя
+      QString middle_name = clients_data_list[5]; // отчество
+      emit signal_register_new_account(login,password,email, last_name, first_name, middle_name); // посылаем сигнал на регистрацию аккаунта.
    }
 
 
@@ -88,9 +88,9 @@ void client::slot_read_from_client() {
       emit signal_send_code_to_email(email, code); // отправляем сигнал на отправку кода на почту
    }
    if (action == "new_password") {
-      QString email = clients_data.split("$")[0]; // вытаскиваем из данных клиента почту.
+      QString login = clients_data.split("$")[0]; // вытаскиваем из данных клиента логин.
       QString new_password = clients_data.split("$")[1]; // вытаскиваем из данных клиента новый пароль, который нужно установить на аккаунт
-      emit signal_set_new_password(email, new_password); // отправляем сигнал на установку нового пароля
+      emit signal_set_new_password(login, new_password); // отправляем сигнал на установку нового пароля
    }
 
    // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
@@ -137,6 +137,11 @@ void client::slot_auth_ok() // слот если авторизация прош
 void client::slot_auth_error() // слот если произошла ошибка при авторизации
 {
    this->client_socket->write("auth|error"); // отправляем клиенту сообщение об ошибке при авторизации.
+}
+
+void client::slot_reset_error()
+{
+   this->client_socket->write("reset|error"); // отправляем клиенту сообщение о том, что указанный аккаунт не зарегистрированю
 }
 
 void client::slot_equation_solution(QString answer) // слот для отправки решения уравнения

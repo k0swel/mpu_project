@@ -23,9 +23,12 @@ private slots:
    void slot_register_ok(); // отправка клиенту сообщение об успешной регистрации.
    void slot_register_error(); // отправку клиенту сообщение об ошибке при регистрации.
 
-   // АВТРОИЗАЦИЯ
+   // АВТОРИЗАЦИЯ
    void slot_auth_ok(); // отправка клиенту сообщение об успешной авторизации.
    void slot_auth_error(); // отправка клиенту сообщение об ошибке при авторизации.
+
+   // СБРОС ПАРОЛЯ
+   void slot_reset_error(); // сигнал об ошибке при сбросе пароля (не найден логин в БД).
 
    // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
    void slot_equation_solution(QString answer); // отправляем сообщение о решении любого уравнения клиенту
@@ -34,7 +37,7 @@ signals:
    void finished(); // для закрытия потока клиента
 
    // СИГНАЛ ДЛЯ РЕГИСТРАЦИИ
-   void signal_register_new_account(QString login, QString password, QString email, QString date_of_birthday, QString last_name, QString first_name, QString middle_name); // слот для регистрации аккаунта
+   void signal_register_new_account(QString login, QString password, QString email, QString last_name, QString first_name, QString middle_name); // слот для регистрации аккаунта
 
    // СИГНАЛ ДЛЯ АВТОРИЗАЦИИ
    void signal_auth(QString login, QString password);
@@ -42,6 +45,7 @@ signals:
    // СБРОС ПАРОЛЯ
    void signal_send_code_to_email(QString email, QString code); // сигнал отправки кода на почту клиента
    void signal_set_new_password(QString email, QString password); // сигнал установки нового пароля на аккаунт клиента.
+
 
    // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
    void signal_linear_equation(QString a, QString b); // сигнал на решение клиентского уравнения

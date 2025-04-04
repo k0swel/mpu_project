@@ -1,4 +1,4 @@
-#include "functions_for_server.h"
+   #include "functions_for_server.h"
 #include <QDebug>
 
 functions_for_server* functions_for_server::p_instance = nullptr;
@@ -22,9 +22,9 @@ QString functions_for_server::get_server_time() {
 }
 
 // РЕГИСТРАЦИЯ
-void functions_for_server::slot_register_new_account(QString login, QString password, QString email, QString date_of_birthday, QString last_name, QString first_name, QString middle_name)
+void functions_for_server::slot_register_new_account(QString login, QString password, QString email, QString last_name, QString first_name, QString middle_name)
 {
-   qDebug() << QString("%1 Вызов функции functions_for_server::slot_register_new_account с аргументами login = %2 ; password = %3 ; email = %4 ; date_of_birthday = %5 ; last_name = %6 ; first_name = %7 ; middle_name = %8").arg(this->get_server_time()).arg(login).arg(password).arg(email).arg(date_of_birthday).arg(last_name).arg(first_name).arg(middle_name);
+   qDebug() << QString("%1 Вызов функции functions_for_server::slot_register_new_account с аргументами login = %2 ; password = %3 ; email = %4 ; last_name = %5 ; first_name = %6 ; middle_name = %7").arg(this->get_server_time()).arg(login).arg(password).arg(email).arg(last_name).arg(first_name).arg(middle_name);
    if (true) // если успешная регистрация
       emit this->register_ok(); // сигнал об успешной регистрации.
    if (false) // если ошибка при регистрации
@@ -43,14 +43,20 @@ void functions_for_server::slot_auth(QString login, QString password) {
 
 
 // СБРОС ПАРОЛЯ
-void functions_for_server::slot_send_code(QString email, QString code)
+void functions_for_server::slot_send_code(QString login, QString code)
 {
-   qDebug() << QString("%1 Вызов функции functions_for_server::slot_send_code с аргументами email = %2 ; code = %3").arg(this->get_server_time()).arg(email).arg(code);
-   // РЕАЛИЗАЦИЯ ФУНКЦИИ ОТПРАВКИ КОДА НА ПОЧТУ.
+   qDebug() << QString("%1 Вызов функции functions_for_server::slot_send_code с аргументами login = %2 ; code = %3").arg(this->get_server_time()).arg(login).arg(code);
+
+   if (true) { // ЗДЕСЬ ПРОВЕРКА НА ТО, ЧТО УКАЗАННЫЙ ЛОГИН СУЩЕСТВУЕТ
+      // РЕАЛИЗАЦИЯ ФУНКЦИИ ОТПРАВКИ КОДА НА ПОЧТУ.
+   }
+   else if (false) {// ЕСЛИ УКАЗАННОГО ЛОГИНА НЕ СУЩЕСТВУЕТ, ТО ПОЛЬЗОВАТЕЛЬ СООТВЕТСТВЕННО НЕ ЗАРЕГИСТРИРОВАН.
+      emit this->reset_error(); // вызываем сигнал об ошибке (не найден логин пользователя в БД)
+   }
 }
 
-void functions_for_server::slot_new_password(QString email, QString password)
-{   qDebug() << QString("%1 Вызов функции functions_for_server::slot_new_password с аргументами email = %2 ; password = %3").arg(this->get_server_time()).arg(email).arg(password);
+void functions_for_server::slot_new_password(QString login, QString password)
+{   qDebug() << QString("%1 Вызов функции functions_for_server::slot_new_password с аргументами login = %2 ; password = %3").arg(this->get_server_time()).arg(login).arg(password);
 
 
 }

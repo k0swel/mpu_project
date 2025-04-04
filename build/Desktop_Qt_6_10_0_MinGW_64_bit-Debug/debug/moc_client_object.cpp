@@ -45,7 +45,6 @@ template <> constexpr inline auto client::qt_create_metaobjectdata<qt_meta_tag_Z
         "login",
         "password",
         "email",
-        "date_of_birthday",
         "last_name",
         "first_name",
         "middle_name",
@@ -66,6 +65,7 @@ template <> constexpr inline auto client::qt_create_metaobjectdata<qt_meta_tag_Z
         "slot_register_error",
         "slot_auth_ok",
         "slot_auth_error",
+        "slot_reset_error",
         "slot_equation_solution",
         "answer"
     };
@@ -74,45 +74,47 @@ template <> constexpr inline auto client::qt_create_metaobjectdata<qt_meta_tag_Z
         // Signal 'finished'
         QtMocHelpers::SignalData<void()>(1, 2, QMC::AccessPublic, QMetaType::Void),
         // Signal 'signal_register_new_account'
-        QtMocHelpers::SignalData<void(QString, QString, QString, QString, QString, QString, QString)>(3, 2, QMC::AccessPublic, QMetaType::Void, {{
+        QtMocHelpers::SignalData<void(QString, QString, QString, QString, QString, QString)>(3, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::QString, 4 }, { QMetaType::QString, 5 }, { QMetaType::QString, 6 }, { QMetaType::QString, 7 },
-            { QMetaType::QString, 8 }, { QMetaType::QString, 9 }, { QMetaType::QString, 10 },
+            { QMetaType::QString, 8 }, { QMetaType::QString, 9 },
         }}),
         // Signal 'signal_auth'
-        QtMocHelpers::SignalData<void(QString, QString)>(11, 2, QMC::AccessPublic, QMetaType::Void, {{
+        QtMocHelpers::SignalData<void(QString, QString)>(10, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::QString, 4 }, { QMetaType::QString, 5 },
         }}),
         // Signal 'signal_send_code_to_email'
-        QtMocHelpers::SignalData<void(QString, QString)>(12, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 6 }, { QMetaType::QString, 13 },
+        QtMocHelpers::SignalData<void(QString, QString)>(11, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 6 }, { QMetaType::QString, 12 },
         }}),
         // Signal 'signal_set_new_password'
-        QtMocHelpers::SignalData<void(QString, QString)>(14, 2, QMC::AccessPublic, QMetaType::Void, {{
+        QtMocHelpers::SignalData<void(QString, QString)>(13, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::QString, 6 }, { QMetaType::QString, 5 },
         }}),
         // Signal 'signal_linear_equation'
-        QtMocHelpers::SignalData<void(QString, QString)>(15, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 16 }, { QMetaType::QString, 17 },
+        QtMocHelpers::SignalData<void(QString, QString)>(14, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 15 }, { QMetaType::QString, 16 },
         }}),
         // Signal 'signal_quadratic_equation'
-        QtMocHelpers::SignalData<void(QString, QString, QString)>(18, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 16 }, { QMetaType::QString, 17 }, { QMetaType::QString, 19 },
+        QtMocHelpers::SignalData<void(QString, QString, QString)>(17, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 15 }, { QMetaType::QString, 16 }, { QMetaType::QString, 18 },
         }}),
         // Signal 'del_thread'
-        QtMocHelpers::SignalData<void()>(20, 2, QMC::AccessPublic, QMetaType::Void),
+        QtMocHelpers::SignalData<void()>(19, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'initialization'
-        QtMocHelpers::SlotData<void()>(21, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(20, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'slot_close_connection'
-        QtMocHelpers::SlotData<void()>(22, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(21, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'slot_read_from_client'
-        QtMocHelpers::SlotData<void()>(23, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(22, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'slot_register_ok'
-        QtMocHelpers::SlotData<void()>(24, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(23, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'slot_register_error'
-        QtMocHelpers::SlotData<void()>(25, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(24, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'slot_auth_ok'
-        QtMocHelpers::SlotData<void()>(26, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(25, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'slot_auth_error'
+        QtMocHelpers::SlotData<void()>(26, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'slot_reset_error'
         QtMocHelpers::SlotData<void()>(27, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'slot_equation_solution'
         QtMocHelpers::SlotData<void(QString)>(28, 2, QMC::AccessPrivate, QMetaType::Void, {{
@@ -142,7 +144,7 @@ void client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: _t->finished(); break;
-        case 1: _t->signal_register_new_account((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[4])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[5])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[6])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[7]))); break;
+        case 1: _t->signal_register_new_account((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[4])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[5])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[6]))); break;
         case 2: _t->signal_auth((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
         case 3: _t->signal_send_code_to_email((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
         case 4: _t->signal_set_new_password((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
@@ -156,14 +158,15 @@ void client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 12: _t->slot_register_error(); break;
         case 13: _t->slot_auth_ok(); break;
         case 14: _t->slot_auth_error(); break;
-        case 15: _t->slot_equation_solution((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 15: _t->slot_reset_error(); break;
+        case 16: _t->slot_equation_solution((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         default: ;
         }
     }
     if (_c == QMetaObject::IndexOfMethod) {
         if (QtMocHelpers::indexOfMethod<void (client::*)()>(_a, &client::finished, 0))
             return;
-        if (QtMocHelpers::indexOfMethod<void (client::*)(QString , QString , QString , QString , QString , QString , QString )>(_a, &client::signal_register_new_account, 1))
+        if (QtMocHelpers::indexOfMethod<void (client::*)(QString , QString , QString , QString , QString , QString )>(_a, &client::signal_register_new_account, 1))
             return;
         if (QtMocHelpers::indexOfMethod<void (client::*)(QString , QString )>(_a, &client::signal_auth, 2))
             return;
@@ -199,14 +202,14 @@ int client::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 16)
+        if (_id < 17)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 16;
+        _id -= 17;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 16)
+        if (_id < 17)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 16;
+        _id -= 17;
     }
     return _id;
 }
@@ -218,9 +221,9 @@ void client::finished()
 }
 
 // SIGNAL 1
-void client::signal_register_new_account(QString _t1, QString _t2, QString _t3, QString _t4, QString _t5, QString _t6, QString _t7)
+void client::signal_register_new_account(QString _t1, QString _t2, QString _t3, QString _t4, QString _t5, QString _t6)
 {
-    QMetaObject::activate<void>(this, &staticMetaObject, 1, nullptr, _t1, _t2, _t3, _t4, _t5, _t6, _t7);
+    QMetaObject::activate<void>(this, &staticMetaObject, 1, nullptr, _t1, _t2, _t3, _t4, _t5, _t6);
 }
 
 // SIGNAL 2
