@@ -23,7 +23,6 @@ public:
    static QString get_client_time();
    static QString random_password();
    static int random_code();
-   static bool age(const QDate& date);
    static void equation(QHBoxLayout* uravnenie, action effect);
    static bool correct_digitals(QHBoxLayout* uravnenie);
 private:

@@ -66,11 +66,12 @@ void client_main_window::on_pushButton_solve_equation_clicked() // метод о
       int arg_b = ui->lineEdit_b_linear->text().toInt(&bool_arg_b);
       if (arg_a and arg_b) {
          QString text_in_dialogbox = QString("Ваше уравнение: %1%2x%3%4 = 0").arg(ui->comboBox_sign_linear->currentText()).arg(ui->lineEdit_a_linear->text()).arg(ui->comboBox_sign2_linear->currentText()).arg(ui->lineEdit_b_linear->text());
-            this->client->write(QString("equation|linear|%1%2$%3%4").arg(ui->comboBox_sign_linear->currentText()).arg(ui->lineEdit_a_linear->text()).arg(ui->comboBox_sign2_linear->currentText()).arg(ui->lineEdit_b_linear->text()));
+         qDebug() << text_in_dialogbox;
+         this->client->write(QString("equation|linear|%1%2$%3%4").arg(ui->comboBox_sign_linear->currentText()).arg(ui->lineEdit_a_linear->text()).arg(ui->comboBox_sign2_linear->currentText()).arg(ui->lineEdit_b_linear->text()));
             // отправляем линейное уравнение на сервер.
       }
       else
-         new notification(NOTIFICATION_ERROR, this);
+         new notification("Ошибка", NOTIFICATION_ERROR, this);
    }
 
    if (ui->comboBox->currentIndex() == 1) { // значит пользователь отправил квадратное уравнение
@@ -87,7 +88,7 @@ void client_main_window::on_pushButton_solve_equation_clicked() // метод о
          // отправляем квадратное уравнение на сервер.
       }
       else
-         new notification(NOTIFICATION_ERROR);
+         new notification("Ошибка", NOTIFICATION_ERROR);
    }
 }
 
@@ -98,13 +99,13 @@ void client_main_window::slot_equation_ok(QString answer) // Слот об ус�
    for (int i = 0; i < answers.size(); i++) {
       text_for_notification += QString("%1 ").arg(answers[i]);
    }
-   new notification(text_for_notification); // создаём уведомление
+   new notification("Ответ", text_for_notification); // создаём уведомление
 }
 
 void client_main_window::slot_equation_fail()
 {
    QString text_for_notification = QString("Ошибка. Корней нет!"); // текст для уведомления
-   new notification(text_for_notification); // создаём уведомление.
+   new notification("Ответ", text_for_notification); // создаём уведомление.
 }
 
 void client_main_window::line_edit_set_validator() {

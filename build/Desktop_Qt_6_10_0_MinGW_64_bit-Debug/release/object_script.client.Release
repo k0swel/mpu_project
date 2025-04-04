@@ -6,6 +6,7 @@ release/main.o
 release/notification.o
 release/reg_form.o
 release/reset_password.o
+release/qrc_recources.o
 release/moc_auth_form.o
 release/moc_client.o
 release/moc_client_main_window.o

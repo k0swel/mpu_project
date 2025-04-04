@@ -43,7 +43,9 @@ template <> constexpr inline auto reset_password::qt_create_metaobjectdata<qt_me
         "",
         "on_pushButton_to_reg_clicked",
         "on_pushButton_to_auth_clicked",
-        "on_pushButton_code_clicked"
+        "on_pushButton_code_clicked",
+        "slot_reset_error",
+        "on_pushButton_clicked"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -55,6 +57,10 @@ template <> constexpr inline auto reset_password::qt_create_metaobjectdata<qt_me
         QtMocHelpers::SlotData<void()>(4, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'on_pushButton_code_clicked'
         QtMocHelpers::SlotData<void()>(5, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'slot_reset_error'
+        QtMocHelpers::SlotData<void()>(6, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'on_pushButton_clicked'
+        QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -82,6 +88,8 @@ void reset_password::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 1: _t->on_pushButton_to_reg_clicked(); break;
         case 2: _t->on_pushButton_to_auth_clicked(); break;
         case 3: _t->on_pushButton_code_clicked(); break;
+        case 4: _t->slot_reset_error(); break;
+        case 5: _t->on_pushButton_clicked(); break;
         default: ;
         }
     }
@@ -107,14 +115,14 @@ int reset_password::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 6)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 6;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 4)
+        if (_id < 6)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 4;
+        _id -= 6;
     }
     return _id;
 }

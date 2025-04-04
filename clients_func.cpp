@@ -112,13 +112,6 @@ QString clients_func::random_password() {
     return random_pswd;
 }
 
-bool clients_func::age(const QDate& date) { // функция проверки возраста
-   QDate now = QDate::currentDate();
-   if (now.year() - date.year() > AGE) return true;
-   if (now.year() - date.year() == AGE and now.dayOfYear() > date.dayOfYear()) return true;
-   return false;
-}
-
 void clients_func::equation(QHBoxLayout* uravnenie, action effect){ // функция, которая прячет/показывает макет уравнений
    if (effect == action::HIDE) {
       for (int i = 0; i < uravnenie->count(); i++) {

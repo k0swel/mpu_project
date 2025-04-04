@@ -9,10 +9,8 @@
 #ifndef UI_REG_FORM_H
 #define UI_REG_FORM_H
 
-#include <QtCore/QDate>
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QDateEdit>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -41,10 +39,6 @@ public:
     QHBoxLayout *horizontalLayout_4;
     QLabel *label_email;
     QLineEdit *lineEdit_email;
-    QWidget *horizontalLayoutWidget_4;
-    QHBoxLayout *horizontalLayout_5;
-    QLabel *label_email_2;
-    QDateEdit *dateEdit_birthday;
     QWidget *horizontalLayoutWidget_5;
     QHBoxLayout *horizontalLayout;
     QLabel *label__lastname;
@@ -112,7 +106,9 @@ public:
         palette.setBrush(QPalette::Disabled, QPalette::WindowText, brush2);
         palette.setBrush(QPalette::Disabled, QPalette::Button, brush1);
         palette.setBrush(QPalette::Disabled, QPalette::Text, brush2);
-        palette.setBrush(QPalette::Disabled, QPalette::ButtonText, brush2);
+        QBrush brush4(QColor(255, 255, 255, 135));
+        brush4.setStyle(Qt::SolidPattern);
+        palette.setBrush(QPalette::Disabled, QPalette::ButtonText, brush4);
         palette.setBrush(QPalette::Disabled, QPalette::Base, brush1);
         palette.setBrush(QPalette::Disabled, QPalette::Window, brush1);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
@@ -199,38 +195,6 @@ public:
         lineEdit_email->setStyleSheet(QString::fromUtf8("background-color: rgb(50, 53, 60);"));
 
         horizontalLayout_4->addWidget(lineEdit_email);
-
-        horizontalLayoutWidget_4 = new QWidget(Widget);
-        horizontalLayoutWidget_4->setObjectName("horizontalLayoutWidget_4");
-        horizontalLayoutWidget_4->setGeometry(QRect(30, 210, 441, 31));
-        horizontalLayout_5 = new QHBoxLayout(horizontalLayoutWidget_4);
-        horizontalLayout_5->setObjectName("horizontalLayout_5");
-        horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
-        label_email_2 = new QLabel(horizontalLayoutWidget_4);
-        label_email_2->setObjectName("label_email_2");
-        label_email_2->setStyleSheet(QString::fromUtf8("color: rgb(224, 225, 230);"));
-        label_email_2->setAlignment(Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter);
-
-        horizontalLayout_5->addWidget(label_email_2);
-
-        dateEdit_birthday = new QDateEdit(horizontalLayoutWidget_4);
-        dateEdit_birthday->setObjectName("dateEdit_birthday");
-        QSizePolicy sizePolicy1(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Maximum);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(dateEdit_birthday->sizePolicy().hasHeightForWidth());
-        dateEdit_birthday->setSizePolicy(sizePolicy1);
-        dateEdit_birthday->setLayoutDirection(Qt::LayoutDirection::LeftToRight);
-        dateEdit_birthday->setStyleSheet(QString::fromUtf8("background-color: rgb(97, 97, 97);\n"
-"color: rgb(197, 197, 197)"));
-        dateEdit_birthday->setAlignment(Qt::AlignmentFlag::AlignCenter);
-        dateEdit_birthday->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
-        dateEdit_birthday->setDateTime(QDateTime(QDate(2000, 1, 1), QTime(3, 0, 0)));
-        dateEdit_birthday->setCalendarPopup(true);
-        dateEdit_birthday->setCurrentSectionIndex(0);
-        dateEdit_birthday->setDate(QDate(2000, 1, 1));
-
-        horizontalLayout_5->addWidget(dateEdit_birthday);
 
         horizontalLayoutWidget_5 = new QWidget(Widget);
         horizontalLayoutWidget_5->setObjectName("horizontalLayoutWidget_5");
@@ -325,7 +289,6 @@ public:
         label_login->setText(QCoreApplication::translate("Widget", "\320\233\320\276\320\263\320\270\320\275", nullptr));
         label_password->setText(QCoreApplication::translate("Widget", "\320\237\320\260\321\200\320\276\320\273\321\214", nullptr));
         label_email->setText(QCoreApplication::translate("Widget", "email", nullptr));
-        label_email_2->setText(QCoreApplication::translate("Widget", "\320\224\320\260\321\202\320\260 \321\200\320\276\320\266\320\264\320\265\320\275\320\270\321\217", nullptr));
         label__lastname->setText(QCoreApplication::translate("Widget", "\320\244\320\260\320\274\320\270\320\273\320\270\321\217", nullptr));
         label_name->setText(QCoreApplication::translate("Widget", "\320\230\320\274\321\217", nullptr));
         label_2->setText(QCoreApplication::translate("Widget", "\320\236\321\202\321\207\320\265\321\201\321\202\320\262\320\276", nullptr));

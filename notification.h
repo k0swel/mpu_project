@@ -12,7 +12,7 @@ class notification : public QWidget
    Q_OBJECT
 
 public:
-   explicit notification(QString text, QWidget *parent = nullptr);
+   explicit notification(QString title, QString text, QWidget *parent = nullptr);
    ~notification();
 
 private:

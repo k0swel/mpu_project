@@ -44,6 +44,7 @@ template <> constexpr inline auto Client::qt_create_metaobjectdata<qt_meta_tag_Z
         "register_error",
         "auth_ok",
         "auth_error",
+        "reset_error",
         "equation_ok",
         "equation_fail",
         "connect_to_server",
@@ -60,18 +61,20 @@ template <> constexpr inline auto Client::qt_create_metaobjectdata<qt_meta_tag_Z
         QtMocHelpers::SignalData<void()>(4, 2, QMC::AccessPublic, QMetaType::Void),
         // Signal 'auth_error'
         QtMocHelpers::SignalData<void()>(5, 2, QMC::AccessPublic, QMetaType::Void),
+        // Signal 'reset_error'
+        QtMocHelpers::SignalData<void()>(6, 2, QMC::AccessPublic, QMetaType::Void),
         // Signal 'equation_ok'
-        QtMocHelpers::SignalData<void(QString)>(6, 2, QMC::AccessPublic, QMetaType::Void, {{
+        QtMocHelpers::SignalData<void(QString)>(7, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::QString, 2 },
         }}),
         // Signal 'equation_fail'
-        QtMocHelpers::SignalData<void()>(7, 2, QMC::AccessPublic, QMetaType::Void),
+        QtMocHelpers::SignalData<void()>(8, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'connect_to_server'
-        QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'disconnect_from_server'
         QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'read'
+        // Slot 'disconnect_from_server'
         QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'read'
+        QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -99,11 +102,12 @@ void Client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 1: _t->register_error(); break;
         case 2: _t->auth_ok(); break;
         case 3: _t->auth_error(); break;
-        case 4: _t->equation_ok((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 5: _t->equation_fail(); break;
-        case 6: _t->connect_to_server(); break;
-        case 7: _t->disconnect_from_server(); break;
-        case 8: _t->read(); break;
+        case 4: _t->reset_error(); break;
+        case 5: _t->equation_ok((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 6: _t->equation_fail(); break;
+        case 7: _t->connect_to_server(); break;
+        case 8: _t->disconnect_from_server(); break;
+        case 9: _t->read(); break;
         default: ;
         }
     }
@@ -116,9 +120,11 @@ void Client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
             return;
         if (QtMocHelpers::indexOfMethod<void (Client::*)()>(_a, &Client::auth_error, 3))
             return;
-        if (QtMocHelpers::indexOfMethod<void (Client::*)(QString )>(_a, &Client::equation_ok, 4))
+        if (QtMocHelpers::indexOfMethod<void (Client::*)()>(_a, &Client::reset_error, 4))
             return;
-        if (QtMocHelpers::indexOfMethod<void (Client::*)()>(_a, &Client::equation_fail, 5))
+        if (QtMocHelpers::indexOfMethod<void (Client::*)(QString )>(_a, &Client::equation_ok, 5))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (Client::*)()>(_a, &Client::equation_fail, 6))
             return;
     }
 }
@@ -142,14 +148,14 @@ int Client::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 10)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }
@@ -179,14 +185,20 @@ void Client::auth_error()
 }
 
 // SIGNAL 4
-void Client::equation_ok(QString _t1)
+void Client::reset_error()
 {
-    QMetaObject::activate<void>(this, &staticMetaObject, 4, nullptr, _t1);
+    QMetaObject::activate(this, &staticMetaObject, 4, nullptr);
 }
 
 // SIGNAL 5
+void Client::equation_ok(QString _t1)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 5, nullptr, _t1);
+}
+
+// SIGNAL 6
 void Client::equation_fail()
 {
-    QMetaObject::activate(this, &staticMetaObject, 5, nullptr);
+    QMetaObject::activate(this, &staticMetaObject, 6, nullptr);
 }
 QT_WARNING_POP

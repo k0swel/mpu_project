@@ -73,6 +73,10 @@ void Client::read() {
    if (data_to_qstring == "auth|error")
       emit this->auth_error(); // ошибка при авторизации!
 
+   // СИГНАЛЫ ДЛЯ ОКНА СБРОСА ПАРОЛЯ
+   if (data_to_qstring == "reset|error")
+      emit this->reset_error(); // указанного логина не существует.
+
    // СИГНАЛЫ ГЛАВНОГО ОКНА КЛИЕНТА
    if (data_to_qstring.split("|")[0] == "answer") { // если текущий ответ от сервера содержит статус о решении уравнения
       QString answer = data_to_qstring.split("|")[1]; // вытаскиваем из ответа от сервера ответ

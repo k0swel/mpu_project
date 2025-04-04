@@ -83,7 +83,7 @@ void auth_form::auth_ok() {
 }
 
 void auth_form::auth_error() {
-   new notification(AUTH_ERROR); // показываем уведомление с ошибкой.
+   new notification("Ошибка", AUTH_ERROR); // показываем уведомление с ошибкой.
 }
 
 
