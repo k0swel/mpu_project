@@ -1,0 +1,15 @@
+release/auth_form.o
+release/client.o
+release/client_main_window.o
+release/clients_func.o
+release/main.o
+release/notification.o
+release/reg_form.o
+release/reset_password.o
+release/qrc_recources.o
+release/moc_auth_form.o
+release/moc_client.o
+release/moc_client_main_window.o
+release/moc_notification.o
+release/moc_reg_form.o
+release/moc_reset_password.o
