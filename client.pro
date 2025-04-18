@@ -9,31 +9,45 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+TARGET = client
+
+CONFIG -=debug_and_release
+CONFIG += release
+
+DESTDIR = $$PWD/build
+
+OBJECTS_DIR = ./build/obj
+UI_DIR = ./build/ui
+MOC_DIR = ./build/moc
+RCC_DIR = ./build/rcc
+
+INCLUDEPATH = "$$PWD/include"
+
 SOURCES += \
-    auth_form.cpp \
-    client.cpp \
-    client_main_window.cpp \
-    clients_func.cpp \
-    main.cpp \
-    notification.cpp \
-    reg_form.cpp \
-    reset_password.cpp
+    $$PWD/src/auth_form.cpp \
+    $$PWD/src/client.cpp \
+    $$PWD/src/client_main_window.cpp \
+    $$PWD/src/clients_func.cpp \
+    $$PWD/src/main.cpp \
+    $$PWD/src/notification.cpp \
+    $$PWD/src/reg_form.cpp \
+    $$PWD/src/reset_password.cpp
 
 HEADERS += \
-    auth_form.h \
-    client.h \
-    client_main_window.h \
-    clients_func.h \
-    notification.h \
-    reg_form.h \
-    reset_password.h
+    $$PWD/include/auth_form.h \
+    $$PWD/include/client.h \
+    $$PWD/include/client_main_window.h \
+    $$PWD/include/clients_func.h \
+    $$PWD/include/notification.h \
+    $$PWD/include/reg_form.h \
+    $$PWD/include/reset_password.h
 
 FORMS += \
-    auth_form.ui \
-    client_main_window.ui \
-    notification.ui \
-    reg_form.ui \
-    reset_password.ui
+    $$PWD/ui/auth_form.ui \
+    $$PWD/ui/client_main_window.ui \
+    $$PWD/ui/notification.ui \
+    $$PWD/ui/reg_form.ui \
+    $$PWD/ui/reset_password.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -41,4 +55,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    recources.qrc
+    $$PWD/resources/recources.qrc
