@@ -6,7 +6,7 @@
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "include/smtpclient.h"
+#include "../../include/smtpclient.h"
 #include <QtCore/qmetatype.h>
 
 #include <QtCore/qtmochelpers.h>

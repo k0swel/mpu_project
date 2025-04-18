@@ -24,6 +24,7 @@ DESTDIR = $$PWD/build
 INCLUDEPATH = $$PWD/include
 
 OBJECTS_DIR = $$PWD/build/object_files
+MOC_DIR = $$PWD/build/moc
 
 SOURCES += \
     $$PWD/src/emailaddress.cpp \
