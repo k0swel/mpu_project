@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 ./build/*
 .qmake.stash
 ./Makefile
 ./qtc_clangd
-=======
-./build
->>>>>>> 2705ba2621b991a3ce4a6be73a0a9d7a5b82e58c
