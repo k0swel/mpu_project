@@ -11,3 +11,5 @@ server/build/Debug
 server/build/moc
 server/build/obj
 server/build/server.exe
+./Maiefole
+./.qmake.stash
