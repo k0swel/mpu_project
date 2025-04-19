@@ -1,8 +1,8 @@
 #include <QCoreApplication>
 #include <QtCore/QCoreApplication >
-#include "mytcpserver.h"
+#include "../include/mytcpserver.h"
 #include <QThread>
-#include "dbsingleton.h"
+#include "../include/dbsingleton.h"
 #include <QDir>
 
 int main(int argc, char *argv[])

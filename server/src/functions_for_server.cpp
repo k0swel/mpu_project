@@ -1,6 +1,6 @@
-#include "functions_for_server.h"
+#include "../include/functions_for_server.h"
 #include <QDebug>
-#include "SmtpMime" // импортируем библиотеку отправки сообщений на почту
+#include "../libraries/SMTPEmail/include/SmtpMime" // импортируем библиотеку отправки сообщений на почту
 
 functions_for_server* functions_for_server::p_instance = nullptr;
 

@@ -1,9 +1,9 @@
-#include "mytcpserver.h"
+#include "../include/mytcpserver.h"
 #include <QDebug>
 #include <QCoreApplication>
 #include <QString>
 #include <QThread>
-#include "client_object.h"
+#include "../include/client_object.h"
 
 MyTcpServer* MyTcpServer::p_instance = nullptr;
 MyTcpServerDestroyer MyTcpServerDestroyer::destroyer = MyTcpServerDestroyer();

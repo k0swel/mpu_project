@@ -1,4 +1,4 @@
-#include "dbsingleton.h"
+#include "../include/dbsingleton.h"
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QDebug>

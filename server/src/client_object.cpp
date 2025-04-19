@@ -1,9 +1,8 @@
-#include "client_object.h"
-#include <functions_for_server.h>
+#include "../include/client_object.h"
+#include "../include/functions_for_server.h"
 #include <QList>
-#include "client_object.h"
 #include <QByteArray>
-#include "dbsingleton.h"
+#include "../include/dbsingleton.h"
 
 extern QList<client*> clients;
 extern functions_for_server* servers_functions;
