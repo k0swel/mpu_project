@@ -1,4 +1,8 @@
-./build/*
+./build/client.exe
+./build/moc
+./build/obj
+./build/rcc
+./build/ui
+.qtc_clangd
 .qmake.stash
-./Makefile
-./qtc_clangd
+Makefile

@@ -28,10 +28,16 @@ bool clients_func::english_symbols(QString text) {
 
 bool clients_func::current_login(QString login) {
    bool english_symbols = false;
-
-   // проверка на английские символы
-   if (clients_func::english_symbols(login) and login.size() >= 5) {
-      english_symbols = true;
+   for (auto symbol: login) {
+      if ( ((symbol.toLatin1() >= 'A' and symbol.toLatin1() <= 'Z') or (symbol.toLatin1() >= 'a' and symbol.toLatin1() <= 'z') or symbol.isDigit()) and symbol != QChar('|') and symbol != QChar('$')) {
+         english_symbols = true;
+         qDebug() << QString("Символ: %1 . Значение: %2").arg(symbol).arg(english_symbols);
+      }
+      else {
+         english_symbols = false;
+         qDebug() << QString("Символ: %1 . Значение: %2").arg(symbol).arg(english_symbols);
+         return false;
+      }
    }
    return english_symbols;
 }

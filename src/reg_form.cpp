@@ -21,9 +21,8 @@ Widget::Widget(Client* Client, QWidget *parent)
    this->setWindowTitle(QString("Метод половинного деления"));
    this->setWindowFlags(Qt::MSWindowsFixedSizeDialogHint); // нельзя сменить размер окна мышкой или клавой
    this->setAttribute(Qt::WA_DeleteOnClose); // удаляем окно при нажатии на значок закрытия.
-   this->ui->lineEdit_login->setFocus();
+   this->ui->lineEdit_login->setFocus(); // устанавливаем фокус на ввод логина.
    connect(this->client, &Client::register_ok, this, &Widget::register_successful); // сигнал на случай успешной регистрации
-
    connect(this->client, &Client::register_error, this, &Widget::register_error); // сигнал на случай если пользователь уже зарегистрирован.
    this->show();
 }
