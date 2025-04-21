@@ -55,60 +55,89 @@ QString functions_for_server::get_server_time() {
    return QString(time_format);
 }
 
-QList<QPair<double, double>> functions_for_server::generatePairs(int b) {
-    QList<QPair<double, double>> result;
+#define EPS 0.00001
 
-    // Преобразуем int в double
-    double start = static_cast<double>(b);
-
-    // Генерируем 5 пар (можно изменить количество)
-    for (int i = -b; i < 2 * b; ++i) {
-        double first = start + i;
-        double second = first + 1.0; // Разница ровно 1 между значениями в паре
-        result.append(qMakePair(first, second));
+QVector<QPair<double, double>> functions_for_server::diaposons(double a, double b, double step) {
+    QVector<QPair<double, double>> diaposon;
+    for (double x = a; x < b; x += step) {
+        diaposon.push_back({x, x + step});
     }
-
-    return result;
+    return diaposon;
 }
 
-// Универсальный метод бисекции для f(x) = 0
-bool functions_for_server::bisectionMethod(const QPair<double, double>& interval,double c_a, double c_b){
-    double tolerance = 0.001;
-    double a = interval.first;
-    double b = interval.second;
-    double fa = c_a * a + c_b;
-    double fb = c_a * b + c_b;
+QVector<double> functions_for_server::find_x(const QVector<QPair<double, double>>& diapozon,
+                                          double a, double b, double c) {
+    QVector<double> answers;
+    const double eps = 1e-8;
+    const double zero_eps = 1e-10;
 
-    if (fa * fb >= 0) {
-        //emit signal_equation_solution("answer|error:no_root_in_interval");
-        return false;
-    }
+    auto isZero = [zero_eps](double val) {
+        return std::abs(val) < zero_eps;
+    };
 
-    int iterations = 0;
-    const int max_iterations = 1000;
-    double c = a;
+    for (auto interval : diapozon) {
+        double left = interval.first;
+        double right = interval.second;
+        double f_left = Calc(a, b, c, left);
+        double f_right = Calc(a, b, c, right);
 
-    while ((b - a) >= tolerance && iterations < max_iterations) {
-        c = (a + b) / 2;
-        double fc = c_a * c + c_b;
-
-        if (qFuzzyIsNull(fc)) break;
-
-        if (fc * fa < 0) {
-            b = c;
-            fb = fc;
-        } else {
-            a = c;
-            fa = fc;
+        // Проверка корней на границах
+        if (isZero(f_left)) {
+            answers.push_back(left);
+            continue;
         }
-        iterations++;
+        if (isZero(f_right)) {
+            answers.push_back(right);
+            continue;
+        }
+
+        // Проверка на возможный корень (включая кратные корни)
+        if (f_left * f_right <= 0 || std::min(std::abs(f_left), std::abs(f_right)) < zero_eps) {
+            // Метод бисекции
+            while (std::abs(right - left) > eps) {
+                double mid = (left + right) / 2;
+                double f_mid = Calc(a, b, c, mid);
+
+                if (isZero(f_mid)) {
+                    answers.push_back(mid);
+                    break;
+                }
+
+                if (f_left * f_mid < 0) {
+                    right = mid;
+                    f_right = f_mid;
+                } else {
+                    left = mid;
+                    f_left = f_mid;
+                }
+            }
+            // Добавляем приближенный корень, если точный не найден
+            double root = (left + right) / 2;
+            if (isZero(Calc(a, b, c, root))) {
+                answers.push_back(root);
+            }
+        }
     }
 
-    QString solution = QString("answer|%1").arg(c).arg(iterations);
-    emit signal_equation_solution(solution);
-    return true;
+    // Удаление дубликатов
+    QVector<double> unique_answers;
+    for (double root : answers) {
+        bool exists = false;
+        for (double unique_root : unique_answers) {
+            if (qFuzzyCompare(root, unique_root)) {
+                exists = true;
+                break;
+            }
+        }
+        if (!exists) unique_answers.push_back(root);
+    }
+
+    return unique_answers;
 }
 
+double functions_for_server::Calc(double a, double b, double c, double x){
+    return x*x*a + x*b + c;
+}
 
 void functions_for_server::slot_linear_equation(QString a, QString b)
 {
@@ -118,7 +147,7 @@ void functions_for_server::slot_linear_equation(QString a, QString b)
     QString solution;
 
     if (!ok1 || !ok2) {
-        solution = "answer|error:invalid_input";
+        solution = "answer|Некорректный ввод!";
         emit this->signal_equation_solution(solution);
         return;
     }
@@ -126,14 +155,29 @@ void functions_for_server::slot_linear_equation(QString a, QString b)
     // a = 0
     if (qFuzzyIsNull(coeff_a)) {
         if (qFuzzyIsNull(coeff_b)) {
-            solution = "answer|infinite_solutions"; // 0x = 0
+            solution = "answer|Бесконечное число решений"; // 0x = 0
         } else {
-            solution = "answer|no_solution"; // 0x = b (where b ≠ 0)
+            solution = "answer|Решений нет"; // 0x = b (b ≠ 0)
         }
     } else {
-        // ax + b = 0 → x = -b/a
-        double answer = -coeff_b / coeff_a;
-        solution = QString("answer|%1").arg(answer);
+       double vertex = -coeff_b/(2*coeff_a);
+       QVector<QPair<double, double>> ans = diaposons(vertex-5, vertex+5, 0.01);
+        QVector<double> korni = find_x(ans, 0, coeff_a, coeff_b);
+        //Выводим корни
+        if (korni.size() > 0) {
+           solution = QString("answer|");
+           for (const auto &el : korni) {
+               qDebug() << el;
+               solution.append(QString::number(el));
+               solution.append("$");
+           }
+           solution.chop(1);
+           double answer = -coeff_b / coeff_a;
+           solution = QString("answer|%1").arg(answer);
+        }
+        else {
+           solution = QString("answer|Решений нет");
+        }
     }
 
     emit this->signal_equation_solution(solution);
@@ -148,47 +192,33 @@ void functions_for_server::slot_quadratic_equation(QString a, QString b, QString
     QString solution;
 
     if (!ok1 || !ok2 || !ok3) {
-        solution = "answer|error:invalid_input";
+        solution = "answer|Некорректный ввод";
         emit this->signal_equation_solution(solution);
         return;
     }
-
-// Является ли коэффициент у x^2 нулевым
-    if (qFuzzyIsNull(coeff_a)) {
-        // Квадратное уравнение становится линейным
-        if (qFuzzyIsNull(coeff_b)) {
-            if (qFuzzyIsNull(coeff_c)) {
-                solution = "answer|infinite_solutions"; // 0 = 0
-            } else {
-                solution = "answer|no_solution"; // c = 0 где c ≠ 0
-            }
-        } else {
-            double root = -coeff_c / coeff_b;
-            solution = QString("answer|%1").arg(root);
+    if (qFuzzyIsNull(coeff_a) && qFuzzyIsNull(coeff_b))
+    {
+        if (qFuzzyIsNull(coeff_c)) {
+            emit this->signal_equation_solution("answer|Бесконечное число решений");
+            return;
         }
-        emit this->signal_equation_solution(solution);
+        emit this->signal_equation_solution("answer|Решений нет");
         return;
     }
-
-    // Вычисляем дискриминант
-    double discriminant = coeff_b * coeff_b - 4 * coeff_a * coeff_c;
-
-    if (discriminant > 0) {
-        double root1 = (-coeff_b + sqrt(discriminant)) / (2 * coeff_a);
-        double root2 = (-coeff_b - sqrt(discriminant)) / (2 * coeff_a);
-        solution = QString("answer|%1$%2").arg(root1).arg(root2);
-    }
-    else if (qFuzzyIsNull(discriminant)) {
-        double root = -coeff_b / (2 * coeff_a);
-        solution = QString("answer|%1").arg(root);
+    QVector<QPair<double, double>> ans = diaposons(-10, 10, 0.001);
+    QVector<double> korni = find_x(ans, coeff_a, coeff_b, coeff_c);
+    //Выводим корни
+    if (korni.size() > 0) {
+       solution = QString("answer|");
+       for (const auto &el : korni) {
+           qDebug() << el;
+           solution.append(QString::number(el));
+           solution.append("$");
+       }
+       solution.chop(1);
     }
     else {
-        double realPart = -coeff_b / (2 * coeff_a);
-        double imaginaryPart = sqrt(-discriminant) / (2 * coeff_a);
-        solution = QString("answer|complex:%1+%2i$%1-%2i")
-                       .arg(realPart)
-                       .arg(imaginaryPart);
+       solution = QString("answer|Решений нет");
     }
-
     emit this->signal_equation_solution(solution);
 }

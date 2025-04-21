@@ -11,5 +11,7 @@ server/build/Debug
 server/build/moc
 server/build/obj
 server/build/server.exe
+server/build/tmp.db
 Makefile
+.qtc_clangd
 .qmake.stash
