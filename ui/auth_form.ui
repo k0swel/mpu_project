@@ -166,15 +166,15 @@
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>190</y>
+     <y>210</y>
      <width>191</width>
-     <height>61</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton#pushButton_login {
 
-border-radius: 30px; 
+border-radius: 20px; 
 color: rgb(0, 0, 0);
 background-color: rgb(13, 178, 255);
 border: 2px solid rgb(0,0,0);
@@ -375,6 +375,30 @@ QPushButton::hover {
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_remamber_me">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>190</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QCheckBox#checkBox_remamber_me {
+	color: white;
+	background-color: rgb(168, 168, 168);
+	font-size: 12px;
+}
+
+QCheckBox#checkBox_remamber_me::hover {
+	border: 3px solid red;
+}</string>
+   </property>
+   <property name="text">
+    <string>Запомнить меня</string>
+   </property>
   </widget>
  </widget>
  <resources/>

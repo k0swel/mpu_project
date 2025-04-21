@@ -38,6 +38,7 @@ private slots:
 private:
    Ui::Widget *ui;
    Client* client = nullptr;
+   void create_notification(QString title, QString text);
    void reset_text();
 };
 #endif // REG_FORM_H

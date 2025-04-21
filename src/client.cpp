@@ -59,9 +59,7 @@ void Client::read() {
    while (this->socket->bytesAvailable() > 0) {
       data.append(this->socket->readAll());
    }
-
    QString data_to_qstring = QString(data);
-
    // СИГНАЛЫ ДЛЯ РЕГИСТРАЦИИ
    if (data_to_qstring == "register|ok")
       emit this->register_ok(); // успешная регистарция

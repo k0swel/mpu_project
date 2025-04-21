@@ -1,5 +1,7 @@
 build/*
 !.gitkeep
+build/cache/*
+!.gitkeep
 .qtc_clangd
 .qmake.stash
 Makefile

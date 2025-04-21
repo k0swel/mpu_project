@@ -21,8 +21,7 @@ client_main_window::client_main_window(Client* client, QWidget *parent) :
    ui->comboBox->setToolTip("Выберите вид уравнения."); // устанавливаем подсказку на combo box
    this->setAttribute(Qt::WA_DeleteOnClose); // удаляем окно при нажатии на значок закрытия.
    clients_func::equation(ui->Layout_quadratic, action::HIDE); // по умолчанию прячем квадратное уравнение.
-   QWidget* widget_for_equations = new QWidget(this); // создаём виджет куда поместил layout с элементами уравнения
-   this->line_edit_set_validator(); // устанавливаем мин и макс.значения для line editов
+   //this->line_edit_set_validator(); // устанавливаем мин и макс.значения для line editов
 
    connect(this->client, &Client::equation_ok, this, &client_main_window::slot_equation_ok); // connect об успешном решении уравнения
    connect(this->client, &Client::equation_fail, this, &client_main_window::slot_equation_fail); // connect об отсутствии корней в уравнении
@@ -61,11 +60,11 @@ void client_main_window::on_pushButton_solve_equation_clicked() // метод о
 {
    if (ui->comboBox->currentIndex() == 0) { // значит пользователь отправляет линейное уравнение
       bool bool_arg_a = false;
-      int arg_a = ui->lineEdit_a_linear->text().toInt(&bool_arg_a);
+      int arg_a = ui->lineEdit_a_linear->text().toDouble(&bool_arg_a);
 
       bool bool_arg_b = false;
-      int arg_b = ui->lineEdit_b_linear->text().toInt(&bool_arg_b);
-      if (arg_a and arg_b) {
+      int arg_b = ui->lineEdit_b_linear->text().toDouble(&bool_arg_b);
+      if (bool_arg_a and bool_arg_b) {
          QString text_in_dialogbox = QString("Ваше уравнение: %1%2x%3%4 = 0").arg(ui->comboBox_sign_linear->currentText()).arg(ui->lineEdit_a_linear->text()).arg(ui->comboBox_sign2_linear->currentText()).arg(ui->lineEdit_b_linear->text());
          qDebug() << text_in_dialogbox;
          this->client->write(QString("equation|linear|%1%2$%3%4").arg(ui->comboBox_sign_linear->currentText()).arg(ui->lineEdit_a_linear->text()).arg(ui->comboBox_sign2_linear->currentText()).arg(ui->lineEdit_b_linear->text()));
@@ -77,14 +76,14 @@ void client_main_window::on_pushButton_solve_equation_clicked() // метод о
 
    if (ui->comboBox->currentIndex() == 1) { // значит пользователь отправил квадратное уравнение
       bool bool_arg_a = false;
-      int arg_a = ui->lineEdit_a_quadratic->text().toInt(&bool_arg_a);
+      int arg_a = ui->lineEdit_a_quadratic->text().toDouble(&bool_arg_a);
       bool bool_arg_b = false;
-      int arg_b = ui->lineEdit_b_quadratic->text().toInt(&bool_arg_b);
+      int arg_b = ui->lineEdit_b_quadratic->text().toDouble(&bool_arg_b);
 
       bool bool_arg_c = false;
-      int arg_c = ui->lineEdit_c_quadratic->text().toInt(&bool_arg_c);
+      int arg_c = ui->lineEdit_c_quadratic->text().toDouble(&bool_arg_c);
 
-      if (arg_a and arg_b and arg_c) {
+      if (bool_arg_a and bool_arg_b and bool_arg_c) {
          this->client->write((QString("equation|quadratic|%1%2$%3%4$%5%6").arg(ui->comboBox_sign2_quardratic->currentText())).arg(ui->lineEdit_a_quadratic->text()).arg(ui->comboBox_sign2_quadratic_2->currentText()).arg(ui->lineEdit_b_quadratic->text()).arg(ui->comboBox_sign2_quadratic_3->currentText()).arg(ui->lineEdit_c_quadratic->text()));
          // отправляем квадратное уравнение на сервер.
       }
@@ -111,12 +110,12 @@ void client_main_window::slot_equation_fail()
    new notification("Ответ", text_for_notification); // создаём уведомление.
 }
 
-void client_main_window::line_edit_set_validator() {
-   ui->lineEdit_a_linear->setValidator(new QIntValidator(1, 100000,this)); // устанавливаем мин и макс.значения
-   ui->lineEdit_b_linear->setValidator(new QIntValidator(1, 100000, this)); // устанавливаем мин и макс.значения
-   ui->lineEdit_a_quadratic->setValidator(new QIntValidator(1, 100000, this)); // устанавливаем мин и макс. значения
-   ui->lineEdit_b_quadratic->setValidator(new QIntValidator(1, 100000, this)); // устанавливаем мин и макс.значения
-   ui->lineEdit_c_quadratic->setValidator(new QIntValidator(1, 100000,this)); // устанавливаем мин и макс.значения
-}
+// void client_main_window::line_edit_set_validator() {
+//    ui->lineEdit_a_linear->setValidator(new QIntValidator(1, 100000,this)); // устанавливаем мин и макс.значения
+//    ui->lineEdit_b_linear->setValidator(new QIntValidator(1, 100000, this)); // устанавливаем мин и макс.значения
+//    ui->lineEdit_a_quadratic->setValidator(new QIntValidator(1, 100000, this)); // устанавливаем мин и макс. значения
+//    ui->lineEdit_b_quadratic->setValidator(new QIntValidator(1, 100000, this)); // устанавливаем мин и макс.значения
+//    ui->lineEdit_c_quadratic->setValidator(new QIntValidator(1, 100000,this)); // устанавливаем мин и макс.значения
+// }
 
 

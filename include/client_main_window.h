@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QLineEdit>
 #include <QIntValidator>
+#include "notification.h"
 
 class Widget; // класс окна регистрации
 class Client; // класс клиента
@@ -32,6 +33,7 @@ private slots:
 private:
    Ui::client_main_window *ui;
    Client* client = nullptr; // класс клиента
+   void create_notification(QString title, QString text);
    void line_edit_set_validator(); // устанавливаем минимальные и максимальные значения в lineedit
 };
 

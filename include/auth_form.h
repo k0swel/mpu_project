@@ -38,6 +38,9 @@ private slots:
 private:
    Ui::auth_form *ui;
    Client* client = nullptr;
+   void create_notification(QString title, QString text);
+   void write_info_in_cache(); // записываем данные в кэш
+   void fill_from_json(); // вставляем из json
 };
 
 #endif // AUTH_FORM_H
