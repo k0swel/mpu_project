@@ -25,36 +25,57 @@ bool clients_func::english_symbols(QString text) {
    }
 }
 
+void clients_func::create_messagebox(QString title, QString message)
+{
+   QMessageBox msg_box;
+   msg_box.setIcon(QMessageBox::Information); // устанавливаем иконку message box
+   msg_box.setStyleSheet("QMessageBox { background-color: rgb(33, 35, 40) }; }"
+                         "QMessageBox QLabel { color: white; }"); // устанавливаем визуальные стили message box
+   msg_box.setWindowTitle(title); // устанавливаем заголовок message box
+   msg_box.setText(message); // устанавливаем текст message box
+   msg_box.exec(); // запускаем message box
+}
+
 
 bool clients_func::current_login(QString login) {
    bool english_symbols = false;
+   bool is_spec_symbols = false;
    for (auto symbol: login) {
-      if ( ((symbol.toLatin1() >= 'A' and symbol.toLatin1() <= 'Z') or (symbol.toLatin1() >= 'a' and symbol.toLatin1() <= 'z') or symbol.isDigit()) and symbol != QChar('|') and symbol != QChar('$')) {
+      if ( ((symbol.toLatin1() >= 'A' and symbol.toLatin1() <= 'Z') or (symbol.toLatin1() >= 'a' and symbol.toLatin1() <= 'z') or symbol.isDigit()) and symbol != QChar('|') and symbol != QChar('$'))
          english_symbols = true;
-         qDebug() << QString("Символ: %1 . Значение: %2").arg(symbol).arg(english_symbols);
-      }
-      else {
+      else
          english_symbols = false;
-         qDebug() << QString("Символ: %1 . Значение: %2").arg(symbol).arg(english_symbols);
-         return false;
-      }
    }
    return english_symbols;
 }
 
 bool clients_func::current_password(QString password) {
    bool english_symbols = false;
+   bool is_spec_symbols = false;
+   bool is_numbers = false;
+   bool is_upper_symbols = false;
    bool length_password_equal_or_more_5 = false;
 
    // проверка на английские символы
-   if (clients_func::english_symbols(password)) {
-      english_symbols = true;
+   english_symbols = clients_func::english_symbols(password);
+
+   // проверка на наличие спец.символа и цифр
+   for(auto symbol: password) {
+      if (symbol.isPunct())
+         is_spec_symbols = true;
+
+      if (symbol.isDigit())
+         is_numbers = true;
+
+      if (symbol.isUpper())
+         is_upper_symbols = true;
    }
 
+   // проверка на длину пароля больше 5
    if (password.length() >= 5) {
       length_password_equal_or_more_5 = true;
    }
-   return english_symbols & length_password_equal_or_more_5;
+   return english_symbols & length_password_equal_or_more_5 & is_spec_symbols & is_numbers & is_upper_symbols;
 }
 
 bool clients_func::current_email(QString email) {
@@ -129,7 +150,6 @@ void clients_func::equation(QHBoxLayout* uravnenie, action effect){ // функ�
       }
    }
 }
-
 QString clients_func::create_hash(QString text)
 {
    return QCryptographicHash::hash(text.toUtf8(), QCryptographicHash::Algorithm::Sha256).toHex();

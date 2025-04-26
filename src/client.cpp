@@ -79,10 +79,10 @@ void Client::read() {
    // СИГНАЛЫ ГЛАВНОГО ОКНА КЛИЕНТА
    if (data_to_qstring.split("|")[0] == "answer") { // если текущий ответ от сервера содержит статус о решении уравнения
       QString answer = data_to_qstring.split("|")[1]; // вытаскиваем из ответа от сервера ответ
-      if (answer != "error")
-         emit this->equation_ok(QString(answer)); // отправляем сигнал о решении уравнения.
+      if (answer != "error" and answer != "infinity_solutions" and answer != "no_solution")
+         emit this->equation_ok(answer); // отправляем сигнал о решении уравнения.
       else
-         emit this->equation_fail(); // отправляем сигнал об ошибке при решении уравнения.
+         emit this->equation_fail(answer); // отправляем сигнал об ошибке при решении уравнения.
    }
    qDebug() << QString("%1 Server send: %2").arg(clients_func::get_client_time()).arg(data_to_qstring.simplified());
 }
@@ -90,7 +90,7 @@ void Client::read() {
 bool Client::write(QString text) {
    QByteArray data = text.toUtf8();
    if (this->socket->state() != QAbstractSocket::ConnectedState) {
-      QMessageBox::information(nullptr, "Ошибка", "Нет подключения к серверу, попробуйте перезапустить приложение");
+      clients_func::create_messagebox("Ошибка", "Нет подключения к серверу, попробуйте перезапустить приложение");
       return false;
    }
    else {

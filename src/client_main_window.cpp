@@ -21,11 +21,9 @@ client_main_window::client_main_window(Client* client, QWidget *parent) :
    ui->comboBox->setToolTip("Выберите вид уравнения."); // устанавливаем подсказку на combo box
    this->setAttribute(Qt::WA_DeleteOnClose); // удаляем окно при нажатии на значок закрытия.
    clients_func::equation(ui->Layout_quadratic, action::HIDE); // по умолчанию прячем квадратное уравнение.
-   //this->line_edit_set_validator(); // устанавливаем мин и макс.значения для line editов
-
    connect(this->client, &Client::equation_ok, this, &client_main_window::slot_equation_ok); // connect об успешном решении уравнения
    connect(this->client, &Client::equation_fail, this, &client_main_window::slot_equation_fail); // connect об отсутствии корней в уравнении
-
+   ui->label_answer_x->hide(); // сначала прячем текст ответа на уравнение.
    this->show(); // показыаем текущее окно
 }
 
@@ -53,6 +51,7 @@ void client_main_window::on_comboBox_activated(int index)
       clients_func::equation(ui->Layout_quadratic, action::SHOW); // показываем квадратное уравнение
       clients_func::equation(ui->layout_linear, action::HIDE); // прячем линейное уравнение
    }
+   ui->label_answer_x->hide(); // прячем надпись ответа при переключении режимов
 }
 
 
@@ -97,25 +96,24 @@ void client_main_window::on_pushButton_solve_equation_clicked() // метод о
 void client_main_window::slot_equation_ok(QString answer) // Слот об успешном решении линейного уравнения
 {
    QStringList answers = answer.split("$"); // вытаскиваем из ответа сервера решения уравнения
-   QString text_for_notification = QString("Ответ: "); // текст для уведомления
+   QString text_for_notification = QString("Ответ: "); // текст для ответа
    for (int i = 0; i < answers.size(); i++) {
       text_for_notification += QString("%1 ").arg(answers[i]);
-   }
-   new notification("Ответ", text_for_notification); // создаём уведомление
+   }// устанавливаем ответ уравнения
+   this->ui->label_answer_x->setText(text_for_notification); // устанавливаем ответ уравнения в QLabel
+   this->ui->label_answer_x->resize(ui->label_answer_x->sizeHint()); // устанавливаем рекомендуемый размер QLabel
+   if (this->ui->label_answer_x->isHidden())
+      this->ui->label_answer_x->show();
 }
 
-void client_main_window::slot_equation_fail()
+void client_main_window::slot_equation_fail(QString& fail)
 {
-   QString text_for_notification = QString("Ошибка. Корней нет!"); // текст для уведомления
-   new notification("Ответ", text_for_notification); // создаём уведомление.
+   QString text_for_answer = QString("Ошибка: %1").arg(fail); // текст для ответа
+   this->ui->label_answer_x->setText(text_for_answer); // устанавливаем ответ уравнения в QLabel
+   this->ui->label_answer_x->resize(ui->label_answer_x->sizeHint()); // устанавливаем рекомендуемый размер QLabel
+   if (this->ui->label_answer_x->isHidden())
+      this->ui->label_answer_x->show();
 }
 
-// void client_main_window::line_edit_set_validator() {
-//    ui->lineEdit_a_linear->setValidator(new QIntValidator(1, 100000,this)); // устанавливаем мин и макс.значения
-//    ui->lineEdit_b_linear->setValidator(new QIntValidator(1, 100000, this)); // устанавливаем мин и макс.значения
-//    ui->lineEdit_a_quadratic->setValidator(new QIntValidator(1, 100000, this)); // устанавливаем мин и макс. значения
-//    ui->lineEdit_b_quadratic->setValidator(new QIntValidator(1, 100000, this)); // устанавливаем мин и макс.значения
-//    ui->lineEdit_c_quadratic->setValidator(new QIntValidator(1, 100000,this)); // устанавливаем мин и макс.значения
-// }
 
 

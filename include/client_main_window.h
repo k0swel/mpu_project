@@ -28,13 +28,11 @@ private slots:
    void on_pushButton_solve_equation_clicked(); // кнопка отправки уравнения на сервер.
 
    void slot_equation_ok(QString answer); // слот при успешном решении уравнения.
-   void slot_equation_fail(); // слот при ошибке при решении линейного уравнения.
+   void slot_equation_fail(QString& fail); // слот при ошибке при решении линейного уравнения.
 
 private:
    Ui::client_main_window *ui;
    Client* client = nullptr; // класс клиента
-   void create_notification(QString title, QString text);
-   void line_edit_set_validator(); // устанавливаем минимальные и максимальные значения в lineedit
 };
 
 #endif // CLIENT_MAIN_WINDOW_H

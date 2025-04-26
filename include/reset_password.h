@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "client.h"
 #include <QCloseEvent>
-#include "notification.h"
+#include <QMessageBox>
 #include <QThread>
 
 
@@ -40,7 +40,6 @@ private:
    Ui::reset_password *ui;
    Client* client = nullptr;
    int generate_code; // переменная хранит сгенерированный код подтверждения.
-   void create_notification(QString title, QString text);
 };
 
 #endif // RESET_PASSWORD_H

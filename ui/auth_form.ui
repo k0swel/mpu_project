@@ -269,7 +269,10 @@ QPushButton#pushButton_to_reg::hover {
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(50, 53, 60);</string>
+    <string notr="true">QLineEdit#lineEdit_login {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_password">
@@ -325,7 +328,10 @@ QPushButton#pushButton_to_reg::hover {
     <item>
      <widget class="QLineEdit" name="lineEdit_password">
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(50, 53, 60);</string>
+       <string notr="true">QLineEdit#lineEdit_password {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
       </property>
       <property name="echoMode">
        <enum>QLineEdit::EchoMode::Password</enum>
@@ -380,7 +386,7 @@ QPushButton::hover {
    <property name="geometry">
     <rect>
      <x>260</x>
-     <y>190</y>
+     <y>180</y>
      <width>121</width>
      <height>20</height>
     </rect>
@@ -388,12 +394,12 @@ QPushButton::hover {
    <property name="styleSheet">
     <string notr="true">QCheckBox#checkBox_remamber_me {
 	color: white;
-	background-color: rgb(168, 168, 168);
+	background-color: rgb(33, 35, 40);
 	font-size: 12px;
 }
 
 QCheckBox#checkBox_remamber_me::hover {
-	border: 3px solid red;
+	border: 1px solid red;
 }</string>
    </property>
    <property name="text">

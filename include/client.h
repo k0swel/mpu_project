@@ -47,8 +47,8 @@ signals:
    void reset_error();
 
    // СИГНАЛЫ ДЛЯ ГЛАВНОГО ОКНА
-   void equation_ok(QString); // корректное решение уравнения.
-   void equation_fail(); // отсутствует решение уравнения.
+   void equation_ok(QString&); // корректное решение уравнения.
+   void equation_fail(QString&); // отсутствует решение уравнения.
 };
 
 #endif // CLIENT_H

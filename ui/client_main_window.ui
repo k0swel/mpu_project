@@ -60,6 +60,10 @@ background-color: rgb(84, 84, 84);
 QPushButton#pushButton::hover {
 	border: 2px solid rgb(170, 0, 0);
 }
+
+QPushButton#pushButton QToolTip {
+	color: white;
+}
 </string>
    </property>
    <property name="text">
@@ -91,33 +95,27 @@ QPushButton#pushButton::hover {
     <enum>Qt::LayoutDirection::LeftToRight</enum>
    </property>
    <property name="styleSheet">
-    <string notr="true">QComboBox {
+    <string notr="true">QComboBox#comboBox {
 background-color: rgb(84, 84, 84);
-color: rgb(237, 237, 237);
+color: rgb(224, 225, 230);
+}
+
+QComboBox#comboBox QListView {
+	color:  rgb(224, 225, 230);
+	background-color: rgb(84, 84, 84);
+}
+
+QComboBox#comboBox QListView::item:hover {
+     border: 1px solid red;
+ }
+
+QComboBox#comboBox QToolTip {
+	color: rgb(224, 225, 230);
 }
 
 QComboBox::down-arrow {
 color: rgb(237, 237, 237);
-}
-
-QListView::item:selected {
-      border: 2px solid rgb(255, 0, 0);
-  }
-
-  QListView::item:selected:!active {
-      background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                  stop: 0 #ABAFE5, stop: 1 #8588B2);
-  }
-
-  QListView::item:selected:active {
-      background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                  stop: 0 #6a6ea9, stop: 1 #888dd9);
-  }
-
-  QListView::item:hover {
-      background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                  stop: 0 #FAFBFE, stop: 1 #DCDEF1);
-  }</string>
+}</string>
    </property>
    <property name="frame">
     <bool>true</bool>
@@ -136,9 +134,9 @@ QListView::item:selected {
   <widget class="QWidget" name="horizontalLayoutWidget_3">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>80</y>
-     <width>311</width>
+     <x>10</x>
+     <y>70</y>
+     <width>341</width>
      <height>28</height>
     </rect>
    </property>
@@ -147,6 +145,29 @@ QListView::item:selected {
      <layout class="QHBoxLayout" name="Layout_quadratic">
       <item>
        <widget class="QComboBox" name="comboBox_sign2_quardratic">
+        <property name="styleSheet">
+         <string notr="true">QComboBox#comboBox_sign2_quardratic {
+background-color: rgb(84, 84, 84);
+color: rgb(224, 225, 230);
+}
+
+QComboBox#comboBox_sign2_quardratic QListView {
+	color:  rgb(224, 225, 230);
+	background-color: rgb(84, 84, 84);
+}
+
+QComboBox#comboBox_sign2_quardratic QListView::item:hover {
+     border: 1px solid red;
+ }
+
+QComboBox#comboBox_sign2_quardratic QToolTip {
+	color: rgb(224, 225, 230);
+}
+
+QComboBox:#comboBox_sign2_quardratic:down-arrow {
+color: rgb(237, 237, 237);
+}</string>
+        </property>
         <item>
          <property name="text">
           <string>+</string>
@@ -165,7 +186,10 @@ QListView::item:selected {
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(50, 53, 60);</string>
+         <string notr="true">QLineEdit#lineEdit_a_quadratic {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -184,6 +208,29 @@ QListView::item:selected {
       </item>
       <item>
        <widget class="QComboBox" name="comboBox_sign2_quadratic_2">
+        <property name="styleSheet">
+         <string notr="true">QComboBox#comboBox_sign2_quadratic_2 {
+background-color: rgb(84, 84, 84);
+color: rgb(224, 225, 230);
+}
+
+QComboBox#comboBox_sign2_quadratic_2 QListView {
+	color:  rgb(224, 225, 230);
+	background-color: rgb(84, 84, 84);
+}
+
+QComboBox#comboBox_sign2_quadratic_2 QListView::item:hover {
+     border: 1px solid red;
+ }
+
+QComboBox#comboBox_sign2_quadratic_2 QToolTip {
+	color: rgb(224, 225, 230);
+}
+
+QComboBox:#comboBox_sign2_quadratic_2:down-arrow {
+color: rgb(237, 237, 237);
+}</string>
+        </property>
         <item>
          <property name="text">
           <string>+</string>
@@ -199,7 +246,10 @@ QListView::item:selected {
       <item>
        <widget class="QLineEdit" name="lineEdit_b_quadratic">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(50, 53, 60);</string>
+         <string notr="true">QLineEdit#lineEdit_b_quadratic {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -218,6 +268,29 @@ QListView::item:selected {
       </item>
       <item>
        <widget class="QComboBox" name="comboBox_sign2_quadratic_3">
+        <property name="styleSheet">
+         <string notr="true">QComboBox#comboBox_sign2_quadratic_3 {
+background-color: rgb(84, 84, 84);
+color: rgb(224, 225, 230);
+}
+
+QComboBox#comboBox_sign2_quadratic_3 QListView {
+	color:  rgb(224, 225, 230);
+	background-color: rgb(84, 84, 84);
+}
+
+QComboBox#comboBox_sign2_quadratic_3 QListView::item:hover {
+     border: 1px solid red;
+ }
+
+QComboBox#comboBox_sign2_quadratic_3 QToolTip {
+	color: rgb(224, 225, 230);
+}
+
+QComboBox:#comboBox_sign2_quadratic_3:down-arrow {
+color: rgb(237, 237, 237);
+}</string>
+        </property>
         <item>
          <property name="text">
           <string>+</string>
@@ -233,7 +306,10 @@ QListView::item:selected {
       <item>
        <widget class="QLineEdit" name="lineEdit_c_quadratic">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(50, 53, 60);</string>
+         <string notr="true">QLineEdit#lineEdit_c_quadratic {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -266,6 +342,29 @@ QListView::item:selected {
      <layout class="QHBoxLayout" name="layout_linear">
       <item>
        <widget class="QComboBox" name="comboBox_sign_linear">
+        <property name="styleSheet">
+         <string notr="true">QComboBox#comboBox_sign_linear {
+background-color: rgb(84, 84, 84);
+color: rgb(224, 225, 230);
+}
+
+QComboBox#comboBox_sign_linear QListView {
+	color:  rgb(224, 225, 230);
+	background-color: rgb(84, 84, 84);
+}
+
+QComboBox#comboBox_sign_linear QListView::item:hover {
+     border: 1px solid red;
+ }
+
+QComboBox#comboBox_sign_linear QToolTip {
+	color: rgb(224, 225, 230);
+}
+
+QComboBox:#comboBox_sign_linear::down-arrow {
+color: rgb(237, 237, 237);
+}</string>
+        </property>
         <item>
          <property name="text">
           <string>+</string>
@@ -281,7 +380,10 @@ QListView::item:selected {
       <item>
        <widget class="QLineEdit" name="lineEdit_a_linear">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(50, 53, 60);</string>
+         <string notr="true">QLineEdit#lineEdit_a_linear {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -290,6 +392,9 @@ QListView::item:selected {
       </item>
       <item>
        <widget class="QLabel" name="label_5">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(224, 225, 230);</string>
+        </property>
         <property name="text">
          <string>x</string>
         </property>
@@ -297,6 +402,29 @@ QListView::item:selected {
       </item>
       <item>
        <widget class="QComboBox" name="comboBox_sign2_linear">
+        <property name="styleSheet">
+         <string notr="true">QComboBox#comboBox_sign2_linear {
+background-color: rgb(84, 84, 84);
+color: rgb(224, 225, 230);
+}
+
+QComboBox#comboBox_sign2_linear QListView {
+	color:  rgb(224, 225, 230);
+	background-color: rgb(84, 84, 84);
+}
+
+QComboBox#comboBox_sign2_linear QListView::item:hover {
+     border: 1px solid red;
+ }
+
+QComboBox#comboBox_sign2_linear QToolTip {
+	color: rgb(224, 225, 230);
+}
+
+QComboBox:#comboBox_sign2_linear::down-arrow {
+color: rgb(237, 237, 237);
+}</string>
+        </property>
         <item>
          <property name="text">
           <string>+</string>
@@ -312,7 +440,10 @@ QListView::item:selected {
       <item>
        <widget class="QLineEdit" name="lineEdit_b_linear">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(50, 53, 60);</string>
+         <string notr="true">QLineEdit#lineEdit_b_linear {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -357,6 +488,24 @@ QPushButton#pushButton_solve_equation::hover {
    </property>
    <property name="text">
     <string>Решить уравнение</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_answer_x">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>160</y>
+     <width>49</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel#label_answer_x {
+color: rgb(224, 225, 230);
+}</string>
+   </property>
+   <property name="text">
+    <string>&lt;Some text&gt;</string>
    </property>
   </widget>
   <action name="action_2">

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>408</width>
-    <height>91</height>
+    <height>105</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,45 +16,66 @@
   <property name="styleSheet">
    <string notr="true">background-color: rgb(33, 35, 40);</string>
   </property>
-  <widget class="QProgressBar" name="progressBar">
+  <widget class="QPushButton" name="pushButton_close">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>50</y>
-     <width>301</width>
-     <height>16</height>
+     <x>370</x>
+     <y>10</y>
+     <width>21</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(224, 225, 230);</string>
+    <string notr="true">QPushButton#pushButton_close {
+background-color: white;
+}</string>
    </property>
-   <property name="value">
-    <number>24</number>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::ApplicationExit"/>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>10</y>
-     <width>381</width>
-     <height>41</height>
+     <y>30</y>
+     <width>361</width>
+     <height>61</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(224, 225, 230);</string>
-   </property>
-   <property name="text">
-    <string>Ошибка при регистрации. Данная учётная запись уже зарегистрирована</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignmentFlag::AlignCenter</set>
-   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(224, 225, 230);</string>
+      </property>
+      <property name="text">
+       <string>Ошибка при регистрации. Данная учётная запись уже зарегистрирована</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(224, 225, 230);</string>
+      </property>
+      <property name="value">
+       <number>24</number>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

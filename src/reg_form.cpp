@@ -48,18 +48,18 @@ void Widget::on_pushButton_reg_clicked()
    bool is_empty_name = ui->lineEdit_name->text().isEmpty(); // проверяем пустой ли виджет ввода имени
    bool is_empty_last_name = ui->lineEdit_lastname->text().isEmpty(); // проверяем пустой ли виджет ввода фамилии
    if (!current_login) // если мы ввели некорректный логин пароль или email
-      QMessageBox::information(this, "Предупреждение об ошибке", "Вы ввели логин в некорректном формате.\n\nЛогин должен содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | )");
+      clients_func::create_messagebox("Предупреждение об ошибке", "Вы ввели логин в некорректном формате.\n\nЛогин должен содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | )");
 
    if (!current_password)
-      QMessageBox::information(this, "Предупреждение об ошибке", "Вы ввели пароль в некорректном формате.\n\nПароль должен содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | ) и длина не меньше 5 символов.");
+      clients_func::create_messagebox("Предупреждение об ошибке", "Вы ввели пароль в некорректном формате.\n\nПароль должен содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | ) и длина не меньше 5 символов.");
 
    if (!current_email)
-      QMessageBox::information(this, "Предупреждение об ошибке", "Вы ввели почту в некорректном формате.\n\n Почта должна содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | ).\n\nЛокальная часть почты не должна начинаться с \".\" и доменная часть почты не должна иметь более двух точек.");
+      clients_func::create_messagebox("Предупреждение об ошибке", "Вы ввели почту в некорректном формате.\n\n Почта должна содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | ).\n\nЛокальная часть почты не должна начинаться с \".\" и доменная часть почты не должна иметь более двух точек.");
 
    if (is_empty_name)
-       QMessageBox::information(this, "Предупреждение об ошибке", "Введите своё имя!");
+       clients_func::create_messagebox("Предупреждение об ошибке", "Введите своё имя!");
    if (is_empty_last_name)
-       QMessageBox::information(this, "Предупреждение об ошибке", "Введите свою фамилию");
+       clients_func::create_messagebox("Предупреждение об ошибке", "Введите свою фамилию");
    if (current_login and current_password and current_email and !is_empty_name and !is_empty_last_name) {
       QString final_data = QString("reg|%1$%2$%3$%4$%5$%6").arg(login).arg(hash_password).arg(email).arg(ui->lineEdit_lastname->text()).arg(ui->lineEdit_name->text()).arg(ui->lineEdit_middlename->text());
       client->write(final_data.toUtf8()); // отправляем данные серверу.

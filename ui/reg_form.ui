@@ -348,7 +348,10 @@ QToolButton::hover {
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(50, 53, 60);</string>
+       <string notr="true">QLineEdit#lineEdit_login {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
       </property>
      </widget>
     </item>
@@ -380,7 +383,10 @@ QToolButton::hover {
     <item>
      <widget class="QLineEdit" name="lineEdit_password">
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(50, 53, 60);</string>
+       <string notr="true">QLineEdit#lineEdit_password {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
       </property>
       <property name="echoMode">
        <enum>QLineEdit::EchoMode::Password</enum>
@@ -448,7 +454,10 @@ QPushButton::hover {
     <item>
      <widget class="QLineEdit" name="lineEdit_email">
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(50, 53, 60);</string>
+       <string notr="true">QLineEdit#lineEdit_email {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
       </property>
      </widget>
     </item>
@@ -493,7 +502,10 @@ QPushButton::hover {
     <item>
      <widget class="QLineEdit" name="lineEdit_lastname">
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(50, 53, 60);</string>
+       <string notr="true">QLineEdit#lineEdit_lastname {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
       </property>
      </widget>
     </item>
@@ -554,7 +566,10 @@ QPushButton::hover {
     <item>
      <widget class="QLineEdit" name="lineEdit_name">
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(50, 53, 60);</string>
+       <string notr="true">QLineEdit#lineEdit_name {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
       </property>
      </widget>
     </item>
@@ -615,7 +630,10 @@ QPushButton::hover {
     <item>
      <widget class="QLineEdit" name="lineEdit_middlename">
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(50, 53, 60);</string>
+       <string notr="true">QLineEdit#lineEdit_middlename {
+background-color: rgb(50, 53, 60);
+color: white;
+}</string>
       </property>
      </widget>
     </item>

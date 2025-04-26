@@ -2,6 +2,7 @@
 #define CLIENTS_FUNC_H
 #include <QString>
 #include <QDate>
+#include <QMessageBox>
 #include <QHBoxLayout>
 
 enum class action {
@@ -24,7 +25,7 @@ public:
    static QString random_password();
    static int random_code();
    static void equation(QHBoxLayout* uravnenie, action effect);
-   static bool correct_digitals(QHBoxLayout* uravnenie);
+   static void create_messagebox(QString title, QString message);
    static QString create_hash(QString text);
 private:
    static bool english_symbols(QString text);

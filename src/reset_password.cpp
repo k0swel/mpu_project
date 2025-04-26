@@ -78,13 +78,13 @@ void reset_password::on_pushButton_code_clicked() // если нажата кн�
       QString new_password = clients_func::random_password(); // генерируем новый пароль для клиента
       QString hash_new_password = clients_func::create_hash(new_password); // хэшируем новый пароль
       this->client->write(QString("new_password|%1$%2").arg(ui->lineEdit_login->text()).arg(hash_new_password));
-      QMessageBox::information(this, QString("Обновление пароля"), QString("Вот ваш новый сгенерированный пароль: %1").arg(new_password));
+      clients_func::create_messagebox("Обновление пароля", QString("Ваш новый пароль: %1").arg(new_password));
       this->hide(); // прячем текущее окно
       new auth_form(this->client); // создаём окно авторизации.
       this->close(); // закрываем текущее окно
    }
    else {
-      QMessageBox::information(this, "Ошибка", "Вы ввели неверный код. Попробуйте ещё раз");
+      clients_func::create_messagebox(QString("Ошибка"), QString("Вы ввели некорректный код. Попробуйте ещё раз"));
    }
 }
 

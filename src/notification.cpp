@@ -8,11 +8,12 @@ notification::notification(QString title, QString text, QWidget *parent) :
    text(text)
 {
    ui->setupUi(this);
-   this->setWindowFlags(Qt::Tool);
+   this->setWindowFlags(Qt::FramelessWindowHint);
    this->setWindowTitle(title); // устанавливаем заголовок окна
-   this->move(0,0); // передвигаем окно в начало рабочего стола.
+   this->move(10,10); // передвигаем окно в начало рабочего стола.
    ui->label->setText(text); // устанавливаем выбранный текст в уведомление
    ui->label->setWordWrap(true); // делаем перенос qlabel на новую строку при необходимости.
+   ui->label->resize(ui->label->sizeHint()); // устанавливаем рекомендованный размер для label
    this->show(); // отображаем уведомление
    this->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose); // уничтожаем виджет при его закрытии.
    update_progress_bar(); // функция обновления прогресс бара.
@@ -47,5 +48,27 @@ void notification::close_window()
       this->setWindowOpacity(start_opacity);
    }
    this->close(); // закрываем окно
+}
+
+void notification::mousePressEvent(QMouseEvent *event)
+{
+   if (event->buttons() & Qt::LeftButton) {
+      this->last_press_position = event->pos(); // записываем координату при нажатии на мышь
+   }
+   event->accept(); // продолжаем событие
+}
+
+void notification::mouseMoveEvent(QMouseEvent *event)
+{
+   if (event->buttons() & Qt::LeftButton) {
+      this->move(std::move(event->globalPosition().toPoint() - last_press_position)); // передвижаем окно
+   }
+   event->accept(); // продолжаем событие
+}
+
+
+void notification::on_pushButton_close_clicked() // закрываем окно при нажатии на клавишу
+{
+   this->close();
 }
 
