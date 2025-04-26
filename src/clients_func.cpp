@@ -121,10 +121,10 @@ QString clients_func::random_password() {
     QString random_pswd;
     int random_count = object.bounded(0, random_length / 5 + 1);
     for (int i = 0; i < random_count; i++ ) {
-      random_pswd.append(upper_symbols[object.bounded(0, upper_symbols.length())]);
-      random_pswd.append(lower_symbols[object.bounded(0, lower_symbols.length())]);
-      random_pswd.append(digits[object.bounded(0, digits.length())]);
-      random_pswd.append(special_symbols[object.bounded(0, special_symbols.length())]);
+      random_pswd.append(upper_symbols[object.bounded(0, upper_symbols.length() - 1)]);
+      random_pswd.append(lower_symbols[object.bounded(0, lower_symbols.length() - 1)]);
+      random_pswd.append(digits[object.bounded(0, digits.length() - 1)]);
+      random_pswd.append(special_symbols[object.bounded(0, special_symbols.length() - 1)]);
     }
 
     // Дополняем пароль случайными символами из всего набора
