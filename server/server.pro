@@ -19,7 +19,7 @@ SOURCES += \
         $$PWD/src/main.cpp \
         $$PWD/src/mytcpserver.cpp
 
-INCLUDEPATH += "PWD$$/libraries/SMTPEmail/include" "PWD$$/include"
+INCLUDEPATH += "PWD$$/../libraries/SMTPEmail/include" "PWD$$/include"
 LIBS += -L"$$PWD/libraries/SMTPEmail/build" -l"libSmtpMime"
 
 HEADERS += \

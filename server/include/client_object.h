@@ -61,6 +61,7 @@ private:
    QThread* thread_for_client = nullptr;
    static void hello_message(); // функция отправки сообщения в консоль при каждом новом подключении
    static void bye_message(); // функция отправки сообщения в консоль при каждом отключении
+   void send_message(QString message); // отправляем сообщение клиенту.
 };
 
 #endif // CLIENT_OBJECT_H

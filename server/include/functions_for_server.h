@@ -12,6 +12,7 @@ private:
    functions_for_server(); // прячем конструктор
    functions_for_server(const functions_for_server&); // прячем конструктор копирования.
    static functions_for_server* p_instance; // переменная для хранения единственного экземпляра класса
+   bool isZero(double number);
 
 public:
    static functions_for_server* get_instance();
