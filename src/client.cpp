@@ -12,7 +12,7 @@ QTcpSocket* Client::socket = nullptr;
 
 SingletonDestroyer Client::el = SingletonDestroyer();
 
-int Client::port = 33333;
+int Client::port = 8080;
 
 void SingletonDestroyer::initialize(Client* element,QTcpSocket* socket) {
    SingletonDestroyer::client_connection = element;
@@ -33,7 +33,7 @@ Client::Client()
    Client::socket = new QTcpSocket();
    connect(Client::socket, &QTcpSocket::connected, this, &Client::connect_to_server); // при подключении к серверу вызываем функцию connect_to_server
    connect(Client::socket, &QTcpSocket::disconnected, this, &Client::disconnect_from_server); // при отключении от сервера вызываем функцию disconnect_from_server
-   Client::socket->connectToHost("127.0.0.1", 33333);
+   Client::socket->connectToHost("127.0.0.1", port);
 }
 
 Client::~Client() {
