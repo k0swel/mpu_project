@@ -1,0 +1,6 @@
+./libraries/SmtpClient/.qtc_clangd
+./libraries/SmtpClient/.qmake.stash
+./libraries/SmtpClient/Makefile
+./libraries/SmtpClient/README.md
+./server/.qmake.stash
+./server/Makefile
