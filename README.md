@@ -15,3 +15,6 @@
 * [Солнцева Анастасия](https://github.com/Nastyasolnyyt) (Docker, Doxigen, UseCase и диаграммы классов для клиента и сервера).
 * [Горлов Олег](https://github.com/OlegacyGold) (Клиент, оконный интерфейс клиента).
 * [Гуссер Мария](https://github.com/Mariguss) (Реализация базы данных на сервере, полностью работоспособный сервер).
+
+## Doxygen
+По этой [**Ссылке**](https://nastyasolnyyt.github.io/doxygen/md_README.html) вы можете ознакомиться с документацией исходного кода.
