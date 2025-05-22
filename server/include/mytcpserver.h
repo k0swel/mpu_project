@@ -18,25 +18,26 @@ public:
    void initialize(MyTcpServer* server, functions_for_server* functions);
    ~MyTcpServerDestroyer();
 private:
-   MyTcpServer* server;
-   functions_for_server* functions;
+   MyTcpServer* server; // объект сервера
+   functions_for_server* functions; // главные функции сервера
 };
 
 class MyTcpServer : public QObject
 {
     Q_OBJECT
 public:
-   static MyTcpServer* create_instance();
+   static MyTcpServer* create_instance(); // статический метод создания объекта сервера
     ~MyTcpServer();
 
 private slots:
-    void slotNewConnection();
+    void slotNewConnection(); // слот нового подключения к серверу
 private:
-    static MyTcpServer* p_instance;
-    explicit MyTcpServer(QObject *parent = nullptr);
+    static MyTcpServer* p_instance; // сервер синглтон
+    explicit MyTcpServer(QObject *parent = nullptr); // конструктор
     MyTcpServer(const MyTcpServer&) = delete;
     QTcpServer * mTcpServer;
     QTcpSocket* temp;
+    int get_port(QString environment_variable); // Порт из переменной окружения
     //DBSingleton *db;
     //int server_status;
 };

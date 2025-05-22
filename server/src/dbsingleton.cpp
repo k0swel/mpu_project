@@ -17,23 +17,23 @@ DBSingleton::DBSingleton() {
     this->servers_functions = functions_for_server::get_instance(); // инициализируем объект функционала сервера.
     if (!db.open()) {
         qDebug() << "Error: Unable to connect to database.";
+        exit(1); // завершаем программу, т.к ошибка при открытии базы данных
     } else {
         qDebug() << "Database connected successfully.";
-        qDebug() << "Tables: " << db.tables();
-        QStringList drivers = QSqlDatabase::drivers();
+        qDebug() << "Tables: " << db.tables(); // печатаем список доступных таблиц
     }
 }
 bool DBSingleton::executeQuery(const QString& queryStr) {
     if (!db.open()) {
         qDebug() << "Database is not open.";
-        return false;
+        exit(1); // ошибка при открытии базы данных
     }
     QSqlQuery query;
-    if (!query.exec(queryStr)) {
-        qDebug() << "Query execution error:" << query.lastError().text();
-        return false;
+    if (!query.exec(queryStr)) { // выполняем запрос
+        qDebug() << "Query execution error:" << query.lastError().text(); // ошибка при выполнении запроса
+        return false; // если запрос выполнился с ошибкой
     }
-    return true;
+    return true; // если запрос успешен.
 }
 
 
@@ -41,9 +41,11 @@ bool DBSingleton::executeQuery(const QString& queryStr) {
 void DBSingleton::slot_register_new_account(QString login, QString password, QString email, QString last_name, QString first_name, QString middle_name)
 {
     QSqlQuery query;
+    // пытаемся создать исходную таблицу, где хранится информация об аккаунтах
     if (query.exec("CREATE TABLE students ( id INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT, hash TEXT, email TEXT, name TEXT, surname TEXT, middle_name TEXT )")) {
         qDebug().noquote() << "Запрос на создание таблицы выполнен успешно!";
     }
+    // если таблица уже существует
     else {
         qDebug().noquote() << "Ошибка при выполнении запроса.";
         qDebug().noquote() << QString("Запрос: %1 | Ошибка: %2").arg(query.lastQuery()).arg(query.lastError().text());
@@ -57,18 +59,22 @@ void DBSingleton::slot_register_new_account(QString login, QString password, QSt
         return;
     }
 
+    // запрос для вставки нового аккаунта в таблицу
     QString insertQuery = QString("INSERT INTO students (login, hash, email, name, surname, middle_name) VALUES (:login, :password, :email, :name, :surname, :middle_name)");
-    query.prepare(insertQuery);
-    query.bindValue(":login", QVariant(login));
-    query.bindValue(":password", QVariant(password));
-    query.bindValue(":email", QVariant(email));
-    query.bindValue(":name", QVariant(first_name));
-    query.bindValue(":surname", QVariant(last_name));
-    query.bindValue(":middle_name", QVariant(middle_name));
+    query.prepare(insertQuery); // подготавливаем запрос к будущей отправке
+    query.bindValue(":login", QVariant(login)); // логин аккаунта
+    query.bindValue(":password", QVariant(password)); // пароль аккаунта
+    query.bindValue(":email", QVariant(email)); // email аккаунта
+    query.bindValue(":name", QVariant(first_name)); // имя аккаунта
+    query.bindValue(":surname", QVariant(last_name)); // фамилия аккаунта
+    query.bindValue(":middle_name", QVariant(middle_name)); // отчество аккаунта
+
+    // если запрос выполнен успешно
     if (query.exec()) {
         qDebug() << "Вставка записи успешно!";
         emit this->register_ok(); // Успешная регистрация
     }
+    // если какая-то ошибка при вставке аккаунта
     else {
         qDebug() << "Ошибка при вставке записи!";
         qDebug() << query.lastError().text();
@@ -93,11 +99,14 @@ void DBSingleton::slot_send_code(QString login, QString code) {
     // Проверка на существование пользователя
     QString checkQuery = QString("SELECT email FROM students WHERE login = '%1'").arg(login);
     QVariantList result = DBSingleton::getInstance()->fetchData(checkQuery);
+    // если пользователь найден
     if (!result.isEmpty()) {
         // Реализация функции отправки кода на почту
        QString email = result[0].toString(); // email-адрес
        this->servers_functions->send_email_to_client(email, code);
-    } else {
+    }
+    // если пользователь не найден
+    else {
         emit this->reset_error(); // Логин не найден
     }
 }
@@ -133,7 +142,7 @@ QVariantList DBSingleton::fetchData(const QString& queryStr) {
     if (query.exec(queryStr)) {
         while (query.next()) {
             QVariantList row; // Создаем список для одной строки
-            for (int i = 0; i <= 6; ++i) { // Предполагаем, что у нас 6 столбцов
+            for (int i = 0; i <= query.record().count(); ++i) { // Предполагаем, что у нас 6 столбцов
                 row.append(query.value(i)); // Добавляем значение каждого столбца в строку
             }
             results.append(row); // Добавляем строку в общий результат

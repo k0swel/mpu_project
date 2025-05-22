@@ -1,9 +1,13 @@
-#include "../include/mytcpserver.h"
+#include "mytcpserver.h"
 #include <QDebug>
 #include <QCoreApplication>
 #include <QString>
 #include <QThread>
-#include "../include/client_object.h"
+#include "client_object.h"
+
+// ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ
+#include <QProcessEnvironment>
+// --
 
 MyTcpServer* MyTcpServer::p_instance = nullptr;
 MyTcpServerDestroyer MyTcpServerDestroyer::destroyer = MyTcpServerDestroyer();
@@ -39,7 +43,7 @@ MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent){ // включени
     connect(mTcpServer, &QTcpServer::newConnection,
             this, &MyTcpServer::slotNewConnection); // связь для нового клиента
 
-    if(!mTcpServer->listen(QHostAddress::Any, 33333)){ // прослушиваем порт 33333
+    if(!mTcpServer->listen(QHostAddress::Any, this->get_port("TMP_PORT"))){ // ищем порт в переменных окружения и прослушиваем его.
         qDebug() << QString("%1 server is not started!").arg(servers_functions->get_server_time());
     } else {
         //server_status=1;
@@ -63,4 +67,19 @@ void MyTcpServer::slotNewConnection(){ // слот, который активи�
         connect(client_object, &client::del_thread, new_thread_for_client, &QThread::quit); // когда клиент завершает работу потока, мы его останавливаем
         connect(new_thread_for_client, &QThread::finished, client_object, &QThread::deleteLater); // когда поток объявляет о завершении работы, мы уничтожаем поток
       new_thread_for_client->start(); // запускаем поток.
+}
+
+
+int MyTcpServer::get_port(QString environment_variable) {
+   QProcessEnvironment env_process = QProcessEnvironment::systemEnvironment();
+   if (env_process.contains(environment_variable)) {
+      int port = env_process.value(environment_variable).toInt(); // возвращаем порт
+      qInfo() << "Порт, который прослушивает сервер = " << port;
+      return port;
+   }
+   else {
+      qDebug() << "Такой переменной окружения не существует";
+      exit(2);
+   }
+
 }

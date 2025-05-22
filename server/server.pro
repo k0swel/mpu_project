@@ -19,15 +19,14 @@ SOURCES += \
         $$PWD/src/main.cpp \
         $$PWD/src/mytcpserver.cpp
 
-INCLUDEPATH += "PWD$$/../libraries/SMTPEmail/include" "PWD$$/include"
-LIBS += -L"$$PWD/libraries/SMTPEmail/build" -l"libSmtpMime"
+INCLUDEPATH += "$$PWD/libraries/SMTPEmail/include" "$$PWD/include"
+LIBS += "$$PWD/libraries/SMTPEmail/build/libSmtpMime.a"
 
 HEADERS += \
     $$PWD/include/client_object.h \
     $$PWD/include/dbsingleton.h \
     $$PWD/include/functions_for_server.h \
-    $$PWD/include/mytcpserver.h \
-    $$PWD/libraries/SMTPEmail/include/SmtpMime
+    $$PWD/include/mytcpserver.h
 
 OBJECTS_DIR = $$PWD/build/obj
 MOC_DIR = $$PWD/build/moc
