@@ -16,6 +16,8 @@ CONFIG += release
 
 DESTDIR = $$PWD/build
 
+RC_ICONS = .\resources\icons\main_icon.ico
+
 OBJECTS_DIR = ./build/obj
 UI_DIR = ./build/ui
 MOC_DIR = ./build/moc
