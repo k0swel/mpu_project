@@ -5,3 +5,5 @@ build/cache/*
 .qtc_clangd
 .qmake.stash
 Makefile
+client_resource.rc
+client.pro.user

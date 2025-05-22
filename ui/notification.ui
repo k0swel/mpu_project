@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>408</width>
+    <width>401</width>
     <height>105</height>
    </rect>
   </property>
@@ -28,13 +28,16 @@
    <property name="styleSheet">
     <string notr="true">QPushButton#pushButton_close {
 background-color: white;
+font-weight: bold;
+color: black;
+}
+
+QPushButton#pushButton_close:hover {
+	border: 2px solid red;
 }</string>
    </property>
    <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset theme="QIcon::ThemeIcon::ApplicationExit"/>
+    <string>X</string>
    </property>
   </widget>
   <widget class="QWidget" name="verticalLayoutWidget">
@@ -42,7 +45,7 @@ background-color: white;
     <rect>
      <x>20</x>
      <y>30</y>
-     <width>361</width>
+     <width>371</width>
      <height>61</height>
     </rect>
    </property>
