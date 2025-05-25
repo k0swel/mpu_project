@@ -45,7 +45,7 @@ void client::initialization() {
 
    // СБРОС ПАРОЛЯ
    connect(this, &client::signal_send_code_to_email, DBSingleton::getInstance(), &DBSingleton::slot_send_code); // CONNECT для отправки кода клиенту.
-   connect(DBSingleton::getInstance(), &DBSingleton::reset_error, this, &client::slot_reset_error); // CONNECT для отправки клиенту ошибки при сбросе пароля.
+   //connect(DBSingleton::getInstance(), &DBSingleton::reset_error, this, &client::slot_reset_error); // CONNECT для отправки клиенту ошибки при сбросе пароля.
    connect(this, &client::signal_set_new_password, DBSingleton::getInstance(), &DBSingleton::slot_new_password); // CONNECT для установки нового пароля клиенту.
 
    // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
@@ -56,66 +56,70 @@ void client::initialization() {
 
 void client::slot_read_from_client() {
    qDebug() << "Сработал " << Q_FUNC_INFO << " . Текущий поток - " << QThread::currentThreadId();
+   QByteArray data_byte_array;
    QString data;
-   while (client_socket->bytesAvailable()) { // читаем сообщение от клиента
-      data.push_back(client_socket->readAll());  // помещаем сообщение от клиента в data.
-   }
-   qInfo() << "Пришло сообщение: " << data;
-   QString action = data.split("|")[0]; // вытаскиваем из сообщения клиента действие
-   QString clients_data = data.split("|")[1]; // вытаскиваем данные из сообщения клиента
+   data_byte_array.push_back(client_socket->readAll());  // помещаем сообщение от клиента в data.
+   int end_symbol_in_message_pos;
+   while ((end_symbol_in_message_pos = data_byte_array.indexOf(end_symbols)) != -1) {
+      data = data_byte_array.left(end_symbol_in_message_pos);
+      data_byte_array = data_byte_array.mid(end_symbol_in_message_pos + end_symbols.size());
+      qInfo() << "Пришло сообщение: " << data;
+      QString action = data.split("|")[0]; // вытаскиваем из сообщения клиента действие
+      QString clients_data = data.split("|")[1]; // вытаскиваем данные из сообщения клиента
 
-   // РЕГИСТРАЦИЯ
-   if (action == "reg") {
-      QStringList clients_data_list = clients_data.split("$"); // получаем список из данных пользователя
-      QString login = clients_data_list[0]; // логин
-      QString password = clients_data_list[1]; // пароль
-      QString email = clients_data_list[2]; // почта
-      QString last_name = clients_data_list[3]; // фамилия
-      QString first_name = clients_data_list[4]; // имя
-      QString middle_name = clients_data_list[5]; // отчество
-      emit signal_register_new_account(login,password,email, last_name, first_name, middle_name, this); // посылаем сигнал на регистрацию аккаунта.
-   }
-
-
-   // АВТОРИЗАЦИЯ
-   if (action == "login") {
-      QString login = clients_data.split("$")[0]; // парсим логин
-      QString password = clients_data.split("$")[1]; // парсим пароль.
-      emit this->signal_auth(login, password, this); // отправляем сигнал авторизации в класс functions_for_server
-   }
-
-   // СБРОС ПАРОЛЯ
-   if (action == "reset") { // ОТПРАВКА КОДА НА ПОЧТУ КЛИЕНТА
-      QString email = clients_data.split("$")[0]; // вытаскиваем из данных клиента почту.
-      QString code = clients_data.split("$")[1]; // вытаскиваем из данных клиента код, который нужно отправить на почту
-      emit signal_send_code_to_email(email, code); // отправляем сигнал на отправку кода на почту
-   }
-   if (action == "new_password") {
-      QString login = clients_data.split("$")[0]; // вытаскиваем из данных клиента логин.
-      QString new_password = clients_data.split("$")[1]; // вытаскиваем из данных клиента новый пароль, который нужно установить на аккаунт
-      emit signal_set_new_password(login, new_password); // отправляем сигнал на установку нового пароля
-   }
-
-   // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
-   if (action == "equation") {
-      QString type_equation = data.split("|")[1]; // вытаскиваем из сообшения клиента тип уравнения
-      if (type_equation == QString("linear")) {
-         QStringList List_with_koef = data.split("|")[2].split("$");
-         QString a = List_with_koef[0]; // вытаскиваем коэффициент a
-         QString b = List_with_koef[1]; // вытаскиваем коэффициент b
-         emit this->signal_linear_equation(a,b, this); // вызываем сигнал решения линейного уравнения
+      // РЕГИСТРАЦИЯ
+      if (action == "reg") {
+         QStringList clients_data_list = clients_data.split("$"); // получаем список из данных пользователя
+         QString login = clients_data_list[0]; // логин
+         QString password = clients_data_list[1]; // пароль
+         QString email = clients_data_list[2]; // почта
+         QString last_name = clients_data_list[3]; // фамилия
+         QString first_name = clients_data_list[4]; // имя
+         QString middle_name = clients_data_list[5]; // отчество
+         emit signal_register_new_account(login,password,email, last_name, first_name, middle_name, this); // посылаем сигнал на регистрацию аккаунта.
       }
-      if (type_equation == "quadratic") {
-         qDebug() << "Test2";
-         QStringList List_with_koef = data.split("|")[2].split("$");
-         QString a = List_with_koef[0]; // вытаскиваем коэффициент a
-         QString b = List_with_koef[1]; // вытаскиваем коэффициент b
-         QString c = List_with_koef[2]; // вытаскиваем коэффициент c
-         emit this->signal_quadratic_equation(a,b,c, this); // вызываем сигнал решения линейного уравнения
-      }
-   }
 
-   qDebug() << QString("%1 Client ").arg(servers_functions->get_server_time()) << &client_socket << QString(" send message: %1").arg(QString(data)).simplified();
+
+      // АВТОРИЗАЦИЯ
+      if (action == "login") {
+         QString login = clients_data.split("$")[0]; // парсим логин
+         QString password = clients_data.split("$")[1]; // парсим пароль.
+         emit this->signal_auth(login, password, this); // отправляем сигнал авторизации в класс functions_for_server
+      }
+
+      // СБРОС ПАРОЛЯ
+      if (action == "reset") { // ОТПРАВКА КОДА НА ПОЧТУ КЛИЕНТА
+         QString email = clients_data.split("$")[0]; // вытаскиваем из данных клиента почту.
+         QString code = clients_data.split("$")[1]; // вытаскиваем из данных клиента код, который нужно отправить на почту
+         emit signal_send_code_to_email(email, code, this); // отправляем сигнал на отправку кода на почту
+      }
+      if (action == "new_password") {
+         QString login = clients_data.split("$")[0]; // вытаскиваем из данных клиента логин.
+         QString new_password = clients_data.split("$")[1]; // вытаскиваем из данных клиента новый пароль, который нужно установить на аккаунт
+         emit signal_set_new_password(login, new_password, this); // отправляем сигнал на установку нового пароля
+      }
+
+      // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
+      if (action == "equation") {
+         QString type_equation = data.split("|")[1]; // вытаскиваем из сообшения клиента тип уравнения
+         if (type_equation == QString("linear")) {
+            QStringList List_with_koef = data.split("|")[2].split("$");
+            QString a = List_with_koef[0]; // вытаскиваем коэффициент a
+            QString b = List_with_koef[1]; // вытаскиваем коэффициент b
+            emit this->signal_linear_equation(a,b, this); // вызываем сигнал решения линейного уравнения
+         }
+         if (type_equation == "quadratic") {
+            qDebug() << "Test2";
+            QStringList List_with_koef = data.split("|")[2].split("$");
+            QString a = List_with_koef[0]; // вытаскиваем коэффициент a
+            QString b = List_with_koef[1]; // вытаскиваем коэффициент b
+            QString c = List_with_koef[2]; // вытаскиваем коэффициент c
+            emit this->signal_quadratic_equation(a,b,c, this); // вызываем сигнал решения линейного уравнения
+         }
+      }
+
+      qDebug() << QString("%1 Client ").arg(servers_functions->get_server_time()) << &client_socket << QString(" send message: %1").arg(QString(data)).simplified();
+   }
 }
 
 void client::slot_close_connection() { // слот если клиент закрыл соединение с сервером.
@@ -151,6 +155,14 @@ void client::slot_reset_ok()
     this->send_message("reset|ok"); // отправляем клиенту сообщение о том, что сброс пароля прошел успешно
 }
 
+void client::slot_fail_send_email_to_client() {
+   this->send_message("reset|fail_send_code_to_email");
+}
+
+void client::slot_successfully_send_email_to_client() {
+   this->send_message("reset|succesfully_send_code_to_email");
+}
+
 void client::slot_equation_solution(QString answer) // слот для отправки решения уравнения
 {
    qDebug() << "Отправлено клиенту: " << answer;
@@ -180,6 +192,7 @@ void client::bye_message() { // функция отправки сообщени
 
 void client::send_message(QString message) // отправляем клиенту сообщение
 {
+   message = message + QString(";end;");
    qDebug() << "message = " << message;
    this->client_socket->write(message.toUtf8());
 }

@@ -55,7 +55,8 @@ void DBSingleton::slot_register_new_account(QString login, QString password, QSt
     QString checkQuery = QString("SELECT COUNT(*) FROM students WHERE login = '%1' OR email = '%2'").arg(login).arg(email);
     QVariantList result = DBSingleton::getInstance()->fetchData(checkQuery);
     if (!result.isEmpty() && result.first().toInt() > 0) {
-        emit this->register_error(); // Пользователь уже существует
+       QMetaObject::invokeMethod(client, "slot_register_error");
+       //emit this->register_error(); // Пользователь уже существует
         return;
     }
 
@@ -73,7 +74,7 @@ void DBSingleton::slot_register_new_account(QString login, QString password, QSt
     if (query.exec()) {
         qDebug() << "Вставка записи успешно!";
         QMetaObject::invokeMethod(client, "slot_register_ok");
-        emit this->register_ok(); // Успешная регистрация
+        //emit this->register_ok(); // Успешная регистрация
     }
     // если какая-то ошибка при вставке аккаунта
     else {
@@ -99,7 +100,7 @@ void DBSingleton::slot_auth(QString login, QString password, client* client) {
 }
 
 // СБРОС ПАРОЛЯ
-void DBSingleton::slot_send_code(QString login, QString code) {
+void DBSingleton::slot_send_code(QString login, QString code, client* client) {
     // Проверка на существование пользователя
     QString checkQuery = QString("SELECT email FROM students WHERE login = '%1'").arg(login);
     QVariantList result = DBSingleton::getInstance()->fetchData(checkQuery);
@@ -107,15 +108,22 @@ void DBSingleton::slot_send_code(QString login, QString code) {
     if (!result.isEmpty()) {
         // Реализация функции отправки кода на почту
        QString email = result[0].toString(); // email-адрес
-       this->servers_functions->send_email_to_client(email, code);
+       if (!this->servers_functions->send_email_to_client(email, code)) {
+          QMetaObject::invokeMethod(client, "slot_fail_send_email_to_client");
+       }
+       else {
+          QMetaObject::invokeMethod(client, "slot_successfully_send_email_to_client");
+
+       }
     }
     // если пользователь не найден
     else {
-        emit this->reset_error(); // Логин не найден
+       QMetaObject::invokeMethod(client, "slot_reset_error");
+        //emit this->reset_error(); // Логин не найден
     }
 }
 
-void DBSingleton::slot_new_password(QString login, QString password) {
+void DBSingleton::slot_new_password(QString login, QString password, client* client) {
     // Проверка на существование пользователя
     QString checkQuery = QString("SELECT COUNT(*) FROM students WHERE login = '%1'").arg(login);
     QVariantList result = DBSingleton::getInstance()->fetchData(checkQuery);
@@ -126,12 +134,14 @@ void DBSingleton::slot_new_password(QString login, QString password) {
                                   .arg(password).arg(login);
 
         if (DBSingleton::getInstance()->executeQuery(updateQuery)) {
-            emit this->reset_ok(); // Успешный сброс пароля
+           QMetaObject::invokeMethod(client, "slot_reset_ok");
+            //emit this->reset_ok(); // Успешный сброс пароля
         } else {
-            emit this->reset_error(); // Ошибка при сбросе пароля
+           QMetaObject::invokeMethod(client, "slot_reset_error");
+            //emit this->reset_error(); // Ошибка при сбросе пароля
         }
     } else {
-        emit this->reset_error(); // Логин не найден
+       QMetaObject::invokeMethod(client, "slot_reset_error");
     }
 }
 

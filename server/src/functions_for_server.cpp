@@ -11,7 +11,7 @@ bool functions_for_server::isZero(double number)
    return (number >=0 and number < 0.0001);
 }
 
-void functions_for_server::send_email_to_client(QString email, QString code)
+bool functions_for_server::send_email_to_client(QString email, QString code)
 {
    MimeMessage message; // сообщение, которое будет отправлено на почту клиенту
    EmailAddress sender("roma-leonenko@bk.ru", "Roman"); // указываем информацию об отправителе
@@ -26,21 +26,24 @@ void functions_for_server::send_email_to_client(QString email, QString code)
    SmtpClient smtp("smtp.mail.ru", 465, SmtpClient::SslConnection); // создаём объект клиента, который будет подключаться к mail ru
    smtp.connectToHost(); // подключаемся к mail.ru
    if (!smtp.waitForReadyConnected()) {
-           qDebug() << "Failed to connect to mail ru!";
-           return;
-       }
+        qDebug() << "Failed to connect to mail ru!";
+         smtp.quit(); // разрываем сеанс с stmp
+        return false;
+   }
    smtp.login("roma-leonenko@bk.ru", "fv2TpkktaiaimAqKN6iH"); // логинимся под свою учётную запись mail ru
    if (!smtp.waitForAuthenticated()) {
        qDebug() << "Failed to login!";
-       return;
+       smtp.quit(); // разрываем сеанс с stmp
+       return false;
    }
    smtp.sendMail(message); // отправляем сообщение
    if (!smtp.waitForMailSent()) { // если соообщение не отправилось
       qDebug() << "Failed to send message";
-      return;
+      smtp.quit(); // разрываем сеанс с stmp
+      return false;
    }
    qDebug() << "mail was send successfully!";
-   smtp.quit(); // разрываем сеанс с stmp
+   return true;
 
 }
 

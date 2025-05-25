@@ -29,6 +29,8 @@ private slots:
    // СБРОС ПАРОЛЯ
    void slot_reset_error(); // сигнал об ошибке при сбросе пароля (не найден логин в БД).
    void slot_reset_ok();    // Сигнал о том, что пароль сброшен успешно
+   void slot_successfully_send_email_to_client(); // если email успешно отправлен клиенту
+   void slot_fail_send_email_to_client(); // если произошла ошибка при отправке email клиента
 
 
    // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
@@ -44,8 +46,8 @@ signals:
    void signal_auth(QString login, QString password, client* client);
 
    // СБРОС ПАРОЛЯ
-   void signal_send_code_to_email(QString email, QString code); // сигнал отправки кода на почту клиента
-   void signal_set_new_password(QString email, QString password); // сигнал установки нового пароля на аккаунт клиента.
+   void signal_send_code_to_email(QString email, QString code, client* client); // сигнал отправки кода на почту клиента
+   void signal_set_new_password(QString email, QString password, client* client); // сигнал установки нового пароля на аккаунт клиента.
 
 
    // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
@@ -61,6 +63,7 @@ private:
    static void hello_message(); // функция отправки сообщения в консоль при каждом новом подключении
    static void bye_message(); // функция отправки сообщения в консоль при каждом отключении
    void send_message(QString message); // отправляем сообщение клиенту.
+   QByteArray end_symbols = ";end;"; // сигнал окончания приёма сообщения
 };
 
 #endif // CLIENT_OBJECT_H

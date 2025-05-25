@@ -58,8 +58,8 @@ public slots:
     void slot_auth(QString login, QString password, client* client);
 
     // СБРОС ПАРОЛЯ
-    void slot_send_code(QString login, QString code); // функция отправки кода на почту клиента.
-    void slot_new_password(QString login, QString password); // функция для установки нового пароля клиенту.
+    void slot_send_code(QString login, QString code, client* client); // функция отправки кода на почту клиента.
+    void slot_new_password(QString login, QString password, client* client); // функция для установки нового пароля клиенту.
 
 
 };

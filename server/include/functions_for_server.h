@@ -18,7 +18,7 @@ private:
 public:
    static functions_for_server* get_instance();
    QString get_server_time(); // метод получения времени на сервере.
-   void send_email_to_client(QString email, QString code); // функция отправки кода на почту
+   bool send_email_to_client(QString email, QString code); // функция отправки кода на почту
    QVector<QPair<double, double>> diaposons(double a, double b, double step);
    QVector<double> find_x(const QVector<QPair<double, double>>& diapozon, double a, double b, double c);
    double Calc(double a, double b, double c, double x); // функция, возвращающая y-значение уравнения
