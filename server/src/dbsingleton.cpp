@@ -38,7 +38,7 @@ bool DBSingleton::executeQuery(const QString& queryStr) {
 
 
 // РЕГИСТРАЦИЯ
-void DBSingleton::slot_register_new_account(QString login, QString password, QString email, QString last_name, QString first_name, QString middle_name)
+void DBSingleton::slot_register_new_account(QString login, QString password, QString email, QString last_name, QString first_name, QString middle_name, client* client)
 {
     QSqlQuery query;
     // пытаемся создать исходную таблицу, где хранится информация об аккаунтах
@@ -72,25 +72,29 @@ void DBSingleton::slot_register_new_account(QString login, QString password, QSt
     // если запрос выполнен успешно
     if (query.exec()) {
         qDebug() << "Вставка записи успешно!";
+        QMetaObject::invokeMethod(client, "slot_register_ok");
         emit this->register_ok(); // Успешная регистрация
     }
     // если какая-то ошибка при вставке аккаунта
     else {
         qDebug() << "Ошибка при вставке записи!";
         qDebug() << query.lastError().text();
-        emit this->register_error(); // Ошибка при регистрации
+        QMetaObject::invokeMethod(client, "slot_register_error");
+        //emit this->register_error(); // Ошибка при регистрации
     }
 }
 
 // АВТОРИЗАЦИЯ
-void DBSingleton::slot_auth(QString login, QString password) {
+void DBSingleton::slot_auth(QString login, QString password, client* client) {
     QSqlQuery query;
     QString selectQuery = QString("SELECT COUNT(*) FROM students WHERE login = '%1' AND hash = '%2'").arg(login).arg(password);
     QVariantList result = DBSingleton::getInstance()->fetchData(selectQuery);
     if (!result.isEmpty() && result.first().toInt() > 0) {
-        emit this->auth_ok(); // Успешная авторизация
+       QMetaObject::invokeMethod(client, "slot_auth_ok");
+       //emit this->auth_ok(); // Успешная авторизация
     } else {
-        emit this->auth_error(); // Ошибка при авторизации
+       QMetaObject::invokeMethod(client, "slot_auth_error");
+       //emit this->auth_error(); // Ошибка при авторизации
     }
 }
 

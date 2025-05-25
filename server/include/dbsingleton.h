@@ -52,10 +52,10 @@ signals:
 
 public slots:
     // РЕГИСТРАЦИЯ
-    void slot_register_new_account(QString login, QString password, QString email, QString last_name, QString first_name, QString middle_name); // слот для регистрации аккаунта
+    void slot_register_new_account(QString login, QString password, QString email, QString last_name, QString first_name, QString middle_name, client* client); // слот для регистрации аккаунта
 
     // АВТОРИЗАЦИЯ
-    void slot_auth(QString login, QString password);
+    void slot_auth(QString login, QString password, client* client);
 
     // СБРОС ПАРОЛЯ
     void slot_send_code(QString login, QString code); // функция отправки кода на почту клиента.

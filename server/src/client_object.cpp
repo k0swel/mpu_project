@@ -1,15 +1,15 @@
-#include "../include/client_object.h"
-#include "../include/functions_for_server.h"
+#include "client_object.h"
+#include "functions_for_server.h"
 #include <QList>
 #include <QByteArray>
-#include "../include/dbsingleton.h"
-
+#include "dbsingleton.h"
+#include <QThread>
 extern QList<client*> clients;
 extern functions_for_server* servers_functions;
 //DBSingleton* DBSingleton = DBSingleton::getInstance();
 client::client(qintptr client_description, QObject* parent): QObject(parent), client_description(client_description)
 {
-   initialization();
+   //initialization();
     //DBSingleton::getInstance();
 }
 
@@ -22,6 +22,7 @@ client::~client() {
 }
 
 void client::initialization() {
+   qDebug() << "ID потока клиента: " << QThread::currentThreadId();
    client_socket = new QTcpSocket(this); // вот сокет.
    client_socket->setSocketDescriptor(client_description); // мы создали новый сокет и идентифицируем его дескриптором уже существующим
    clients.push_back(this); // добавляем клиента в конец списка
@@ -33,13 +34,13 @@ void client::initialization() {
 
    // РЕГИСТРАЦИЯ
    connect(this, &client::signal_register_new_account, DBSingleton::getInstance(), &DBSingleton::slot_register_new_account); // процесс регистрации аккаунта
-   connect(DBSingleton::getInstance(), &DBSingleton::register_ok, this, &client::slot_register_ok); // успешная регистрация
-   connect(DBSingleton::getInstance(), &DBSingleton::register_error, this, &client::slot_register_error); // ошибка при регистрации
+   //connect(DBSingleton::getInstance(), &DBSingleton::register_ok, this, &client::slot_register_ok); // успешная регистрация
+   //connect(DBSingleton::getInstance(), &DBSingleton::register_error, this, &client::slot_register_error); // ошибка при регистрации
 
    //АВТОРИЗАЦИЯ
    connect(this, &client::signal_auth, DBSingleton::getInstance(), &DBSingleton::slot_auth); // процесс авторизации
-   connect(DBSingleton::getInstance(), &DBSingleton::auth_ok, this, &client::slot_auth_ok); // успешная авторизация
-   connect(DBSingleton::getInstance(), &DBSingleton::auth_error, this, &client::slot_auth_error); // ошибка при авторизации.
+   //connect(DBSingleton::getInstance(), &DBSingleton::auth_ok, this, &client::slot_auth_ok); // успешная авторизация
+   //connect(DBSingleton::getInstance(), &DBSingleton::auth_error, this, &client::slot_auth_error); // ошибка при авторизации.
 
 
    // СБРОС ПАРОЛЯ
@@ -50,7 +51,7 @@ void client::initialization() {
    // ГЛАВНОЕ КЛИЕНТСКОЕ ОКНО
    connect(this, &client::signal_linear_equation, servers_functions, &functions_for_server::slot_linear_equation); // CONNECT для решения линейного уравнения
    connect(this, &client::signal_quadratic_equation, servers_functions, &functions_for_server::slot_quadratic_equation); // CONNECT для решения квадратного уравнения.
-   connect(servers_functions, &functions_for_server::signal_equation_solution, this, &client::slot_equation_solution);  // CONNECT для отправки решения уравнения
+   //connect(servers_functions, &functions_for_server::signal_equation_solution, this, &client::slot_equation_solution);  // CONNECT для отправки решения уравнения
 }
 
 void client::slot_read_from_client() {
@@ -59,6 +60,7 @@ void client::slot_read_from_client() {
    while (client_socket->bytesAvailable()) { // читаем сообщение от клиента
       data.push_back(client_socket->readAll());  // помещаем сообщение от клиента в data.
    }
+   qInfo() << "Пришло сообщение: " << data;
    QString action = data.split("|")[0]; // вытаскиваем из сообщения клиента действие
    QString clients_data = data.split("|")[1]; // вытаскиваем данные из сообщения клиента
 
@@ -71,7 +73,7 @@ void client::slot_read_from_client() {
       QString last_name = clients_data_list[3]; // фамилия
       QString first_name = clients_data_list[4]; // имя
       QString middle_name = clients_data_list[5]; // отчество
-      emit signal_register_new_account(login,password,email, last_name, first_name, middle_name); // посылаем сигнал на регистрацию аккаунта.
+      emit signal_register_new_account(login,password,email, last_name, first_name, middle_name, this); // посылаем сигнал на регистрацию аккаунта.
    }
 
 
@@ -79,7 +81,7 @@ void client::slot_read_from_client() {
    if (action == "login") {
       QString login = clients_data.split("$")[0]; // парсим логин
       QString password = clients_data.split("$")[1]; // парсим пароль.
-      emit this->signal_auth(login, password); // отправляем сигнал авторизации в класс functions_for_server
+      emit this->signal_auth(login, password, this); // отправляем сигнал авторизации в класс functions_for_server
    }
 
    // СБРОС ПАРОЛЯ
@@ -101,7 +103,7 @@ void client::slot_read_from_client() {
          QStringList List_with_koef = data.split("|")[2].split("$");
          QString a = List_with_koef[0]; // вытаскиваем коэффициент a
          QString b = List_with_koef[1]; // вытаскиваем коэффициент b
-         emit this->signal_linear_equation(a,b); // вызываем сигнал решения линейного уравнения
+         emit this->signal_linear_equation(a,b, this); // вызываем сигнал решения линейного уравнения
       }
       if (type_equation == "quadratic") {
          qDebug() << "Test2";
@@ -109,7 +111,7 @@ void client::slot_read_from_client() {
          QString a = List_with_koef[0]; // вытаскиваем коэффициент a
          QString b = List_with_koef[1]; // вытаскиваем коэффициент b
          QString c = List_with_koef[2]; // вытаскиваем коэффициент c
-         emit this->signal_quadratic_equation(a,b,c); // вызываем сигнал решения линейного уравнения
+         emit this->signal_quadratic_equation(a,b,c, this); // вызываем сигнал решения линейного уравнения
       }
    }
 

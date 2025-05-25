@@ -1,4 +1,4 @@
-#include "../include/functions_for_server.h"
+#include "functions_for_server.h"
 #include <QDebug>
 #include "SmtpMime" // импортируем библиотеку отправки сообщений на почту
 
@@ -135,7 +135,7 @@ double functions_for_server::Calc(double a, double b, double c, double x){
     return x*x*a + x*b + c;
 }
 
-void functions_for_server::slot_linear_equation(QString a, QString b)
+void functions_for_server::slot_linear_equation(QString a, QString b, client* client)
 {
     bool ok1, ok2;
     double coeff_a = a.toDouble(&ok1);
@@ -144,7 +144,8 @@ void functions_for_server::slot_linear_equation(QString a, QString b)
 
     if (!ok1 or !ok2) {
         solution = "answer|error";
-        emit this->signal_equation_solution(solution);
+        QMetaObject::invokeMethod(client, "slot_equation_solution", Q_ARG(QString, solution));
+        //emit this->signal_equation_solution(solution);
         return;
     }
 
@@ -170,11 +171,11 @@ void functions_for_server::slot_linear_equation(QString a, QString b)
         double answer = -coeff_b / coeff_a;
         solution = QString("answer|%1").arg(answer);
     }
-
-    emit this->signal_equation_solution(solution);
+    QMetaObject::invokeMethod(client, "slot_equation_solution", Q_ARG(QString, solution));
+    //emit this->signal_equation_solution(solution);
 }
 
-void functions_for_server::slot_quadratic_equation(QString a, QString b, QString c)
+void functions_for_server::slot_quadratic_equation(QString a, QString b, QString c, client* client)
 {
     bool ok1, ok2, ok3;
     double coeff_a = a.toDouble(&ok1);
@@ -185,14 +186,16 @@ void functions_for_server::slot_quadratic_equation(QString a, QString b, QString
     if (!ok1 || !ok2 || !ok3) {
        // некорректный ввод
         solution = "answer|error";
-        emit this->signal_equation_solution(solution);
+        QMetaObject::invokeMethod(client, "slot_equation_solution", Q_ARG(QString, solution));
+        //emit this->signal_equation_solution(solution);
         return;
     }
     if (qFuzzyIsNull(coeff_a) && qFuzzyIsNull(coeff_b))
     {
         if (qFuzzyIsNull(coeff_c)) {
            // бесконечное число решений
-            emit this->signal_equation_solution("answer|infinity_solutions");
+           QMetaObject::invokeMethod(client, "slot_equation_solution", Q_ARG(QString, solution));
+           //emit this->signal_equation_solution("answer|infinity_solutions");
             return;
         }
         // нет корней
@@ -215,5 +218,6 @@ void functions_for_server::slot_quadratic_equation(QString a, QString b, QString
        // корней нет.
        solution = QString("answer|no_solution");
     }
-    emit this->signal_equation_solution(solution);
+    QMetaObject::invokeMethod(client, "slot_equation_solution", Q_ARG(QString, solution));
+    //emit this->signal_equation_solution(solution);
 }

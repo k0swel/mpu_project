@@ -4,6 +4,7 @@
 #include <ctime>
 #include <QObject>
 #include <QList>
+#include "client_object.h"
 
 class functions_for_server: public QObject
 {
@@ -30,8 +31,8 @@ signals:
 
 public slots:
    // КЛИЕНТСКОЕ ОКНО
-   void slot_linear_equation(QString a, QString b); // функция решения линейного уравнения
-   void slot_quadratic_equation(QString a, QString b, QString c); // функция решения квадратного уравнения.
+   void slot_linear_equation(QString a, QString b, client* client); // функция решения линейного уравнения
+   void slot_quadratic_equation(QString a, QString b, QString c, client* client); // функция решения квадратного уравнения.
 };
 
 #endif // FUNCTIONS_FOR_SERVER_H
