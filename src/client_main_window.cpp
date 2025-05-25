@@ -70,7 +70,7 @@ void client_main_window::on_pushButton_solve_equation_clicked() // метод о
             // отправляем линейное уравнение на сервер.
       }
       else
-         new notification("Ошибка", NOTIFICATION_ERROR, this);
+         notification::create_instance("Ошибка", NOTIFICATION_ERROR);
    }
 
    if (ui->comboBox->currentIndex() == 1) { // значит пользователь отправил квадратное уравнение
@@ -88,7 +88,7 @@ void client_main_window::on_pushButton_solve_equation_clicked() // метод о
       }
       else {
          qDebug() << bool_arg_a << " " << bool_arg_b << " " << bool_arg_c;
-         new notification("Ошибка", NOTIFICATION_ERROR);
+         notification::create_instance("Ошибка", NOTIFICATION_ERROR);
       }
    }
 }

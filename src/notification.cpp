@@ -1,6 +1,10 @@
 #include "notification.h"
 #include "ui_notification.h"
 #include <QTimer>
+#include <thread>
+
+notification* notification::instance = nullptr; // инициализируем единственный объект nullptr
+
 
 notification::notification(QString title, QString text, QWidget *parent) :
    QWidget(parent),
@@ -19,9 +23,18 @@ notification::notification(QString title, QString text, QWidget *parent) :
    update_progress_bar(); // функция обновления прогресс бара.
 }
 
+notification *notification::create_instance(QString title, QString text, QWidget *parent)
+{
+   if (notification::instance == nullptr) {
+      notification::instance = new notification(title, text, parent); // создаём единственный виджет уведомления
+   }
+   return notification::instance;
+}
+
 notification::~notification()
 {
    qDebug() << "Вызван деструктор уведомления";
+   notification::instance = nullptr;
    delete ui;
 }
 
@@ -34,7 +47,9 @@ void notification::update_progress_bar() {
          this->ui->progressBar->setValue(++this->current_value_progress_bar);
       else if (this->ui->progressBar->value() == 100) {
          timer->deleteLater(); // уничтожаем таймер
-         this->close_window(); // закрываем текущее окно
+
+         std::thread close_notification([this]() -> void {this->close_window();});
+         close_notification.detach();
       }
 
    });

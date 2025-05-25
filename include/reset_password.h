@@ -36,6 +36,10 @@ private slots:
 
    void on_pushButton_clicked();
 
+   void slot_reset_send_code_to_email();
+
+   void slot_fail_send_code_to_email_client();
+
 private:
    Ui::reset_password *ui;
    Client* client = nullptr;

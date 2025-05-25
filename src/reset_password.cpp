@@ -8,7 +8,7 @@
 #include "reg_form.h"
 #include "client.h"
 #include "notification.h"
-
+#include <QClipboard>
 reset_password::reset_password(Client* client, QWidget *parent) :
    QWidget(parent),
    ui(new Ui::reset_password),
@@ -21,8 +21,9 @@ reset_password::reset_password(Client* client, QWidget *parent) :
    ui->pushButton_code->hide(); // прячем pushbutton код
    ui->label_message_send_code->hide(); // прячем сообщение об отправки кода на почту
 
-   connect(this->client, &Client::reset_error, this, &reset_password::slot_reset_error);
-
+   connect(this->client, &Client::reset_error, this, &reset_password::slot_reset_error); // если ошибка при сбросе пароля (не найден аккаунт)
+   connect(this->client, &Client::signal_successfully_send_code_to_email, this, &reset_password::slot_reset_send_code_to_email); // если код отправлен на email клиента
+   connect(this->client, &Client::signal_fail_send_code_to_email, this, &reset_password::slot_fail_send_code_to_email_client); // если код не был отправлен на email клиента из-за ошибок на стороне сервера.
    ui->lineEdit_code->setValidator(new QIntValidator(0, 2147483647, this)); // устанавливаем допустимый диапозон кода
    this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint); // запрещаем изменять размер окна
    this->setWindowTitle(QString("Метод половинного деления"));
@@ -44,14 +45,10 @@ void reset_password::on_pushButton_reset_password_clicked()
       this->ui->lineEdit_login->setEnabled(false); // делаем неактивным поле логина.
       if (client->write(QString("reset|%1$%2").arg(login).arg(this->generate_code))) {
          qDebug() << "Сгенерированный код: " << this->generate_code;
-         ui->pushButton_reset_password->hide();
-         ui->pushButton_code->show();
-         ui->lineEdit_code->show();
-         ui->label_code->show();
       }
    }
    else {
-      new notification("Ошибка", "Заполните поле ""Логин"". Оно не должно быть пустым!");
+      notification::create_instance("Ошибка", "Заполните поле ""Логин"". Оно не должно быть пустым!");
    }
 }
 
@@ -78,13 +75,19 @@ void reset_password::on_pushButton_code_clicked() // если нажата кн�
       QString new_password = clients_func::random_password(); // генерируем новый пароль для клиента
       QString hash_new_password = clients_func::create_hash(new_password); // хэшируем новый пароль
       this->client->write(QString("new_password|%1$%2").arg(ui->lineEdit_login->text()).arg(hash_new_password));
-      clients_func::create_messagebox("Обновление пароля", QString("Ваш новый пароль: %1").arg(new_password));
+      auto dialog_result = clients_func::create_messagebox("Обновление пароля",
+               QString("Ваш новый пароль: %1.\n\n Сохранить пароль в буфере обмена?").arg(new_password).arg(hash_new_password),
+                  clients_func::dialog_style::WITH_BTN); // диалог с кнопками
+      if (dialog_result == clients_func::dialog_return_button::BTN_YES) {
+         QApplication::clipboard()->setText(new_password, QClipboard::Clipboard); // сохраняем пароль в буфере обмена
+      }
       this->hide(); // прячем текущее окно
       new auth_form(this->client); // создаём окно авторизации.
       this->close(); // закрываем текущее окно
    }
    else {
-      clients_func::create_messagebox(QString("Ошибка"), QString("Вы ввели некорректный код. Попробуйте ещё раз"));
+      clients_func::create_messagebox(QString("Ошибка"), QString("Вы ввели некорректный код. Попробуйте ещё раз"),
+                                      clients_func::dialog_style::NO_BTN);
    }
 }
 
@@ -94,11 +97,24 @@ void reset_password::slot_reset_error()
    ui->pushButton_code->hide(); // прячем кнопку отправки кода.
    ui->lineEdit_code->hide(); // прячем lineedit ввода кода.
    ui->label_code->hide(); // прячемт текст, относящийся к коду.
-   new notification("Ошибка", "Пользователя с указанным логином не существует. Попробуйте зарегистрироваться."); // уведомление о том, что пользователя с указанным логином не существует
+   ui->lineEdit_login->setEnabled(true); // делаем активной кнопку ввода логина.
+   notification::create_instance("Ошибка", "Пользователя с указанным логином не существует. Попробуйте зарегистрироваться."); // уведомление о том, что пользователя с указанным логином не существует
+}
+
+void reset_password::slot_reset_send_code_to_email() { // если код отправлен на email клиента
+   ui->pushButton_reset_password->hide();
+   ui->pushButton_code->show();
+   ui->lineEdit_code->show();
+   ui->label_code->show();
+   notification::create_instance("Уведомление", "На ваш почтовый ящик, соответствующий вашему логину, был отправлен код подтверждения!");
+}
+
+void reset_password::slot_fail_send_code_to_email_client() {
+   notification::create_instance("Ошибка", "На стороне сервера неполадки при попытке отправить письмо вам на почту. Попробуйте позже");
 }
 
 
-void reset_password::on_pushButton_clicked()
+void reset_password::on_pushButton_clicked() // кнопка обновления окна
 {
    ui->lineEdit_login->setText(QString("")); // устанавливаем пустой текст в поле ввода логина.
    ui->lineEdit_code->setText(QString("")); // устанавливаем пустой текст в поле ввода кода.

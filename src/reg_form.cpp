@@ -35,38 +35,6 @@ Widget::~Widget()
 }
 
 
-
-void Widget::on_pushButton_reg_clicked()
-{
-   QString login = ui->lineEdit_login->text(); // получаем логин из строки ввода
-   QString password = ui->lineEdit_password->text(); // получаем пароль из строки ввода
-   QString hash_password = clients_func::create_hash(password); // получем хэш пароля из ранее полученного пароля
-   QString email = ui->lineEdit_email->text(); // получаем email из строки ввода email
-   bool current_login = clients_func::current_login(login); // проверяем логин на корректность
-   bool current_password = clients_func::current_password(password); // проверяем пароль на корректность
-   bool current_email = clients_func::current_email(email); // проверяем emai на корректность
-   bool is_empty_name = ui->lineEdit_name->text().isEmpty(); // проверяем пустой ли виджет ввода имени
-   bool is_empty_last_name = ui->lineEdit_lastname->text().isEmpty(); // проверяем пустой ли виджет ввода фамилии
-   if (!current_login) // если мы ввели некорректный логин пароль или email
-      clients_func::create_messagebox("Предупреждение об ошибке", "Вы ввели логин в некорректном формате.\n\nЛогин должен содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | )");
-
-   if (!current_password)
-      clients_func::create_messagebox("Предупреждение об ошибке", "Вы ввели пароль в некорректном формате.\n\nПароль должен содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | ) и длина не меньше 5 символов.");
-
-   if (!current_email)
-      clients_func::create_messagebox("Предупреждение об ошибке", "Вы ввели почту в некорректном формате.\n\n Почта должна содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | ).\n\nЛокальная часть почты не должна начинаться с \".\" и доменная часть почты не должна иметь более двух точек.");
-
-   if (is_empty_name)
-       clients_func::create_messagebox("Предупреждение об ошибке", "Введите своё имя!");
-   if (is_empty_last_name)
-       clients_func::create_messagebox("Предупреждение об ошибке", "Введите свою фамилию");
-   if (current_login and current_password and current_email and !is_empty_name and !is_empty_last_name) {
-      QString final_data = QString("reg|%1$%2$%3$%4$%5$%6").arg(login).arg(hash_password).arg(email).arg(ui->lineEdit_lastname->text()).arg(ui->lineEdit_name->text()).arg(ui->lineEdit_middlename->text());
-      client->write(final_data.toUtf8()); // отправляем данные серверу.
-   }
-}
-
-
 void Widget::on_toolButton_auth_clicked() // по нажатии на кнопку открываем окно авторизации
 {
    this->hide(); // прячем текущее окно
@@ -81,7 +49,7 @@ void Widget::register_successful() {
 }
 
 void Widget::register_error() {
-   new notification("Ошибка", REG_ERROR);
+   notification::create_instance("Ошибка", REG_ERROR);
 }
 
 
@@ -97,5 +65,39 @@ void Widget::on_pushButton_draw_password_released() // если отжата к�
 {
    ui->lineEdit_password->setEchoMode(QLineEdit::EchoMode::Password); // при зажатии на кнопку показываем введенный нами пароль.
 
+}
+
+
+void Widget::on_pushButton_reg_clicked()
+{
+   QString login = ui->lineEdit_login->text(); // получаем логин из строки ввода
+   QString password = ui->lineEdit_password->text(); // получаем пароль из строки ввода
+   QString hash_password = clients_func::create_hash(password); // получем хэш пароля из ранее полученного пароля
+   QString email = ui->lineEdit_email->text(); // получаем email из строки ввода email
+   bool current_login = clients_func::current_login(login); // проверяем логин на корректность
+   bool current_password = clients_func::current_password(password); // проверяем пароль на корректность
+   bool current_email = clients_func::current_email(email); // проверяем emai на корректность
+   bool is_empty_name = ui->lineEdit_name->text().isEmpty(); // проверяем пустой ли виджет ввода имени
+   bool is_empty_last_name = ui->lineEdit_lastname->text().isEmpty(); // проверяем пустой ли виджет ввода фамилии
+   if (!current_login) // если мы ввели некорректный логин пароль или email
+      clients_func::create_messagebox("Предупреждение об ошибке", "Вы ввели логин в некорректном формате.\n\nЛогин должен содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | )",
+                                      clients_func::dialog_style::NO_BTN);
+
+   if (!current_password)
+      clients_func::create_messagebox("Предупреждение об ошибке", "Вы ввели пароль в некорректном формате.\n\nПароль должен содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | ) и длина не меньше 5 символов.",
+                                      clients_func::dialog_style::NO_BTN);
+
+   if (!current_email)
+      clients_func::create_messagebox("Предупреждение об ошибке", "Вы ввели почту в некорректном формате.\n\n Почта должна содержать следующие символы: A-Z ; a-z; 0-9;\n спец.символы(кроме $ и | ).\n\nЛокальная часть почты не должна начинаться с \".\" и доменная часть почты не должна иметь более двух точек.",
+                                      clients_func::dialog_style::NO_BTN);
+
+   if (is_empty_name)
+       clients_func::create_messagebox("Предупреждение об ошибке", "Введите своё имя!", clients_func::dialog_style::NO_BTN);
+   if (is_empty_last_name)
+       clients_func::create_messagebox("Предупреждение об ошибке", "Введите свою фамилию", clients_func::dialog_style::NO_BTN);
+   if (current_login and current_password and current_email and !is_empty_name and !is_empty_last_name) {
+      QString final_data = QString("reg|%1$%2$%3$%4$%5$%6").arg(login).arg(hash_password).arg(email).arg(ui->lineEdit_lastname->text()).arg(ui->lineEdit_name->text()).arg(ui->lineEdit_middlename->text());
+      client->write(final_data.toUtf8()); // отправляем данные серверу.
+   }
 }
 

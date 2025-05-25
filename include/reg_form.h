@@ -23,7 +23,6 @@ public:
    ~Widget();
 
 private slots:
-   void on_pushButton_reg_clicked(); // нажата кнопка регистрации
    void on_toolButton_auth_clicked(); // нажата кнопка авторизации
 
    // СЛОТЫ РЕГИСТРАЦИИ
@@ -34,6 +33,8 @@ private slots:
    void on_pushButton_draw_password_pressed(); // если зажата кнопка, то отображаем наш пароль
 
    void on_pushButton_draw_password_released(); // если отпущена кнопка, то прячем наш пароль
+
+   void on_pushButton_reg_clicked();
 
 private:
    Ui::Widget *ui;

@@ -29,6 +29,8 @@ private:
    static int port;
    Client(); // прячем конструктор
    static SingletonDestroyer el;
+
+   QByteArray buffer; // буфер хранения пришедших сообщений.
 private slots:
    void connect_to_server();
    void disconnect_from_server();
@@ -44,7 +46,9 @@ signals:
    void auth_error(); // ошибка при авторизации.
 
    // СИГНАЛЫ ДЛЯ ОКНА СБРОСА ПАРОЛЯ
-   void reset_error();
+   void reset_error(); // пользователь отсутствует в БД сервера
+   void signal_fail_send_code_to_email(); // ошибка при отправке кода на почту клиента
+   void signal_successfully_send_code_to_email(); // код на почту клиента отправлен успешно
 
    // СИГНАЛЫ ДЛЯ ГЛАВНОГО ОКНА
    void equation_ok(QString&); // корректное решение уравнения.

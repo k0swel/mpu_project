@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QLineEdit>
 #include <QCryptographicHash>
+#include <QPushButton>
 
 bool clients_func::english_symbols(QString text) {
    if (text.size() > 1) {
@@ -25,15 +26,30 @@ bool clients_func::english_symbols(QString text) {
    }
 }
 
-void clients_func::create_messagebox(QString title, QString message)
+clients_func::dialog_return_button clients_func::create_messagebox(QString title, QString message, dialog_style style)
 {
    QMessageBox msg_box;
    msg_box.setIcon(QMessageBox::Information); // устанавливаем иконку message box
-   msg_box.setStyleSheet("QMessageBox { background-color: rgb(33, 35, 40) }; }"
+   msg_box.setStyleSheet("QMessageBox { background-color: rgb(33, 35, 40); }"
                          "QMessageBox QLabel { color: white; }"); // устанавливаем визуальные стили message box
    msg_box.setWindowTitle(title); // устанавливаем заголовок message box
    msg_box.setText(message); // устанавливаем текст message box
+   if (style == clients_func::dialog_style::WITH_BTN) {
+      QPushButton* btn_yes = new QPushButton("Да", &msg_box);
+      QPushButton* btn_no = new QPushButton("Нет", &msg_box);
+      msg_box.addButton((QAbstractButton*)btn_yes, QMessageBox::ButtonRole::YesRole);
+      msg_box.addButton((QAbstractButton*)btn_no, QMessageBox::ButtonRole::NoRole);
+      msg_box.exec(); // запускаем message box
+
+      if (msg_box.clickedButton() == (QAbstractButton*)btn_yes) {
+         return clients_func::dialog_return_button::BTN_YES; // если мы нажали на кнопку "Да"
+      }
+      else if (msg_box.clickedButton() == (QAbstractButton*)btn_no) {
+         return clients_func::dialog_return_button::BTN_NO; // если мы нажали на кнопку "Нет"
+      }
+   }
    msg_box.exec(); // запускаем message box
+   return clients_func::dialog_return_button::NULL_VALUE; // в противном случае возвращаем NULL
 }
 
 
