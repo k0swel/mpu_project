@@ -1,5 +1,5 @@
-# Базовый образ с Ubuntu LTS
-FROM ubuntu:latest
+# Первый этап - собираем ОС, которая соберёт наш сервер
+FROM ubuntu:latest AS step_one
 # Устанавливаем зависимости Qt5
 RUN apt update && apt install -y qt5-qmake qtbase5-dev build-essential && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
@@ -7,5 +7,9 @@ COPY . .
 # Собираем проект
 RUN qmake ./subdirs.pro && make && chmod +x ./server/build/server
 
-# Запускаем сервер
+# Второй этап - собираем чистую ОС, на которой запустим наш итоговый образ сервера
+FROM ubuntu:latest
+WORKDIR /app
+COPY --from=step_one /app .
+ENTRYPOINT ["./server/build/server"]
 CMD ["./server/build/server"]
