@@ -45,6 +45,8 @@ MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent){ // включени
 
     if(!mTcpServer->listen(QHostAddress::Any, this->get_port("TMP_PORT"))){ // ищем порт в переменных окружения и прослушиваем его.
         qDebug() << QString("%1 server is not started!").arg(servers_functions->get_server_time());
+        exit(3);
+
     } else {
         //server_status=1;
         qDebug() << QString("%1 server is started").arg(servers_functions->get_server_time());

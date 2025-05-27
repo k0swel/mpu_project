@@ -2,9 +2,9 @@ libraries/SMTPEmail/.qtc_clangd
 libraries/SMTPEmail/.qmake.stash
 libraries/SMTPEmail/Makefile
 libraries/SMTPEmail/README.md
-libraries/SMTPEmail/build/moc
-libraries/SMTPEmail/object_files
-librabries/SMTPEmail/libSmtpMime.a
+libraries/SMTPEmail/build/*
+!.gitkeep
+libraries/SMTPEmail/libSmtpMime.a
 server/.qmake.stash
 server/Makefile
 server/build/Debug
