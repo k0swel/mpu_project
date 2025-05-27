@@ -11,5 +11,6 @@ RUN qmake ./subdirs.pro && make && chmod +x ./server/build/server
 FROM ubuntu:latest
 WORKDIR /app
 COPY --from=step_one /app .
+RUN apt update && apt install -y libqt5sql5 libqt5network5 openssl ca-certificates
 ENTRYPOINT ["./server/build/server"]
 CMD ["./server/build/server"]
