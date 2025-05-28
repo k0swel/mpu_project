@@ -26,23 +26,23 @@ bool functions_for_server::send_email_to_client(QString email, QString code)
    SmtpClient smtp("smtp.mail.ru", 465, SmtpClient::SslConnection); // создаём объект клиента, который будет подключаться к mail ru
    smtp.connectToHost(); // подключаемся к mail.ru
    if (!smtp.waitForReadyConnected()) {
-        qDebug() << "Failed to connect to mail ru!";
+        qCritical() << "Failed to connect to mail ru!";
          smtp.quit(); // разрываем сеанс с stmp
         return false;
    }
    smtp.login("roma-leonenko@bk.ru", "fv2TpkktaiaimAqKN6iH"); // логинимся под свою учётную запись mail ru
    if (!smtp.waitForAuthenticated()) {
-       qDebug() << "Failed to login!";
+       qCritical() << "Failed to login!";
        smtp.quit(); // разрываем сеанс с stmp
        return false;
    }
    smtp.sendMail(message); // отправляем сообщение
    if (!smtp.waitForMailSent()) { // если соообщение не отправилось
-      qDebug() << "Failed to send message";
+      qCritical() << "Failed to send message";
       smtp.quit(); // разрываем сеанс с stmp
       return false;
    }
-   qDebug() << "mail was send successfully!";
+   qCritical() << "mail was send successfully!";
    return true;
 
 }
@@ -166,7 +166,6 @@ void functions_for_server::slot_linear_equation(QString a, QString b, client* cl
         //Выводим корни
         solution = QString("answer|");
         for (const auto &el : korni) {
-            qDebug() << el; // Используем qDebug для вывода в консоль Qt
             solution.append(QString::number(el, 'g', 2));
             solution.append("$");
         }
@@ -211,7 +210,6 @@ void functions_for_server::slot_quadratic_equation(QString a, QString b, QString
     solution = QString("answer|");
     if (korni.size() > 0) {
        for (const auto &el : korni) {
-           qDebug() << el;
            solution.append(QString::number(el, 'f', 4));
            solution.append("$");
        }

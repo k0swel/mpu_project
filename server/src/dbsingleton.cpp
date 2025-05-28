@@ -16,21 +16,21 @@ DBSingleton::DBSingleton() {
     //db.setPassword("123");
     this->servers_functions = functions_for_server::get_instance(); // инициализируем объект функционала сервера.
     if (!db.open()) {
-        qDebug() << "Error: Unable to connect to database.";
+        qCritical() << "Error: Unable to connect to database.";
         exit(1); // завершаем программу, т.к ошибка при открытии базы данных
     } else {
-        qDebug() << "Database connected successfully.";
-        qDebug() << "Tables: " << db.tables(); // печатаем список доступных таблиц
+        qInfo() << "Database connected successfully.";
+        qInfo() << "Tables: " << db.tables(); // печатаем список доступных таблиц
     }
 }
 bool DBSingleton::executeQuery(const QString& queryStr) {
     if (!db.open()) {
-        qDebug() << "Database is not open.";
+        qCritical() << "Database is not open.";
         exit(1); // ошибка при открытии базы данных
     }
     QSqlQuery query;
     if (!query.exec(queryStr)) { // выполняем запрос
-        qDebug() << "Query execution error:" << query.lastError().text(); // ошибка при выполнении запроса
+        qCritical() << "Query execution error:" << query.lastError().text(); // ошибка при выполнении запроса
         return false; // если запрос выполнился с ошибкой
     }
     return true; // если запрос успешен.
@@ -43,12 +43,12 @@ void DBSingleton::slot_register_new_account(QString login, QString password, QSt
     QSqlQuery query;
     // пытаемся создать исходную таблицу, где хранится информация об аккаунтах
     if (query.exec("CREATE TABLE students ( id INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT, hash TEXT, email TEXT, name TEXT, surname TEXT, middle_name TEXT )")) {
-        qDebug().noquote() << "Запрос на создание таблицы выполнен успешно!";
+        qInfo().noquote() << "Запрос на создание таблицы выполнен успешно!";
     }
     // если таблица уже существует
     else {
-        qDebug().noquote() << "Ошибка при выполнении запроса.";
-        qDebug().noquote() << QString("Запрос: %1 | Ошибка: %2").arg(query.lastQuery()).arg(query.lastError().text());
+        qCritical().noquote() << "Ошибка при выполнении запроса.";
+        qCritical().noquote() << QString("Запрос: %1 | Ошибка: %2").arg(query.lastQuery()).arg(query.lastError().text());
     }
 
     // Проверка на существование пользователя
@@ -72,14 +72,14 @@ void DBSingleton::slot_register_new_account(QString login, QString password, QSt
 
     // если запрос выполнен успешно
     if (query.exec()) {
-        qDebug() << "Вставка записи успешно!";
+        qInfo() << "Вставка записи успешно!";
         QMetaObject::invokeMethod(client, "slot_register_ok");
         //emit this->register_ok(); // Успешная регистрация
     }
     // если какая-то ошибка при вставке аккаунта
     else {
-        qDebug() << "Ошибка при вставке записи!";
-        qDebug() << query.lastError().text();
+        qCritical() << "Ошибка при вставке записи!";
+        qCritical() << query.lastError().text();
         QMetaObject::invokeMethod(client, "slot_register_error");
         //emit this->register_error(); // Ошибка при регистрации
     }
@@ -147,7 +147,7 @@ void DBSingleton::slot_new_password(QString login, QString password, client* cli
 
 QVariantList DBSingleton::fetchData(const QString& queryStr) {
     if (!db.isOpen()) {
-        qDebug() << "Database is not open.";
+        qCritical() << "Database is not open.";
         return QVariantList(); // Возвращаем пустой список
     }
 
@@ -162,7 +162,7 @@ QVariantList DBSingleton::fetchData(const QString& queryStr) {
             results.append(row); // Добавляем строку в общий результат
         }
     } else {
-        qDebug() << "Query execution error:" << query.lastError().text();
+        qCritical() << "Query execution error:" << query.lastError().text();
     }
     return results;
 }
@@ -170,7 +170,7 @@ QVariantList DBSingleton::fetchData(const QString& queryStr) {
 // Деструктор
 DBSingleton::~DBSingleton() {
     db.close();
-    qDebug() << "Database connection closed.";
+    qInfo() << "Database connection closed.";
 }
 
 // Метод получения экземпляра

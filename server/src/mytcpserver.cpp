@@ -4,6 +4,7 @@
 #include <QString>
 #include <QThread>
 #include "client_object.h"
+#include "dbsingleton.h"
 
 // ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ
 #include <QProcessEnvironment>
@@ -44,12 +45,13 @@ MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent){ // включени
             this, &MyTcpServer::slotNewConnection); // связь для нового клиента
 
     if(!mTcpServer->listen(QHostAddress::Any, this->get_port("TMP_PORT"))){ // ищем порт в переменных окружения и прослушиваем его.
-        qDebug() << QString("%1 server is not started!").arg(servers_functions->get_server_time());
+        qCritical() << QString("%1 server is not started!").arg(servers_functions->get_server_time());
         exit(3);
 
     } else {
         //server_status=1;
-        qDebug() << QString("%1 server is started").arg(servers_functions->get_server_time());
+         qInfo() << "Server is start. It listen the port is: " << this->get_port("TMP_PORT");
+         DBSingleton* db = DBSingleton::getInstance(); // База данных
     }
 }
 
@@ -81,7 +83,6 @@ int MyTcpServer::get_port(QString environment_variable) {
    QProcessEnvironment env_process = QProcessEnvironment::systemEnvironment();
    if (env_process.contains(environment_variable)) {
       int port = env_process.value(environment_variable).toInt(); // возвращаем порт
-      qInfo() << "Порт, который прослушивает сервер = " << port;
       return port;
    }
    else {

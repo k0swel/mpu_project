@@ -14,7 +14,7 @@ client::client(qintptr client_description, QObject* parent): QObject(parent), cl
 }
 
 client::~client() {
-   qDebug() << "Деструктор клиента вызван успешно!";
+   qInfo() << "Деструктор клиента вызван успешно!";
    clients.removeAll(this);
    this->client_socket->close();
    this->bye_message(); // вызываем прощальное сообщение
@@ -22,7 +22,7 @@ client::~client() {
 }
 
 void client::initialization() {
-   qDebug() << "ID потока клиента: " << QThread::currentThreadId();
+   qInfo() << "ID потока клиента: " << QThread::currentThreadId();
    client_socket = new QTcpSocket(this); // вот сокет.
    client_socket->setSocketDescriptor(client_description); // мы создали новый сокет и идентифицируем его дескриптором уже существующим
    clients.push_back(this); // добавляем клиента в конец списка
@@ -55,7 +55,7 @@ void client::initialization() {
 }
 
 void client::slot_read_from_client() {
-   qDebug() << "Сработал " << Q_FUNC_INFO << " . Текущий поток - " << QThread::currentThreadId();
+   qInfo() << "Сработал " << Q_FUNC_INFO << " . Текущий поток - " << QThread::currentThreadId();
    QByteArray data_byte_array;
    QString data;
    data_byte_array.push_back(client_socket->readAll());  // помещаем сообщение от клиента в data.
@@ -63,7 +63,6 @@ void client::slot_read_from_client() {
    while ((end_symbol_in_message_pos = data_byte_array.indexOf(end_symbols)) != -1) {
       data = data_byte_array.left(end_symbol_in_message_pos);
       data_byte_array = data_byte_array.mid(end_symbol_in_message_pos + end_symbols.size());
-      qInfo() << "Пришло сообщение: " << data;
       QString action = data.split("|")[0]; // вытаскиваем из сообщения клиента действие
       QString clients_data = data.split("|")[1]; // вытаскиваем данные из сообщения клиента
 
@@ -109,7 +108,6 @@ void client::slot_read_from_client() {
             emit this->signal_linear_equation(a,b, this); // вызываем сигнал решения линейного уравнения
          }
          if (type_equation == "quadratic") {
-            qDebug() << "Test2";
             QStringList List_with_koef = data.split("|")[2].split("$");
             QString a = List_with_koef[0]; // вытаскиваем коэффициент a
             QString b = List_with_koef[1]; // вытаскиваем коэффициент b
@@ -118,7 +116,7 @@ void client::slot_read_from_client() {
          }
       }
 
-      qDebug() << QString("%1 Client ").arg(servers_functions->get_server_time()) << &client_socket << QString(" send message: %1").arg(QString(data)).simplified();
+      qInfo() << QString("%1 Client ").arg(servers_functions->get_server_time()) << &client_socket << QString(" send message: %1").arg(QString(data)).simplified();
    }
 }
 
@@ -165,7 +163,7 @@ void client::slot_successfully_send_email_to_client() {
 
 void client::slot_equation_solution(QString answer) // слот для отправки решения уравнения
 {
-   qDebug() << "Отправлено клиенту: " << answer;
+   qInfo() << "Отправлено клиенту: " << answer;
    this->send_message(answer.toUtf8()); // отправляем клиенту сообщение о статусе решения уравнения)
 }
 
@@ -174,25 +172,25 @@ void client::slot_equation_solution(QString answer) // слот для отпр�
 void client::hello_message() { // функция отправки сообщения в консоль при каждом новом подключении
 
    if (clients.size() == 1) {
-      qDebug() << QString("%1 Client socket has connected. Сurrently 1 socket is connected").arg(servers_functions->get_server_time());
+      qInfo() << QString("%1 Client socket has connected. Сurrently 1 socket is connected").arg(servers_functions->get_server_time());
     }
     else if (clients.size() > 1) {
-       qDebug() << QString("%1 Client socket has connected. Сurrently %2 sockets are connected").arg(servers_functions->get_server_time()).arg(QString::number(clients.size()));
+       qInfo() << QString("%1 Client socket has connected. Сurrently %2 sockets are connected").arg(servers_functions->get_server_time()).arg(QString::number(clients.size()));
     }
 }
 
 void client::bye_message() { // функция отправки сообщения в консоль при каждом отключении
    if (clients.size() == 0)
-      qDebug() << QString("%1 The client has disconnected. No clients at the moment").arg(servers_functions->get_server_time());
+      qInfo() << QString("%1 The client has disconnected. No clients at the moment").arg(servers_functions->get_server_time());
    else if (clients.size() == 1)
-      qDebug() << QString("%1 The client has disconnected. Сurrently 1 socket is connected").arg(servers_functions->get_server_time());
+      qInfo() << QString("%1 The client has disconnected. Сurrently 1 socket is connected").arg(servers_functions->get_server_time());
    else if (clients.size() > 1)
-      qDebug() << QString("%1 The client has disconnected. Сurrently %2 sockets are connected").arg(servers_functions->get_server_time()).arg(QString::number(clients.size()));
+      qInfo() << QString("%1 The client has disconnected. Сurrently %2 sockets are connected").arg(servers_functions->get_server_time()).arg(QString::number(clients.size()));
 }
 
 void client::send_message(QString message) // отправляем клиенту сообщение
 {
    message = message + QString(";end;");
-   qDebug() << "message = " << message;
+   qInfo() << "message = " << message;
    this->client_socket->write(message.toUtf8());
 }
