@@ -17,16 +17,18 @@ SOURCES += \
         $$PWD/src/dbsingleton.cpp \
         $$PWD/src/functions_for_server.cpp \
         $$PWD/src/main.cpp \
-        $$PWD/src/mytcpserver.cpp
+        $$PWD/src/mytcpserver.cpp \
+        $$PWD/src/math_class.cpp
 
 INCLUDEPATH += "$$PWD/libraries/SMTPEmail/include" "$$PWD/include"
-LIBS += "$$PWD/libraries/SMTPEmail/build/libSmtpMime.a"
+LIBS += -L$$PWD/libraries/SMTPEmail/build -lSmtpMime
 
 HEADERS += \
     $$PWD/include/client_object.h \
     $$PWD/include/dbsingleton.h \
     $$PWD/include/functions_for_server.h \
-    $$PWD/include/mytcpserver.h
+    $$PWD/include/mytcpserver.h \
+    $$PWD/include/math_class.h
 
 OBJECTS_DIR = $$PWD/build/obj
 MOC_DIR = $$PWD/build/moc
