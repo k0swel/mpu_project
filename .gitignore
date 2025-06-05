@@ -15,4 +15,4 @@ server/build/tmp.db
 Makefile
 .qtc_clangd
 .qmake.stash
-subdirs.pro.user
+./subdirs.pro.user

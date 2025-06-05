@@ -12,4 +12,4 @@ FROM ubuntu:latest
 WORKDIR /app
 COPY --from=step_one /app .
 RUN apt update && apt install -y libqt5sql5 libqt5network5 openssl ca-certificates libqt5test5
-ENTRYPOINT ./unittests/build/unittests && ./server/build/server
+ENTRYPOINT ./unittests/build/unittests && cd ./server/build && ./server
