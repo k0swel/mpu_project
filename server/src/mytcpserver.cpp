@@ -66,15 +66,15 @@ MyTcpServer* MyTcpServer::create_instance() {
 void MyTcpServer::slotNewConnection(){ // слот, который активируется при каждом подключении клиента к серверу.
        QTcpSocket* socket = mTcpServer->nextPendingConnection();
 
-       QThread* thread = new QThread(this);
-       client* clientObj = new client(socket->socketDescriptor());
-
-       clientObj->moveToThread(thread);
+       QThread* thread = new QThread(this); // создаёмо объект потока
+       client* clientObj = new client(socket);
+       clientObj->moveToThread(thread); // переносим клиента в другой поток
+       socket->setParent(nullptr);
+       socket->moveToThread(thread); // переносим сокет в другой поток
        connect(clientObj, &client::del_thread, thread, &QThread::quit);
        connect(thread, &QThread::finished, thread, &QThread::deleteLater); // Удаляем сам поток
       connect(thread, &QThread::started, clientObj, &client::initialization);
-       socket->setParent(nullptr); // Отвязываем сокет от сервера
-
+      clients.push_back(clientObj); // добавляем клиента в конец списка
        thread->start();
 }
 

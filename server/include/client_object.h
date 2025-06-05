@@ -9,7 +9,7 @@ class client: public QObject
 {
    Q_OBJECT
 public:
-   client(qintptr client_description, QObject* parent = nullptr);
+   client(QTcpSocket* client_socket, QObject* parent = nullptr);
    ~client();
 
 public slots:
@@ -58,7 +58,6 @@ signals:
 
 private:
    QTcpSocket* client_socket;
-   qintptr client_description;
    QThread* thread_for_client = nullptr;
    static void hello_message(); // функция отправки сообщения в консоль при каждом новом подключении
    static void bye_message(); // функция отправки сообщения в консоль при каждом отключении

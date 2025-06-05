@@ -7,25 +7,21 @@
 extern QList<client*> clients;
 extern functions_for_server* servers_functions;
 //DBSingleton* DBSingleton = DBSingleton::getInstance();
-client::client(qintptr client_description, QObject* parent): QObject(parent), client_description(client_description)
+client::client(QTcpSocket* client_socket, QObject* parent): QObject(parent), client_socket(client_socket)
 {
-   //initialization();
-    //DBSingleton::getInstance();
+   client_socket->setParent(this);
 }
 
 client::~client() {
    qInfo() << "Деструктор клиента вызван успешно!";
    clients.removeAll(this);
-   this->client_socket->close();
+   this->client_socket->deleteLater();
    this->bye_message(); // вызываем прощальное сообщение
    emit this->del_thread(); // вызываем сигнал удаления потока
 }
 
 void client::initialization() {
    qInfo() << "ID потока клиента: " << QThread::currentThreadId();
-   client_socket = new QTcpSocket(this); // вот сокет.
-   client_socket->setSocketDescriptor(client_description); // мы создали новый сокет и идентифицируем его дескриптором уже существующим
-   clients.push_back(this); // добавляем клиента в конец списка
    hello_message(); // отправляем в консоль приветственное сообщение. Статическая функция.
    connect(client_socket, &QTcpSocket::readyRead, this, &client::slot_read_from_client); // читаем сообщения от клиента
    connect(client_socket, &QTcpSocket::disconnected, this, &client::slot_close_connection); // если сокет отключается от сервера, вызываем функцию slot_close_connection
