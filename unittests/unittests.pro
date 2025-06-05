@@ -2,7 +2,7 @@ QT += testlib network sql
 QT -= gui
 
 CONFIG += qt console warn_on depend_includepath testcase release
-CONFIG -= app_bundle debug
+CONFIG -= app_bundle debug_and_release
 
 TEMPLATE = app
 TARGET = unittests
