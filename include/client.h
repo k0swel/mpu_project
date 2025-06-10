@@ -22,17 +22,19 @@ class Client: public QObject
 public:
    bool write(QString text); // отправить сообщение серверу.
    static Client* get_instance(); // создаём единственный экземпляр клиента
+   // QString& get_ip() const; // геттер и сеттер IP-адреса сервера.
+   // int& get_port() const; // геттер и сеттер порта-сервера
+   QAbstractSocket::SocketState get_socket_state() const; // получаем состояние сокета. Getter.
+   void connect_to_server(QString ip, int port); // подключаемся к серверу.
    ~Client();
 private:
    static QTcpSocket* socket;
    static Client* p_instance;
-   static int port;
    Client(); // прячем конструктор
    static SingletonDestroyer el;
 
    QByteArray buffer; // буфер хранения пришедших сообщений.
 private slots:
-   void connect_to_server();
    void disconnect_from_server();
    void read();
 

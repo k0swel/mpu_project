@@ -2,6 +2,9 @@
 #include "clients_func.h"
 #include <QMessageBox>
 #include <QCryptographicHash>
+#include <notification.h>
+#include "network_connection_state.h"
+#include "json_manager.h"
 
 extern QApplication a;
 
@@ -11,8 +14,6 @@ QTcpSocket* SingletonDestroyer::socket = nullptr;
 QTcpSocket* Client::socket = nullptr;
 
 SingletonDestroyer Client::el = SingletonDestroyer();
-
-int Client::port = 8080;
 
 void SingletonDestroyer::initialize(Client* element,QTcpSocket* socket) {
    SingletonDestroyer::client_connection = element;
@@ -31,9 +32,10 @@ Client::Client()
 {
    qDebug() << "Вызвался конструктор клиента";
    Client::socket = new QTcpSocket(this);
-   connect(Client::socket, &QTcpSocket::connected, this, &Client::connect_to_server); // при подключении к серверу вызываем функцию connect_to_server
+   connect(Client::socket, &QTcpSocket::connected, [&]() { connect(this->socket, &QTcpSocket::readyRead, this, &Client::read); }); // при подключении к серверу читаем сигналы поступления сообщений
    connect(Client::socket, &QTcpSocket::disconnected, this, &Client::disconnect_from_server); // при отключении от сервера вызываем функцию disconnect_from_server
-   Client::socket->connectToHost("127.0.0.1", port);
+   json_manager::create_json_file("./cache", "cache.json"); // создаём файл, где будет хранится инфа о кеше.
+   this->connect_to_server(json_manager::get_data_from_json(json_manager::json_manager_network::Network).ip, json_manager::get_data_from_json(json_manager::json_manager_network::Network).port);
 }
 
 Client::~Client() {
@@ -49,9 +51,17 @@ Client* Client::get_instance() {
    return Client::p_instance;
 }
 
+QAbstractSocket::SocketState Client::get_socket_state() const
+{
+   return this->socket->state(); // возвращаем состояние сокета
+}
 
-void Client::connect_to_server() {
-   connect(this->socket, &QTcpSocket::readyRead, this, &Client::read); // при отправлении сообщения от сервера - читаем сообщение
+
+void Client::connect_to_server(QString ip, int port) {
+   this->socket->disconnectFromHost(); // отключаемся от подключений
+   //this->socket->connectToHost(ip, port); // подключаемся к серверу по IP и порту
+   this->socket->connectToHost("127.0.0.1", 8080); // подключаемся к серверу по IP и порту
+
 }
 
 void Client::read() {

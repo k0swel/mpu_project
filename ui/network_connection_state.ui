@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>network_connection_state</class>
+ <widget class="QWidget" name="network_connection_state">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>583</width>
+    <height>318</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#network_connection_state {
+	background-color: rgb(33, 35, 40);
+}</string>
+  </property>
+  <widget class="QWidget" name="horizontalLayoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>120</y>
+     <width>461</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="layout_ip">
+    <item>
+     <widget class="QLabel" name="label_ip_address">
+      <property name="styleSheet">
+       <string notr="true">QLabel#label_ip_address {
+	color: #ffffff;
+	font-size: 20px;
+	font-family: &quot;Segoe UI&quot;, sanf-serif;
+}</string>
+      </property>
+      <property name="text">
+       <string>IP-адрес сервера:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="line_edit_ip_address">
+      <property name="placeholderText">
+       <string>Текущий адрес: {ip}</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_4">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>190</y>
+     <width>461</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="layout_port">
+    <item>
+     <widget class="QLabel" name="label_port">
+      <property name="styleSheet">
+       <string notr="true">QLabel#label_port {
+	color: #ffffff;
+	font-size: 20px;
+	font-family: &quot;Segoe UI&quot;, sanf-serif;
+}</string>
+      </property>
+      <property name="text">
+       <string>Порт:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Policy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>100</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="line_edit_port">
+      <property name="placeholderText">
+       <string>Текущий порт: {port}</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="pushButton_try_to_connect">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>270</y>
+     <width>251</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton#pushButton_try_to_connect {
+	background-color: #367d25;
+	border-radius: 10px;
+	color: white;
+	font-size: 12px;
+	font-family: &quot;Segoe UI&quot;, sanf-serif;
+}
+
+QPushButton#pushButton_try_to_connect:hover {
+	font-size: 13px;
+	border: 1px solid rgb(170, 255, 255);
+}</string>
+   </property>
+   <property name="text">
+    <string>Применить настройки</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_5">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>561</width>
+     <height>44</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLabel" name="label_network_settings">
+      <property name="styleSheet">
+       <string notr="true">QLabel#label_network_settings {
+	color: #ffffff;
+	font-size: 20px;
+	font-family: &quot;Segoe UI&quot;, sanf-serif;
+}</string>
+      </property>
+      <property name="text">
+       <string>Сетевые настройки</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_polytech_logo">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="../resources/recources.qrc">:/logo/C:/Users/k0swel/Downloads/mpu_logo.png</pixmap>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Policy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>103</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_state">
+      <property name="styleSheet">
+       <string notr="true">QLabel#label_state {
+	color: #ffffff;
+	font-size: 20px;
+	font-family: &quot;Segoe UI&quot;, sanf-serif;
+}</string>
+      </property>
+      <property name="text">
+       <string>Состояние:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_state_on">
+      <property name="styleSheet">
+       <string notr="true">QLabel#label_state_on {
+	color: #20A929;
+	font-size: 20px;
+	font-family: &quot;Segoe UI&quot;, sanf-serif;
+}</string>
+      </property>
+      <property name="text">
+       <string>подключено</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_state_off">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel#label_state_off {
+	color: #9F2C2C;
+	font-size: 20px;
+	font-family: &quot;Segoe UI&quot;, sanf-serif;
+}</string>
+      </property>
+      <property name="text">
+       <string>отключено</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_save_config">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>240</y>
+     <width>171</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QCheckBox#checkBox_save_config {
+	color: white;
+}</string>
+   </property>
+   <property name="text">
+    <string>Сохранить конфигурацию</string>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="../resources/recources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

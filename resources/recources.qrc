@@ -1,6 +1,5 @@
 <RCC>
-    <qresource prefix="/icons">
-        <file>icons/icon-reload.png</file>
-        <file>icons/main_icon.ico</file>
+    <qresource prefix="/logo">
+        <file>C:/Users/k0swel/Downloads/mpu_logo.png</file>
     </qresource>
 </RCC>

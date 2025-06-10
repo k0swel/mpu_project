@@ -11,9 +11,11 @@
 #include <QJsonValue>
 #include <fstream>
 #include <filesystem>
+#include "network_connection_state.h"
 
 #define AUTH_ERROR "Неверный логин/пароль"
 
+extern QJsonDocument json_data_about_client;
 
 
 auth_form::auth_form(Client* client_socket, QWidget *parent) :
@@ -23,14 +25,13 @@ auth_form::auth_form(Client* client_socket, QWidget *parent) :
 {
    ui->setupUi(this);
    this->setWindowTitle(QString("Метод половинного деления"));
-   this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
+   this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint); // фиксируем размер окна.
    this->ui->lineEdit_login->setFocus();
    this->setAttribute(Qt::WA_DeleteOnClose); // удаляем окно при нажатии на значок закрытия.
    connect(this->client, &Client::auth_ok, this, &auth_form::auth_ok); // сигнал на случай успешной авторизации
    connect(this->client, &Client::auth_error, this, &auth_form::auth_error); // сигнал на случай ошибки при авторизации
    ui->pushButton_draw_password->setFixedSize(QSize(20,ui->pushButton_draw_password->height()));
    this->show(); // показываем текущее окно.
-   this->fill_from_json();
 }
 
 auth_form::~auth_form()
@@ -82,7 +83,7 @@ void auth_form::on_pushButton_to_reg_clicked() // нажата кнопка вы
 void auth_form::auth_ok() {
    if (ui->checkBox_remamber_me->isChecked()) {
       if (ui->checkBox_remamber_me->isChecked()) {
-         this->write_info_in_cache();
+         json_manager::write_authentication_to_json(ui->lineEdit_login->text(), ui->lineEdit_password->text());
          qDebug() << "Данные записаны";
       }
    }
@@ -110,60 +111,10 @@ void auth_form::on_pushButton_draw_password_released()
 
 }
 
-void auth_form::write_info_in_cache() // функция для записи данных пользователя в JSON-файл
+
+void auth_form::on_pushButton_settings_clicked() // вызываем окно с настройками.
 {
-   // СОЗДАЁМ JSON КУДА БУДЕМ ЗАПИСЫВАТЬ ДАННЫЕ ОТ АККАУНТА
-   QString login = ui->lineEdit_login->text(); // login
-   QString password = ui->lineEdit_password->text(); // password;
-   QJsonObject main_object;
-   main_object["login"] = QJsonValue(login);
-   main_object["password"] = QJsonValue(password);
-   QJsonDocument json_doc;
-   json_doc.setObject(main_object);
-
-   if (std::filesystem::create_directory("./cache")) {
-      qDebug() << "Директория успешно создана";
-   }
-   else {
-      qDebug() << "Ошибка! Вероятно директория уже существует";
-   }
-
-   std::fstream json_file;
-   json_file.open("cache/auth_data.json", std::ios_base::out); // открываем файл чтобы записать туда JSON
-   if (json_file.is_open()) {
-      json_file.write(json_doc.toJson(), json_doc.toJson().size()); // записываем json в файл
-      notification::create_instance("Успех", "Ваши данные записаны!");
-      json_file.close();
-   }
-   else {
-      notification::create_instance("Ошибка", "Непредвиденная ошибка при попытке записи JSON-файла");
-   }
-
+   network_connection_state::get_instance(this->client); // создаём окно с сетевыми настройками
 }
 
-void auth_form::fill_from_json() {
-   QJsonDocument json_data;
-   std::fstream json_file;
-   std::string lines_from_file;
-
-   // считываем данные из JSON-файла в переменную QJsonDocument json_data
-   json_file.open("cache/auth_data.json", std::ios_base::in);
-   if (json_file.is_open()) {
-      qDebug() << "json file успешно открыт";
-      std::string line_from_file;
-      while (std::getline(json_file, line_from_file)) {
-         lines_from_file += line_from_file;
-      }
-      json_data= QJsonDocument::fromJson(QByteArray(lines_from_file.c_str()));
-      qDebug().noquote() << json_data.toJson();
-   }
-   else {
-      qDebug() << "Ошибка при открытии json-файла";
-      return;
-   }
-
-   //Заполняем поля ввода значениями из QJsonDocument
-   ui->lineEdit_login->setText(json_data.object()["login"].toString());
-   ui->lineEdit_password->setText(json_data.object()["password"].toString());
-}
 

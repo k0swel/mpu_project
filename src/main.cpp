@@ -3,7 +3,8 @@
 #include <client.h>
 #include "notification.h"
 #include "reg_form.h"
-#include "QValidator"
+#include "json_manager.h"
+
 #define window Widget
 
 int main(int argc, char *argv[])

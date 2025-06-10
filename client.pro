@@ -33,7 +33,9 @@ SOURCES += \
     $$PWD/src/main.cpp \
     $$PWD/src/notification.cpp \
     $$PWD/src/reg_form.cpp \
-    $$PWD/src/reset_password.cpp
+    $$PWD/src/reset_password.cpp \
+    $$PWD/src/network_connection_state.cpp \
+    $$PWD/src/json_manager.cpp
 
 HEADERS += \
     $$PWD/include/auth_form.h \
@@ -42,14 +44,17 @@ HEADERS += \
     $$PWD/include/clients_func.h \
     $$PWD/include/notification.h \
     $$PWD/include/reg_form.h \
-    $$PWD/include/reset_password.h
+    $$PWD/include/reset_password.h \
+    $$PWD/include/network_connection_state.h \
+    $$PWD/include/json_manager.h
 
 FORMS += \
     $$PWD/ui/auth_form.ui \
     $$PWD/ui/client_main_window.ui \
     $$PWD/ui/notification.ui \
     $$PWD/ui/reg_form.ui \
-    $$PWD/ui/reset_password.ui
+    $$PWD/ui/reset_password.ui \
+    $$PWD/ui/network_connection_state.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -57,4 +62,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    $$PWD/resources/recources.qrc \
     $$PWD/resources/recources.qrc

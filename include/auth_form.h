@@ -35,12 +35,12 @@ private slots:
 
    void on_pushButton_draw_password_released(); // функция при отпускании кнопки обратно прячет пароль
 
+   void on_pushButton_settings_clicked(); // вызываем окно с настройками.
+
 private:
    Ui::auth_form *ui;
    Client* client = nullptr;
    void create_notification(QString title, QString text);
-   void write_info_in_cache(); // записываем данные в кэш
-   void fill_from_json(); // вставляем из json
 };
 
 #endif // AUTH_FORM_H
