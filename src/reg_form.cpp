@@ -12,7 +12,7 @@
 #define REG_ERROR "Ошибка при регистрации. Данная учётная запись уже зарегистрирована"
 
 static void set_icon_to_button_settings(QPushButton* pushButton_settings) {
-   pushButton_settings->setIcon(QIcon(":/settings/C:/Users/k0swel/Downloads/settings icon.svg"));
+   pushButton_settings->setIcon(QIcon(":/settings/icons/settings icon.svg"));
    pushButton_settings->setIconSize(QSize(40, 40));
    pushButton_settings->setStyleSheet(
        "QPushButton#pushButton_settings {"

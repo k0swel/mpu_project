@@ -141,7 +141,7 @@ color: rgb(237, 237, 237);
     <rect>
      <x>10</x>
      <y>120</y>
-     <width>441</width>
+     <width>600</width>
      <height>28</height>
     </rect>
    </property>
@@ -526,7 +526,7 @@ color: rgb(224, 225, 230);
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="../resources/recources.qrc">:/logo/C:/Users/k0swel/Downloads/mpu_logo.png</pixmap>
+    <pixmap resource="../resources/recources.qrc">:/logo/icons/mpu_logo.png</pixmap>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_settings">

@@ -691,7 +691,7 @@ color: white;
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../resources/recources.qrc">:/logo/C:/Users/k0swel/Downloads/mpu_logo.png</pixmap>
+       <pixmap resource="../resources/recources.qrc">:/logo/icons/mpu_logo.png</pixmap>
       </property>
      </widget>
     </item>

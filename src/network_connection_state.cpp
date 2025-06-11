@@ -27,7 +27,7 @@ network_connection_state::network_connection_state(Client* client_object, QWidge
    flag_stop_thread.store(false); // устанавливаем флаг работы другого потока, который отслеживает состояние подключения.
    this->setWindowTitle("Сетевые настройки"); // устанавливаем заголовок окна.
    this->set_actual_info_in_placeholders(this->client_object->ip, this->client_object->port); // заменяем placeholder на актуальную сетевую информацию
-   std::thread check_connect_state([&]() -> void {this->check_connection_state(500);}); // создаём поток, который мониторит состояние подключения.
+   std::thread check_connect_state([&]() -> void {this->check_connection_state(10);}); // создаём поток, который мониторит состояние подключения.
    check_connect_state.detach();
    this->show(); // показываем окно на экране.
 }
