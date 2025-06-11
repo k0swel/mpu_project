@@ -8,13 +8,15 @@ QString json_manager::path_to_file = "./cache/cache.json";
 
 void json_manager::create_json_file(const QString& path, const QString& filename)
 {
-   std::filesystem::create_directory(path.toStdString());
-   QJsonDocument json_doc; // главный документ JSON-файла
-   main_object.insert("authentication", QJsonObject({{"login", QString("unknown")}, {"password", QString("unknown")}})); // раздел authentication
-   main_object.insert("network", QJsonObject({{"ip", DEFAULT_IP}, {"port", DEFAULT_PORT}})); // раздел network
-   json_doc.setObject(main_object);
-   QString path_filename = QString("%1/%2").arg(path).arg(filename); // путь к текстовому файлу.
-   write_data_in_json(json_doc, path_filename); // записываем JSON-объект в текстовый файл.
+   if (!std::filesystem::exists(std::filesystem::path("./cache/cache.json"))) {
+      std::filesystem::create_directory(path.toStdString());
+      QJsonDocument json_doc; // главный документ JSON-файла
+      main_object.insert("authentication", QJsonObject({{"login", QString("unknown")}, {"password", QString("unknown")}})); // раздел authentication
+      main_object.insert("network", QJsonObject({{"ip", DEFAULT_IP}, {"port", DEFAULT_PORT}})); // раздел network
+      json_doc.setObject(main_object);
+      QString path_filename = QString("%1/%2").arg(path).arg(filename); // путь к текстовому файлу.
+      write_data_in_json(json_doc, path_filename); // записываем JSON-объект в текстовый файл.
+   }
 
 }
 
@@ -83,13 +85,31 @@ void json_manager::write_authentication_to_json(QString login, QString password)
       authentication.insert("password", password);
       root["authentication"] = authentication;
       doc.setObject(root);
-      std::string json_to_string = doc.toJson().toStdString();
-      file.write(json_to_string.c_str(), doc.toJson().toStdString().size());
-      file.close();
+      write_data_in_json(doc, json_manager::path_to_file); // записываем JSON-документ в текстовый файл.
       return;
    }
    else {
-      std::runtime_error("Произошла ошибка при открытии JSON-файла.");
+      throw std::runtime_error("Произошла ошибка при открытии JSON-файла.");
+   }
+}
+
+void json_manager::write_network_to_json(QString ip, int port)
+{
+   QJsonDocument doc = read_json_file();
+   std::fstream file;
+   file.open(json_manager::path_to_file.toStdString().c_str(), std::ios_base::out);
+   if (file.is_open()) {
+      QJsonObject root = doc.object();
+      QJsonObject authentication = root["network"].toObject();
+      authentication.insert("ip", ip);
+      authentication.insert("port", port);
+      root["network"] = authentication;
+      doc.setObject(root);
+      write_data_in_json(doc, json_manager::path_to_file); // записываем JSON-документ в текстовый файл.
+      return;
+   }
+   else {
+      throw std::runtime_error("Произошла ошибка при открытии JSON-файла.");
    }
 }
 

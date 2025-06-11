@@ -36,6 +36,8 @@ private slots:
 
    void on_pushButton_reg_clicked();
 
+   void on_pushButton_settings_clicked();
+
 private:
    Ui::Widget *ui;
    Client* client = nullptr;

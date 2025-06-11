@@ -6,8 +6,29 @@
 #include <QMessageBox>
 #include <QLabel>
 #include "notification.h"
+#include "network_connection_state.h"
 
 #define NOTIFICATION_ERROR "Убедитесь, что вы ввели корректные коэффициенты."
+
+static void set_icon_to_button_settings(QPushButton* pushButton_settings) {
+   pushButton_settings->setIcon(QIcon(":/settings/C:/Users/k0swel/Downloads/settings icon.svg"));
+   pushButton_settings->setIconSize(QSize(40, 40));
+   pushButton_settings->setStyleSheet(
+       "QPushButton#pushButton_settings {"
+       "   background: transparent;"  // Прозрачный фон в обычном состоянии
+       "   border: none;"            // Убираем границу
+       "}"
+       "QPushButton#pushButton_settings:hover {"
+       "   background: rgba(0,0,0,0.5);" // Прозрачный фон при наведении
+            "border-radius: 10px;"
+       "   padding: 5px;"
+       "}"
+       "QPushButton#pushButton_settings:pressed {"
+       "   background: transparent;" // Прозрачный фон при нажатии
+       "}"
+   );
+
+}
 
 client_main_window::client_main_window(Client* client, QWidget *parent) :
    QWidget(parent),
@@ -23,6 +44,7 @@ client_main_window::client_main_window(Client* client, QWidget *parent) :
    clients_func::equation(ui->Layout_quadratic, action::HIDE); // по умолчанию прячем квадратное уравнение.
    connect(this->client, &Client::equation_ok, this, &client_main_window::slot_equation_ok); // connect об успешном решении уравнения
    connect(this->client, &Client::equation_fail, this, &client_main_window::slot_equation_fail); // connect об отсутствии корней в уравнении
+   set_icon_to_button_settings(ui->pushButton_settings);
    ui->label_answer_x->hide(); // сначала прячем текст ответа на уравнение.
    this->show(); // показыаем текущее окно
 }
@@ -116,4 +138,10 @@ void client_main_window::slot_equation_fail(QString& fail)
 }
 
 
+
+
+void client_main_window::on_pushButton_settings_clicked()
+{
+   network_connection_state::get_instance(this->client); // создаём окно с сетевыми настройками
+}
 

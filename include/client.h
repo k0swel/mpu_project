@@ -25,7 +25,9 @@ public:
    // QString& get_ip() const; // геттер и сеттер IP-адреса сервера.
    // int& get_port() const; // геттер и сеттер порта-сервера
    QAbstractSocket::SocketState get_socket_state() const; // получаем состояние сокета. Getter.
-   void connect_to_server(QString ip, int port); // подключаемся к серверу.
+   QString ip; // IP-адрес, куда будет подключаться клиент.
+   int port; // порт, куда будет подключаться клиент.
+   void connect_to_server(); // подключаемся к серверу.
    ~Client();
 private:
    static QTcpSocket* socket;

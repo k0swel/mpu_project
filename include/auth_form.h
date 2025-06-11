@@ -40,7 +40,7 @@ private slots:
 private:
    Ui::auth_form *ui;
    Client* client = nullptr;
-   void create_notification(QString title, QString text);
+   void fill_login_and_password_from_json();
 };
 
 #endif // AUTH_FORM_H

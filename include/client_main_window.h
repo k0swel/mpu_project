@@ -30,6 +30,8 @@ private slots:
    void slot_equation_ok(QString answer); // слот при успешном решении уравнения.
    void slot_equation_fail(QString& fail); // слот при ошибке при решении линейного уравнения.
 
+   void on_pushButton_settings_clicked();
+
 private:
    Ui::client_main_window *ui;
    Client* client = nullptr; // класс клиента

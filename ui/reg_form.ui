@@ -673,6 +673,19 @@ color: white;
      </spacer>
     </item>
     <item>
+     <widget class="QPushButton" name="pushButton_settings">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>41</horstretch>
+        <verstretch>41</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QLabel" name="label_logo">
       <property name="text">
        <string/>

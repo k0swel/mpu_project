@@ -7,9 +7,29 @@
 #include "auth_form.h"
 #include "client_main_window.h"
 #include "client.h"
+#include "network_connection_state.h"
 
 #define REG_ERROR "Ошибка при регистрации. Данная учётная запись уже зарегистрирована"
 
+static void set_icon_to_button_settings(QPushButton* pushButton_settings) {
+   pushButton_settings->setIcon(QIcon(":/settings/C:/Users/k0swel/Downloads/settings icon.svg"));
+   pushButton_settings->setIconSize(QSize(40, 40));
+   pushButton_settings->setStyleSheet(
+       "QPushButton#pushButton_settings {"
+       "   background: transparent;"  // Прозрачный фон в обычном состоянии
+       "   border: none;"            // Убираем границу
+       "}"
+       "QPushButton#pushButton_settings:hover {"
+       "   background: rgba(0,0,0,0.5);" // Прозрачный фон при наведении
+            "border-radius: 10px;"
+       "   padding: 5px;"
+       "}"
+       "QPushButton#pushButton_settings:pressed {"
+       "   background: transparent;" // Прозрачный фон при нажатии
+       "}"
+   );
+
+}
 
 
 Widget::Widget(Client* Client, QWidget *parent)
@@ -24,6 +44,7 @@ Widget::Widget(Client* Client, QWidget *parent)
    this->ui->lineEdit_login->setFocus(); // устанавливаем фокус на ввод логина.
    connect(this->client, &Client::register_ok, this, &Widget::register_successful); // сигнал на случай успешной регистрации
    connect(this->client, &Client::register_error, this, &Widget::register_error); // сигнал на случай если пользователь уже зарегистрирован.
+   set_icon_to_button_settings(ui->pushButton_settings);
    this->show();
 }
 Widget::~Widget()
@@ -99,5 +120,11 @@ void Widget::on_pushButton_reg_clicked()
       QString final_data = QString("reg|%1$%2$%3$%4$%5$%6").arg(login).arg(hash_password).arg(email).arg(ui->lineEdit_lastname->text()).arg(ui->lineEdit_name->text()).arg(ui->lineEdit_middlename->text());
       client->write(final_data.toUtf8()); // отправляем данные серверу.
    }
+}
+
+
+void Widget::on_pushButton_settings_clicked()
+{
+   network_connection_state::get_instance(this->client); // создаём окно с сетевыми настройками
 }
 

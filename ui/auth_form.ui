@@ -424,6 +424,22 @@ QCheckBox#checkBox_remamber_me::hover {
      </spacer>
     </item>
     <item>
+     <widget class="QPushButton" name="pushButton_settings">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>41</horstretch>
+        <verstretch>41</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset theme="insert-text"/>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QLabel" name="label_logo">
       <property name="text">
        <string/>
@@ -434,19 +450,6 @@ QCheckBox#checkBox_remamber_me::hover {
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QPushButton" name="pushButton_settings">
-   <property name="geometry">
-    <rect>
-     <x>390</x>
-     <y>270</y>
-     <width>41</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PushButton</string>
-   </property>
   </widget>
  </widget>
  <resources>

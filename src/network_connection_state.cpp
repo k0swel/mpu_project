@@ -4,6 +4,7 @@
 #include <chrono>
 #include <fstream>
 #include <notification.h>
+#include <json_manager.h>
 
 network_connection_state* network_connection_state::instance = nullptr; // инициализируем статическую переменную
 static std::atomic<bool> flag_stop_thread = false; // флаг для остановки потока
@@ -25,7 +26,7 @@ network_connection_state::network_connection_state(Client* client_object, QWidge
    this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint); // фиксируем размер окна.
    flag_stop_thread.store(false); // устанавливаем флаг работы другого потока, который отслеживает состояние подключения.
    this->setWindowTitle("Сетевые настройки"); // устанавливаем заголовок окна.
-   this->set_actual_info_in_placeholders(); // заменяем placeholder на актуальную сетевую информацию
+   this->set_actual_info_in_placeholders(this->client_object->ip, this->client_object->port); // заменяем placeholder на актуальную сетевую информацию
    std::thread check_connect_state([&]() -> void {this->check_connection_state(500);}); // создаём поток, который мониторит состояние подключения.
    check_connect_state.detach();
    this->show(); // показываем окно на экране.
@@ -42,7 +43,12 @@ void network_connection_state::set_actual_info_in_placeholders() const // фун
 {
    ui->line_edit_ip_address->setPlaceholderText(QString("Ваш текущий IP: %1").arg(json_manager::get_data_from_json(json_manager::json_manager_network::Network).ip));
    ui->line_edit_port->setPlaceholderText(QString("Ваш текущий порт: %1").arg(json_manager::get_data_from_json(json_manager::json_manager_network::Network).port));
+}
 
+void network_connection_state::set_actual_info_in_placeholders(const QString &ip, const int &port) const // функция которая обновляет placeholder по переданным аргументам.
+{
+   ui->line_edit_ip_address->setPlaceholderText(QString("Ваш текущий IP: %1").arg(ip));
+   ui->line_edit_port->setPlaceholderText(QString("Ваш текущий порт: %1").arg(QString::number(port)));
 }
 
 void network_connection_state::check_connection_state(int interval_ms)
@@ -56,7 +62,7 @@ void network_connection_state::check_connection_state(int interval_ms)
          ui->label_state_off->show(); // показываем сообщение о том, что нет подключения.
          ui->label_state_on->hide(); // прячем сообщение о том, что есть подключение.
       }
-      set_actual_info_in_placeholders(); // вставляем в placeholders актуальную информацию
+      //set_actual_info_in_placeholders(); // вставляем в placeholders актуальную информацию
       std::this_thread::sleep_for(std::chrono::milliseconds(interval_ms)); // засыпаем на interval_ms
    }
 }
@@ -86,13 +92,18 @@ QJsonDocument network_connection_state::read_json(const QString& path) {
 
 void network_connection_state::on_pushButton_try_to_connect_clicked()
 {
-   this->client_object->connect_to_server(ui->line_edit_ip_address->text(), ui->line_edit_port->text().toInt()); // подключение к серверу по введенным данным.
-   if (ui->checkBox_save_config->isChecked()) {
-      qInfo() << "some input...";
-   }
+   const QString ip = ui->line_edit_ip_address->text();
+   const int port = ui->line_edit_port->text().toInt();
+   if (ip.isEmpty() or port == 0)
+      notification::create_instance("Ошибка", "Заполните значение полей корректными значениями.");
    else {
-      this->set_actual_info_in_placeholders();
-
+      this->client_object->ip = ip;
+      this->client_object->port = port;
+      this->client_object->connect_to_server(); // подключение к серверу по введенным данным.
+      if (ui->checkBox_save_config->isChecked()) {
+         json_manager::write_network_to_json(ip, port);
+      }
+      this->set_actual_info_in_placeholders(ip, port);
    }
 }
 

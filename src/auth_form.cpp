@@ -12,11 +12,30 @@
 #include <fstream>
 #include <filesystem>
 #include "network_connection_state.h"
-
+#include <QStyleFactory>
 #define AUTH_ERROR "Неверный логин/пароль"
 
 extern QJsonDocument json_data_about_client;
 
+static void set_icon_to_button_settings(QPushButton* pushButton_settings) {
+   pushButton_settings->setIcon(QIcon(":/settings/C:/Users/k0swel/Downloads/settings icon.svg"));
+   pushButton_settings->setIconSize(QSize(40, 40));
+   pushButton_settings->setStyleSheet(
+       "QPushButton#pushButton_settings {"
+       "   background: transparent;"  // Прозрачный фон в обычном состоянии
+       "   border: none;"            // Убираем границу
+       "}"
+       "QPushButton#pushButton_settings:hover {"
+       "   background: rgba(0,0,0,0.5);" // Прозрачный фон при наведении
+            "border-radius: 10px;"
+       "   padding: 5px;"
+       "}"
+       "QPushButton#pushButton_settings:pressed {"
+       "   background: transparent;" // Прозрачный фон при нажатии
+       "}"
+   );
+
+}
 
 auth_form::auth_form(Client* client_socket, QWidget *parent) :
    QWidget(parent),
@@ -30,7 +49,8 @@ auth_form::auth_form(Client* client_socket, QWidget *parent) :
    this->setAttribute(Qt::WA_DeleteOnClose); // удаляем окно при нажатии на значок закрытия.
    connect(this->client, &Client::auth_ok, this, &auth_form::auth_ok); // сигнал на случай успешной авторизации
    connect(this->client, &Client::auth_error, this, &auth_form::auth_error); // сигнал на случай ошибки при авторизации
-   ui->pushButton_draw_password->setFixedSize(QSize(20,ui->pushButton_draw_password->height()));
+   fill_login_and_password_from_json(); // заполняем поля ввода данными из JSON-файла.
+   set_icon_to_button_settings(ui->pushButton_settings);
    this->show(); // показываем текущее окно.
 }
 
@@ -82,10 +102,10 @@ void auth_form::on_pushButton_to_reg_clicked() // нажата кнопка вы
 
 void auth_form::auth_ok() {
    if (ui->checkBox_remamber_me->isChecked()) {
-      if (ui->checkBox_remamber_me->isChecked()) {
-         json_manager::write_authentication_to_json(ui->lineEdit_login->text(), ui->lineEdit_password->text());
-         qDebug() << "Данные записаны";
-      }
+      json_manager::write_authentication_to_json(ui->lineEdit_login->text(), ui->lineEdit_password->text()); // записываем логин и пароль с полей ввода.
+   }
+   else {
+      json_manager::write_authentication_to_json("unknown", "unknown"); // записываем unknown, чтобы поля ввода не заполнялись.
    }
    this->hide(); // прячем окно
    new client_main_window(this->client); // открываем окно клиента.
@@ -116,5 +136,15 @@ void auth_form::on_pushButton_settings_clicked() // вызываем окно с
 {
    network_connection_state::get_instance(this->client); // создаём окно с сетевыми настройками
 }
+
+void auth_form::fill_login_and_password_from_json()
+{
+   json_manager::login_and_password data = json_manager::get_data_from_json(json_manager::json_manager_auth::Authentication);
+   if (data.login != "unknown" and data.password != "unknown") {
+      ui->lineEdit_login->setText(data.login);
+      ui->lineEdit_password->setText(data.password);
+   }
+}
+
 
 

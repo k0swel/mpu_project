@@ -35,7 +35,9 @@ Client::Client()
    connect(Client::socket, &QTcpSocket::connected, [&]() { connect(this->socket, &QTcpSocket::readyRead, this, &Client::read); }); // при подключении к серверу читаем сигналы поступления сообщений
    connect(Client::socket, &QTcpSocket::disconnected, this, &Client::disconnect_from_server); // при отключении от сервера вызываем функцию disconnect_from_server
    json_manager::create_json_file("./cache", "cache.json"); // создаём файл, где будет хранится инфа о кеше.
-   this->connect_to_server(json_manager::get_data_from_json(json_manager::json_manager_network::Network).ip, json_manager::get_data_from_json(json_manager::json_manager_network::Network).port);
+   this->ip = json_manager::get_data_from_json(json_manager::json_manager_network::Network).ip;
+   this->port = json_manager::get_data_from_json(json_manager::json_manager_network::Network).port;
+   this->connect_to_server();
 }
 
 Client::~Client() {
@@ -57,10 +59,9 @@ QAbstractSocket::SocketState Client::get_socket_state() const
 }
 
 
-void Client::connect_to_server(QString ip, int port) {
+void Client::connect_to_server() {
    this->socket->disconnectFromHost(); // отключаемся от подключений
-   //this->socket->connectToHost(ip, port); // подключаемся к серверу по IP и порту
-   this->socket->connectToHost("127.0.0.1", 8080); // подключаемся к серверу по IP и порту
+   this->socket->connectToHost(this->ip, this->port); // подключаемся к серверу по IP и порту
 
 }
 

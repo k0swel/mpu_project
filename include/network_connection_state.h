@@ -30,7 +30,8 @@ private:
    explicit network_connection_state(Client* client_object, QWidget *parent = nullptr); // делаем конструктор приватным, чтобы реализовать синглтон.
    Client* client_object = nullptr; // указатель на синглтон клиента.
    static network_connection_state* instance; // статическая переменная, указывающая на класс синглтон.
-   void set_actual_info_in_placeholders() const; // функция которая обновляет placeholder на актуальную информацию
+   void set_actual_info_in_placeholders() const; // функция которая обновляет placeholder на актуальную информацию из JSON-файла
+   void set_actual_info_in_placeholders(const QString& ip, const int& port) const; // вставляем информацию в placeholders из input
    void check_connection_state(int interval_ms); // функция, которая в другом потоке будет следить за состоянием сокета
 };
 #endif // NETWORK_CONNECTION_STATE_H

@@ -9,6 +9,28 @@
 #include "client.h"
 #include "notification.h"
 #include <QClipboard>
+#include "network_connection_state.h"
+
+static void set_icon_to_button_settings(QPushButton* pushButton_settings) {
+   pushButton_settings->setIcon(QIcon(":/settings/C:/Users/k0swel/Downloads/settings icon.svg"));
+   pushButton_settings->setIconSize(QSize(40, 40));
+   pushButton_settings->setStyleSheet(
+       "QPushButton#pushButton_settings {"
+       "   background: transparent;"  // Прозрачный фон в обычном состоянии
+       "   border: none;"            // Убираем границу
+       "}"
+       "QPushButton#pushButton_settings:hover {"
+       "   background: rgba(0,0,0,0.5);" // Прозрачный фон при наведении
+            "border-radius: 10px;"
+       "   padding: 5px;"
+       "}"
+       "QPushButton#pushButton_settings:pressed {"
+       "   background: transparent;" // Прозрачный фон при нажатии
+       "}"
+   );
+
+}
+
 reset_password::reset_password(Client* client, QWidget *parent) :
    QWidget(parent),
    ui(new Ui::reset_password),
@@ -28,6 +50,9 @@ reset_password::reset_password(Client* client, QWidget *parent) :
    this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint); // запрещаем изменять размер окна
    this->setWindowTitle(QString("Метод половинного деления"));
    this->setAttribute(Qt::WA_DeleteOnClose); // удаляем окно при нажатии на значок закрытия.
+   set_icon_to_button_settings(ui->pushButton_settings);
+   ui->pushButton_update->setIcon(QIcon(QPixmap(":/update_icon/C:/Users/k0swel/Downloads/update_icon.png")));
+   ui->pushButton_update->setIconSize(QSize(50,50));
    this->show(); // показываем текущее окно.
 }
 
@@ -125,5 +150,11 @@ void reset_password::on_pushButton_clicked() // кнопка обновлени�
    ui->pushButton_code->hide(); // прячем pushbutton код
    ui->label_message_send_code->hide(); // прячем сообщение об отправки кода на почту
    ui->pushButton_reset_password->show(); // показываем кнопку "Забыл пароль".
+}
+
+
+void reset_password::on_pushButton_settings_clicked()
+{
+   network_connection_state::get_instance(this->client); // создаём окно с сетевыми настройками
 }
 
