@@ -60,7 +60,7 @@ QAbstractSocket::SocketState Client::get_socket_state() const
 
 
 void Client::connect_to_server() {
-   this->socket->disconnectFromHost(); // отключаемся от подключений
+   this->socket->abort(); // отключаемся от подключений
    this->socket->connectToHost(this->ip, this->port); // подключаемся к серверу по IP и порту
 
 }

@@ -141,7 +141,7 @@ color: rgb(237, 237, 237);
     <rect>
      <x>10</x>
      <y>120</y>
-     <width>600</width>
+     <width>441</width>
      <height>28</height>
     </rect>
    </property>
@@ -537,6 +537,9 @@ color: rgb(224, 225, 230);
      <width>41</width>
      <height>41</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Открыть сетевые настройки&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string/>

@@ -680,6 +680,9 @@ color: white;
         <verstretch>41</verstretch>
        </sizepolicy>
       </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Открыть сетевые настройки&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
       <property name="text">
        <string/>
       </property>

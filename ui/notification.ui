@@ -44,8 +44,8 @@ QPushButton#pushButton_close:hover {
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>30</y>
-     <width>371</width>
+     <y>40</y>
+     <width>361</width>
      <height>61</height>
     </rect>
    </property>

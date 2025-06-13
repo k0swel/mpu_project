@@ -1,13 +1,11 @@
 #include "network_connection_state.h"
 #include "ui_network_connection_state.h"
-#include <thread>
-#include <chrono>
+#include <QTimer>
 #include <fstream>
 #include <notification.h>
 #include <json_manager.h>
 
 network_connection_state* network_connection_state::instance = nullptr; // инициализируем статическую переменную
-static std::atomic<bool> flag_stop_thread = false; // флаг для остановки потока
 
 network_connection_state* network_connection_state::get_instance(Client* client_object) {
    if (!network_connection_state::instance) { // если объекта-синглтона не существует
@@ -24,18 +22,20 @@ network_connection_state::network_connection_state(Client* client_object, QWidge
    ui->setupUi(this);
    this->setAttribute(Qt::WA_DeleteOnClose); // вызываем деструктор при закрытии окна.
    this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint); // фиксируем размер окна.
-   flag_stop_thread.store(false); // устанавливаем флаг работы другого потока, который отслеживает состояние подключения.
    this->setWindowTitle("Сетевые настройки"); // устанавливаем заголовок окна.
    this->set_actual_info_in_placeholders(this->client_object->ip, this->client_object->port); // заменяем placeholder на актуальную сетевую информацию
-   std::thread check_connect_state([&]() -> void {this->check_connection_state(10);}); // создаём поток, который мониторит состояние подключения.
-   check_connect_state.detach();
+   this->check_connection_timer = new QTimer(this);
+   this->check_connection_timer->setInterval(300);
+   this->check_connection_timer->start();
+   connect(this->check_connection_timer, &QTimer::timeout, this, &network_connection_state::check_connection_state);
    this->show(); // показываем окно на экране.
 }
 
 network_connection_state::~network_connection_state()
 {
-   flag_stop_thread.store(true);
    delete ui;
+   this->check_connection_timer->stop();
+   this->check_connection_timer->deleteLater();
    network_connection_state::instance = nullptr;
 }
 
@@ -51,19 +51,15 @@ void network_connection_state::set_actual_info_in_placeholders(const QString &ip
    ui->line_edit_port->setPlaceholderText(QString("Ваш текущий порт: %1").arg(QString::number(port)));
 }
 
-void network_connection_state::check_connection_state(int interval_ms)
+void network_connection_state::check_connection_state()
 {
-   while (flag_stop_thread.load() == false) { // когда std::atomic<bool>flag_stop_thread == false
-      if (this->client_object->get_socket_state() == QAbstractSocket::ConnectedState) { // если мы подключены к серверу
-         ui->label_state_on->show(); // показываем сообщение о том, что имеется подключение.
-         ui->label_state_off->hide(); // прячем сообщение о том, что нет подключения к клиенту.
-      }
-      else {
-         ui->label_state_off->show(); // показываем сообщение о том, что нет подключения.
-         ui->label_state_on->hide(); // прячем сообщение о том, что есть подключение.
-      }
-      //set_actual_info_in_placeholders(); // вставляем в placeholders актуальную информацию
-      std::this_thread::sleep_for(std::chrono::milliseconds(interval_ms)); // засыпаем на interval_ms
+   if (this->client_object->get_socket_state() == QAbstractSocket::ConnectedState) { // если мы подключены к серверу
+      ui->label_state_on->show(); // показываем сообщение о том, что имеется подключение.
+      ui->label_state_off->hide(); // прячем сообщение о том, что нет подключения к клиенту.
+   }
+   else {
+      ui->label_state_off->show(); // показываем сообщение о том, что нет подключения.
+      ui->label_state_on->hide(); // прячем сообщение о том, что есть подключение.
    }
 }
 
@@ -97,6 +93,7 @@ void network_connection_state::on_pushButton_try_to_connect_clicked()
    if (ip.isEmpty() or port == 0)
       notification::create_instance("Ошибка", "Заполните значение полей корректными значениями.");
    else {
+      qInfo() << "Test...";
       this->client_object->ip = ip;
       this->client_object->port = port;
       this->client_object->connect_to_server(); // подключение к серверу по введенным данным.

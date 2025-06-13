@@ -7,3 +7,4 @@ build/cache/*
 Makefile
 client_resource.rc
 client.pro.user
+CMakeLists.txt

@@ -19,11 +19,11 @@ public:
    static network_connection_state* get_instance(Client* client_object); // конструктор для синглтона
    network_connection_state& operator=(network_connection_state&) = delete; // удаляем оператор присваивания для синглтона.
    static QJsonDocument read_json(const QString& path = "./cache/cache.json");
-
    ~network_connection_state();
 
 private slots:
    void on_pushButton_try_to_connect_clicked();
+   void check_connection_state(); // функция, которая в другом потоке будет следить за состоянием сокета
 
 private:
    Ui::network_connection_state *ui;
@@ -32,6 +32,6 @@ private:
    static network_connection_state* instance; // статическая переменная, указывающая на класс синглтон.
    void set_actual_info_in_placeholders() const; // функция которая обновляет placeholder на актуальную информацию из JSON-файла
    void set_actual_info_in_placeholders(const QString& ip, const int& port) const; // вставляем информацию в placeholders из input
-   void check_connection_state(int interval_ms); // функция, которая в другом потоке будет следить за состоянием сокета
+   QTimer* check_connection_timer;
 };
 #endif // NETWORK_CONNECTION_STATE_H
