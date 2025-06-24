@@ -15,3 +15,6 @@ Makefile
 .qmake.stash
 tmp.db
 ./client.pro.user
+*.pro.user
+server/build/
+server/libraries/SMTPEmail/build/
